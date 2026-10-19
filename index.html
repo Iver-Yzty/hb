@@ -31,12 +31,24 @@
         font-style: italic;
         font-display: swap;
       }
+      /* 可见汉字子集里没有数字，数字单独再打一份（等高 lining 数字），
+         否则会回退到 Cormorant 的旧式数字，「2」会明显比「3」小 */
       @font-face {
         font-family: "Noto Serif SC";
         src: url("assets/fonts/noto-serif-sc-visible.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
+        unicode-range: U+0020, U+3002, U+4E00, U+4E07, U+4E2A, U+4E50, U+4E5F,
+          U+4E8B, U+4EE5, U+4F60, U+4F9D, U+505A, U+507F, U+5149, U+5174,
+          U+53BB, U+53D1, U+5427, U+559C, U+5728, U+5730, U+5929, U+5982,
+          U+5A9A, U+5B89, U+5BB9, U+5C65, U+5C81, U+5E73, U+5F88, U+5FC3,
+          U+5FEB, U+60C5, U+60F3, U+610F, U+613F, U+6210, U+62B5, U+65B0,
+          U+65B9, U+65E5, U+65E7, U+660E, U+661F, U+6B65, U+6BCF, U+6CB3,
+          U+6D3B, U+706B, U+70C8, U+70DB, U+70ED, U+7136, U+751F, U+7684,
+          U+795D, U+7B11, U+80DC, U+80FD, U+81EA, U+89E6, U+8BA4, U+8BB8,
+          U+8BC6, U+8F7B, U+8FBE, U+8FD8, U+9042, U+90FD, U+91CD, U+957F,
+          U+95EA, U+987A, U+9AD8, U+9C9C, U+FF01, U+FF0C, U+FF1B;
       }
       @font-face {
         font-family: "Noto Serif SC";
@@ -44,6 +56,32 @@
         font-weight: 500;
         font-style: normal;
         font-display: swap;
+        unicode-range: U+0020, U+3002, U+4E00, U+4E07, U+4E2A, U+4E50, U+4E5F,
+          U+4E8B, U+4EE5, U+4F60, U+4F9D, U+505A, U+507F, U+5149, U+5174,
+          U+53BB, U+53D1, U+5427, U+559C, U+5728, U+5730, U+5929, U+5982,
+          U+5A9A, U+5B89, U+5BB9, U+5C65, U+5C81, U+5E73, U+5F88, U+5FC3,
+          U+5FEB, U+60C5, U+60F3, U+610F, U+613F, U+6210, U+62B5, U+65B0,
+          U+65B9, U+65E5, U+65E7, U+660E, U+661F, U+6B65, U+6BCF, U+6CB3,
+          U+6D3B, U+706B, U+70C8, U+70DB, U+70ED, U+7136, U+751F, U+7684,
+          U+795D, U+7B11, U+80DC, U+80FD, U+81EA, U+89E6, U+8BA4, U+8BB8,
+          U+8BC6, U+8F7B, U+8FBE, U+8FD8, U+9042, U+90FD, U+91CD, U+957F,
+          U+95EA, U+987A, U+9AD8, U+9C9C, U+FF01, U+FF0C, U+FF1B;
+      }
+      @font-face {
+        font-family: "Noto Serif SC";
+        src: url("assets/fonts/noto-serif-sc-digits.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        unicode-range: U+0030-0039;
+      }
+      @font-face {
+        font-family: "Noto Serif SC";
+        src: url("assets/fonts/noto-serif-sc-digits.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+        unicode-range: U+0030-0039;
       }
 
       body.theme-night {
@@ -2021,10 +2059,12 @@
           ctx.stroke();
 
           /* 数字 */
+          /* Cormorant 的数字是旧式(不等高)字形，「2」会明显比「3」矮小，
+             这里改用正文的 Noto Serif SC（等高 lining 数字），两个数字才齐平 */
           ctx.font =
-            "600 " +
+            "400 " +
             Math.round(h * 0.56) +
-            'px "Cormorant Garamond", "Noto Serif SC", serif';
+            'px "Noto Serif SC", "Cormorant Garamond", serif';
           ctx.fillStyle = palette.candleNumeral;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";

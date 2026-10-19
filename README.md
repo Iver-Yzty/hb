@@ -27,7 +27,7 @@ cd "C:/Users/Administrator/Desktop/hb" && python -m http.server 5173
 - 贺卡顶部贴了三张手绘贴纸照片（`assets/photos/sticker-1/2/3.webp`，由根目录的 `s1/s2/s3.png` 裁边压缩而来），像随手贴在卡片上的装饰。
 - 贺卡右下角是一枚手绘小头像落款（`assets/photos/signature-avatar.png`，由根目录的原始 PNG 裁切而来）。想换图直接替换这个文件；如果浏览器还显示旧图，把 `index.html` 里的 `?v=2` 改成 `?v=3` 即可强制刷新。
 - 顶部标题是一张手绘字图（`assets/photos/hbfont-title.webp`，由根目录的 `hb2.png` 裁边压缩而来），不再使用文字标题；想换图直接替换这个 webp 即可。
-- 正文字体 Noto Serif SC、英文字体 Cormorant Garamond 都做了子集化放在 `assets/fonts/`，页面不再请求 Google Fonts，国内可正常加载。
+- 正文字体 Noto Serif SC、英文字体 Cormorant Garamond 都做了子集化放在 `assets/fonts/`，页面不再请求 Google Fonts，国内可正常加载。Noto 的可见汉字子集不含数字，所以另打了一份 `noto-serif-sc-digits.woff2`（等高 lining 数字），避免数字回退到 Cormorant 的旧式字形后「2」比「3」矮一截。
 
 ### 五幕版（story.html · 保留）
 

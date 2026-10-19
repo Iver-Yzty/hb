@@ -17,290 +17,397 @@
       /* ── 独立试作页：3D 星河丝带蛋糕 ───────────────────────── */
 
       /* 字体全部本地打包（只含页面实际用到的字），国内无需访问 Google Fonts */
-      @font-face{
-        font-family:"BirthdayBrush";
-        src:url("assets/fonts/ma-shan-zheng-title.woff2") format("woff2");
-        font-weight:400;
-        font-style:normal;
-        font-display:swap;
+      @font-face {
+        font-family: "Cormorant Garamond";
+        src: url("assets/fonts/cormorant-garamond-latin.woff2") format("woff2");
+        font-weight: 400 600;
+        font-style: normal;
+        font-display: swap;
       }
-      @font-face{
-        font-family:"Cormorant Garamond";
-        src:url("assets/fonts/cormorant-garamond-latin.woff2") format("woff2");
-        font-weight:400 600;
-        font-style:normal;
-        font-display:swap;
+      @font-face {
+        font-family: "Cormorant Garamond";
+        src: url("assets/fonts/cormorant-garamond-italic.woff2") format("woff2");
+        font-weight: 400 600;
+        font-style: italic;
+        font-display: swap;
       }
-      @font-face{
-        font-family:"Cormorant Garamond";
-        src:url("assets/fonts/cormorant-garamond-italic.woff2") format("woff2");
-        font-weight:400 600;
-        font-style:italic;
-        font-display:swap;
+      @font-face {
+        font-family: "Noto Serif SC";
+        src: url("assets/fonts/noto-serif-sc-visible.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
       }
-      @font-face{
-        font-family:"Noto Serif SC";
-        src:url("assets/fonts/noto-serif-sc-visible.woff2") format("woff2");
-        font-weight:400;
-        font-style:normal;
-        font-display:swap;
-      }
-      @font-face{
-        font-family:"Noto Serif SC";
-        src:url("assets/fonts/noto-serif-sc-visible.woff2") format("woff2");
-        font-weight:500;
-        font-style:normal;
-        font-display:swap;
+      @font-face {
+        font-family: "Noto Serif SC";
+        src: url("assets/fonts/noto-serif-sc-visible.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
       }
 
-      body.theme-night{ background:#070B14; }
+      body.theme-night {
+        background: #070b14;
+      }
 
       /* 默认：原始代码的深海星河色系 */
-      .scene--star{
+      .scene--star {
         background:
-          radial-gradient(95% 62% at 50% 46%, rgba(30,64,140,.42) 0%, rgba(13,29,64,.28) 42%, transparent 74%),
-          radial-gradient(135% 85% at 50% 38%, #15234A 0%, #0E1830 52%, #070B14 100%);
+          radial-gradient(
+            95% 62% at 50% 46%,
+            rgba(30, 64, 140, 0.42) 0%,
+            rgba(13, 29, 64, 0.28) 42%,
+            transparent 74%
+          ),
+          radial-gradient(
+            135% 85% at 50% 38%,
+            #15234a 0%,
+            #0e1830 52%,
+            #070b14 100%
+          );
       }
-      .scene--star .night-glow{
-        background:radial-gradient(circle,
-          rgba(56,189,248,.20) 0%,
-          rgba(29,78,216,.10) 38%,
-          transparent 68%);
+      .scene--star .night-glow {
+        background: radial-gradient(
+          circle,
+          rgba(56, 189, 248, 0.2) 0%,
+          rgba(29, 78, 216, 0.1) 38%,
+          transparent 68%
+        );
       }
-      .scene--star .night-horizon{
-        background:radial-gradient(ellipse at 50% 100%, rgba(56,189,248,.14), transparent 64%);
+      .scene--star .night-horizon {
+        background: radial-gradient(
+          ellipse at 50% 100%,
+          rgba(56, 189, 248, 0.14),
+          transparent 64%
+        );
       }
-      .scene--star .bokeh--a{ background:rgba(56,189,248,.5); box-shadow:0 0 18px rgba(56,189,248,.4); }
-      .scene--star .bokeh--b{ background:rgba(255,105,180,.45); box-shadow:0 0 16px rgba(255,105,180,.35); }
-      .scene--star .bokeh--c{ background:rgba(125,223,242,.35); box-shadow:0 0 22px rgba(125,223,242,.3); }
+      .scene--star .bokeh--a {
+        background: rgba(56, 189, 248, 0.5);
+        box-shadow: 0 0 18px rgba(56, 189, 248, 0.4);
+      }
+      .scene--star .bokeh--b {
+        background: rgba(255, 105, 180, 0.45);
+        box-shadow: 0 0 16px rgba(255, 105, 180, 0.35);
+      }
+      .scene--star .bokeh--c {
+        background: rgba(125, 223, 242, 0.35);
+        box-shadow: 0 0 22px rgba(125, 223, 242, 0.3);
+      }
 
-      .scene--star .kicker--light{ color:rgba(186,230,253,.8); }
-      .scene--star .kicker--light::before,
-      .scene--star .kicker--light::after{
-        background:linear-gradient(90deg, transparent, rgba(125,211,252,.65));
+      .scene--star .finale-title--art {
+        display: block;
+        width: min(88vw, 372px);
+        margin: 0;
+        line-height: 0;
+        letter-spacing: 0;
+        text-indent: 0;
+        text-shadow: none;
+        color: transparent;
+        filter: drop-shadow(0 12px 34px rgba(5, 12, 30, 0.55));
       }
-      .scene--star .finale-title{
-        font-family:"BirthdayBrush", var(--cn);
-        font-weight:400;
-        font-size:clamp(34px, 9.4vw, 46px);
-        line-height:1.25;
-        letter-spacing:.06em;
-        text-indent:.06em;
-        background:linear-gradient(100deg, #FFE7A3 0%, #FFB6C1 46%, #7BDFF2 100%);
-        -webkit-background-clip:text;
-        background-clip:text;
-        color:transparent;
-        text-shadow:none;
-        filter:drop-shadow(0 0 22px rgba(56,189,248,.28));
+      .scene--star .finale-title--art img {
+        display: block;
+        width: 100%;
+        height: auto;
+        -webkit-user-drag: none;
+        user-select: none;
       }
-      .scene--star .blow-hint{ color:rgba(224,242,254,.8); }
-      .scene--star .blow-hint::after{
-        background:linear-gradient(90deg, transparent, rgba(56,189,248,.75), transparent);
+      @media (min-width: 760px) {
+        .scene--star .finale-title--art {
+          width: min(46vw, 430px);
+        }
+      }
+      .scene--star .blow-hint {
+        color: rgba(224, 242, 254, 0.8);
+      }
+      .scene--star .blow-hint::after {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(56, 189, 248, 0.75),
+          transparent
+        );
       }
 
-      .star-topbar{
-        position:fixed;
-        z-index:52;
-        top:calc(var(--safe-top) + 14px);
-        left:0; right:0;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding:0 clamp(16px, 5vw, 28px);
-        pointer-events:none;
+      .star-topbar {
+        position: fixed;
+        z-index: 52;
+        top: calc(var(--safe-top) + 14px);
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 clamp(16px, 5vw, 28px);
+        pointer-events: none;
       }
-      .star-topbar > *{ pointer-events:auto; }
-
-      .star-back{
-        display:inline-flex;
-        align-items:center;
-        gap:6px;
-        padding:6px 2px;
-        color:rgba(186,230,253,.66);
-        font-size:10.5px;
-        letter-spacing:.16em;
-        text-decoration:none;
-        -webkit-tap-highlight-color:transparent;
-        transition:color .35s;
+      .star-topbar > * {
+        pointer-events: auto;
       }
-      .star-back:hover{ color:#E0F2FE; }
 
-      .star-badge{
-        font-family:var(--serif);
-        font-style:italic;
-        font-size:10px;
-        letter-spacing:.24em;
-        color:rgba(125,211,252,.45);
-        user-select:none;
+      .star-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 2px;
+        color: rgba(186, 230, 253, 0.66);
+        font-size: 10.5px;
+        letter-spacing: 0.16em;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: color 0.35s;
+      }
+      .star-back:hover {
+        color: #e0f2fe;
+      }
+
+      .star-badge {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 10px;
+        letter-spacing: 0.24em;
+        color: rgba(125, 211, 252, 0.45);
+        user-select: none;
       }
 
       /* 香槟金版：index.html?theme=gold */
-      .cake-gold .scene--star{
+      .cake-gold .scene--star {
         background:
-          radial-gradient(95% 62% at 50% 46%, rgba(64,55,72,.55) 0%, rgba(32,40,64,.35) 42%, transparent 74%),
-          radial-gradient(135% 85% at 50% 38%, #2A3554 0%, #1A2238 52%, #111726 100%);
+          radial-gradient(
+            95% 62% at 50% 46%,
+            rgba(64, 55, 72, 0.55) 0%,
+            rgba(32, 40, 64, 0.35) 42%,
+            transparent 74%
+          ),
+          radial-gradient(
+            135% 85% at 50% 38%,
+            #2a3554 0%,
+            #1a2238 52%,
+            #111726 100%
+          );
       }
-      .cake-gold .scene--star .night-glow{
-        background:radial-gradient(circle,
-          rgba(255,209,102,.22) 0%,
-          rgba(230,194,128,.09) 38%,
-          transparent 68%);
+      .cake-gold .scene--star .night-glow {
+        background: radial-gradient(
+          circle,
+          rgba(255, 209, 102, 0.22) 0%,
+          rgba(230, 194, 128, 0.09) 38%,
+          transparent 68%
+        );
       }
-      .cake-gold .scene--star .night-horizon{
-        background:radial-gradient(ellipse at 50% 100%, rgba(255,196,110,.13), transparent 64%);
+      .cake-gold .scene--star .night-horizon {
+        background: radial-gradient(
+          ellipse at 50% 100%,
+          rgba(255, 196, 110, 0.13),
+          transparent 64%
+        );
       }
-      .cake-gold .scene--star .bokeh--a{ background:rgba(255,209,102,.5); box-shadow:0 0 18px rgba(255,209,102,.4); }
-      .cake-gold .scene--star .bokeh--b{ background:rgba(243,232,255,.5); box-shadow:0 0 16px rgba(243,232,255,.35); }
-      .cake-gold .scene--star .bokeh--c{ background:rgba(230,194,128,.35); box-shadow:0 0 22px rgba(230,194,128,.3); }
-
-      .cake-gold .scene--star .kicker--light{ color:rgba(240,216,166,.85); }
-      .cake-gold .scene--star .kicker--light::before,
-      .cake-gold .scene--star .kicker--light::after{
-        background:linear-gradient(90deg, transparent, rgba(230,194,128,.7));
+      .cake-gold .scene--star .bokeh--a {
+        background: rgba(255, 209, 102, 0.5);
+        box-shadow: 0 0 18px rgba(255, 209, 102, 0.4);
       }
-      .cake-gold .scene--star .finale-title{
-        background:none;
-        -webkit-background-clip:border-box;
-        background-clip:border-box;
-        color:#FBF1DC;
-        text-shadow:0 0 26px rgba(255,209,102,.25);
-        filter:none;
+      .cake-gold .scene--star .bokeh--b {
+        background: rgba(243, 232, 255, 0.5);
+        box-shadow: 0 0 16px rgba(243, 232, 255, 0.35);
       }
-      .cake-gold .scene--star .blow-hint{ color:rgba(255,240,210,.82); }
-      .cake-gold .scene--star .blow-hint::after{
-        background:linear-gradient(90deg, transparent, rgba(255,209,102,.75), transparent);
-      }
-      .cake-gold .star-back{ color:rgba(243,226,185,.66); }
-      .cake-gold .star-back:hover{ color:#FFE9B8; }
-      .cake-gold .star-badge{ color:rgba(230,194,128,.5); }
-
-      .cake-canvas{
-        position:absolute;
-        inset:0;
-        z-index:3;
-        width:100%;
-        height:100%;
-        touch-action:none;
-        cursor:grab;
-        -webkit-tap-highlight-color:transparent;
-      }
-      .cake-canvas:active{ cursor:grabbing; }
-
-      .star-inner{
-        justify-content:flex-start;
-        gap:0;
-        pointer-events:none;
+      .cake-gold .scene--star .bokeh--c {
+        background: rgba(230, 194, 128, 0.35);
+        box-shadow: 0 0 22px rgba(230, 194, 128, 0.3);
       }
 
-      .star-inner .finale-head{
-        padding-top:2px;
-        flex:0 0 auto;
+      .cake-gold .scene--star .blow-hint {
+        color: rgba(255, 240, 210, 0.82);
+      }
+      .cake-gold .scene--star .blow-hint::after {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 209, 102, 0.75),
+          transparent
+        );
+      }
+      .cake-gold .star-back {
+        color: rgba(243, 226, 185, 0.66);
+      }
+      .cake-gold .star-back:hover {
+        color: #ffe9b8;
+      }
+      .cake-gold .star-badge {
+        color: rgba(230, 194, 128, 0.5);
       }
 
-      .star-inner .blow-hint{
-        position:absolute;
-        left:50%;
-        top:68%;
-        z-index:8;
-        margin:0;
-        transform:translateX(-50%);
-        white-space:nowrap;
-        pointer-events:auto;
+      .cake-canvas {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+        cursor: grab;
+        -webkit-tap-highlight-color: transparent;
       }
-      .scene--star.is-blown .blow-hint{
-        transform:translate(-50%, 8px);
-      }
-
-      .star-inner .wish-card{
-        position:absolute;
-        left:50%;
-        bottom:0;
-        transform:translateX(-50%);
-        margin:0;
-        pointer-events:auto;
-        width:min(90%, 390px);
+      .cake-canvas:active {
+        cursor: grabbing;
       }
 
-      .scene--star.is-card .wish-card{
-        max-height:min(420px, 52vh);
-        overflow-y:auto;
-        overscroll-behavior:contain;
-        scrollbar-width:none;
+      .star-inner {
+        justify-content: flex-start;
+        gap: 0;
+        pointer-events: none;
       }
-      .scene--star.is-card .wish-card::-webkit-scrollbar{ display:none; }
+
+      .star-inner .finale-head {
+        padding-top: 2px;
+        flex: 0 0 auto;
+      }
+
+      .star-inner .blow-hint {
+        position: absolute;
+        left: 50%;
+        top: 68%;
+        z-index: 8;
+        margin: 0;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        pointer-events: auto;
+      }
+      .scene--star.is-blown .blow-hint {
+        transform: translate(-50%, 8px);
+      }
+
+      .star-inner .wish-card {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        margin: 0;
+        pointer-events: auto;
+        width: min(90%, 390px);
+      }
+
+      .scene--star.is-card .wish-card {
+        max-height: min(420px, 52vh);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: none;
+      }
+      .scene--star.is-card .wish-card::-webkit-scrollbar {
+        display: none;
+      }
 
       /* 去掉署名后，用一枚小小的金色分隔收尾 */
-      .wish-card .wish-ornament{
-        display:block;
-        position:relative;
-        width:104px;
-        height:8px;
-        margin:13px auto 0;
-        background:radial-gradient(circle, rgba(174,124,54,.85) 0 1.6px, rgba(174,124,54,0) 2px) center/6px 6px no-repeat;
+      .wish-card .wish-ornament {
+        display: block;
+        position: relative;
+        width: 104px;
+        height: 8px;
+        margin: 13px auto 0;
+        background: radial-gradient(
+            circle,
+            rgba(174, 124, 54, 0.85) 0 1.6px,
+            rgba(174, 124, 54, 0) 2px
+          )
+          center/6px 6px no-repeat;
       }
       .wish-card .wish-ornament::before,
-      .wish-card .wish-ornament::after{
-        content:"";
-        position:absolute;
-        top:50%;
-        width:40px;
-        height:1px;
-        background:linear-gradient(90deg, rgba(185,138,71,0), rgba(185,138,71,.55));
+      .wish-card .wish-ornament::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 40px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          rgba(185, 138, 71, 0),
+          rgba(185, 138, 71, 0.55)
+        );
       }
-      .wish-card .wish-ornament::before{ left:0; }
-      .wish-card .wish-ornament::after{ right:0; transform:scaleX(-1); }
-      .scene--finale.is-card .wish-ornament{ animation-delay:1.2s; }
+      .wish-card .wish-ornament::before {
+        left: 0;
+      }
+      .wish-card .wish-ornament::after {
+        right: 0;
+        transform: scaleX(-1);
+      }
+      .scene--finale.is-card .wish-ornament {
+        animation-delay: 1.2s;
+      }
 
       /* 正文保持居中；底部留出落款的位置，像信末签名一样自然错开 */
-      .wish-card .wish-card-inner{
-        padding-bottom:calc(clamp(17px, 4.4vw, 24px) + clamp(50px, 16vw, 62px));
+      .wish-card .wish-card-inner {
+        padding-bottom: calc(
+          clamp(17px, 4.4vw, 24px) + clamp(50px, 16vw, 62px)
+        );
       }
 
       /* 右下角的手绘头像，当作落款 */
-      .wish-card .wish-signature{
-        position:absolute;
-        right:11px;
-        bottom:14px;
-        width:clamp(56px, 17vw, 68px);
-        height:auto;
-        pointer-events:none;
+      .wish-card .wish-signature {
+        position: absolute;
+        right: 11px;
+        bottom: 14px;
+        width: clamp(56px, 17vw, 68px);
+        height: auto;
+        pointer-events: none;
       }
-      .wish-card .wish-signature img{
-        display:block;
-        width:100%;
-        height:auto;
-        transform:rotate(-7deg);
-        opacity:.9;
-        filter:drop-shadow(0 1px 1px rgba(120,92,48,.10));
+      .wish-card .wish-signature img {
+        display: block;
+        width: 100%;
+        height: auto;
+        transform: rotate(-7deg);
+        opacity: 0.9;
+        filter: drop-shadow(0 1px 1px rgba(120, 92, 48, 0.1));
       }
-      .scene--finale.is-card .wish-signature{ animation-delay:1.16s; }
+      .scene--finale.is-card .wish-signature {
+        animation-delay: 1.16s;
+      }
 
-      @media (max-width:640px){
+      @media (max-width: 640px) {
         /* 手机上贺卡整体上移一点，离底部水印更从容 */
-        .star-inner .wish-card{ bottom:24px; }
+        .star-inner .wish-card {
+          bottom: 24px;
+        }
       }
 
-      @media (max-height:600px){
-        .star-inner .blow-hint{ top:68%; font-size:9px; }
-        .scene--star.is-card .wish-card{ max-height:min(360px, 48vh); }
-        .star-badge{ display:none; }
+      @media (max-height: 600px) {
+        .star-inner .blow-hint {
+          top: 68%;
+          font-size: 9px;
+        }
+        .scene--star.is-card .wish-card {
+          max-height: min(360px, 48vh);
+        }
+        .star-badge {
+          display: none;
+        }
       }
 
-      @media (max-width:360px){
-        .star-badge{ display:none; }
-        .star-inner .blow-hint{ font-size:9px; letter-spacing:.12em; }
-        .scene--star.is-card .wish-card{ width:94%; }
+      @media (max-width: 360px) {
+        .star-badge {
+          display: none;
+        }
+        .star-inner .blow-hint {
+          font-size: 9px;
+          letter-spacing: 0.12em;
+        }
+        .scene--star.is-card .wish-card {
+          width: 94%;
+        }
       }
 
-      @media (prefers-reduced-motion: reduce){
-        .cake-canvas{ cursor:default; }
+      @media (prefers-reduced-motion: reduce) {
+        .cake-canvas {
+          cursor: default;
+        }
       }
     </style>
   </head>
 
   <body class="theme-night">
     <div class="app">
-      <section class="scene scene--finale scene--star" id="finale" data-theme="night">
+      <section
+        class="scene scene--finale scene--star"
+        id="finale"
+        data-theme="night"
+      >
         <div class="scene-bg finale-bg" aria-hidden="true">
           <div class="night-glow"></div>
           <div class="starfield"></div>
@@ -318,8 +425,15 @@
 
         <div class="scene-inner finale-inner star-inner">
           <header class="finale-head">
-            <p class="kicker kicker--light"><span>Happy Birthday</span></p>
-            <h2 class="finale-title">生日快乐</h2>
+            <h2 class="finale-title finale-title--art">
+              <img
+                src="assets/photos/hbfont-title.webp"
+                alt="生日快乐"
+                width="1100"
+                height="556"
+                decoding="async"
+              />
+            </h2>
           </header>
 
           <button class="blow-hint" id="blowHint" type="button">
@@ -328,7 +442,7 @@
 
           <div class="wish-card" id="wishCard">
             <div class="wish-card-inner">
-              <p class="wish-eyebrow">Happy 23rd Birthday</p>
+              <p class="wish-eyebrow">Happy Birthday</p>
               <p class="wish-title">生日快乐</p>
               <p class="wish-date" data-birthday>2026.10.20</p>
               <span class="wish-rule" aria-hidden="true"></span>
@@ -381,7 +495,8 @@
         var H = 0;
         var DPR = 1;
         var small = false;
-        var reduce = window.matchMedia &&
+        var reduce =
+          window.matchMedia &&
           window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         /* ── 蛋糕的三个世界坐标参数 ───────────────────────────── */
@@ -441,9 +556,16 @@
             [0, 229, 255],
             [255, 209, 102],
             [255, 105, 180],
-            [56, 189, 248]
+            [56, 189, 248],
           ],
-          stars: ["#FFD166", "#FF9F1C", "#FF70A6", "#7BDFF2", "#FFFFFF", "#BDE0FE"],
+          stars: [
+            "#FFD166",
+            "#FF9F1C",
+            "#FF70A6",
+            "#7BDFF2",
+            "#FFFFFF",
+            "#BDE0FE",
+          ],
 
           puffLit: ["#FFFFFF", "#FEF9C3", "#E0F2FE", "rgba(96,165,250,.25)"],
           puffDim: ["#F8FAFC", "#BAE6FD", "rgba(30,58,138,.25)"],
@@ -460,7 +582,7 @@
           candleStroke: "rgba(56,189,248,.35)",
 
           flash0: "224,242,254",
-          flash1: "56,189,248"
+          flash1: "56,189,248",
         };
 
         var THEME_GOLD = {
@@ -509,9 +631,16 @@
             [255, 209, 102],
             [230, 194, 128],
             [253, 251, 247],
-            [243, 232, 255]
+            [243, 232, 255],
           ],
-          stars: ["#FFD166", "#E6C280", "#F3E8FF", "#FFFFFF", "#FFEBC4", "#B98A47"],
+          stars: [
+            "#FFD166",
+            "#E6C280",
+            "#F3E8FF",
+            "#FFFFFF",
+            "#FFEBC4",
+            "#B98A47",
+          ],
 
           puffLit: ["#FFFFFF", "#FFF6DD", "#FDFBF7", "rgba(230,194,128,.32)"],
           puffDim: ["#F7F3E9", "#DCCDB1", "rgba(140,112,70,.28)"],
@@ -528,7 +657,7 @@
           candleStroke: "rgba(150,112,56,.35)",
 
           flash0: "255,248,220",
-          flash1: "255,209,102"
+          flash1: "255,209,102",
         };
 
         var useGold = /[?&]theme=gold\b/.test(window.location.search);
@@ -542,7 +671,7 @@
           "平安喜乐",
           "万事胜意",
           "心想事成",
-          "星河长明"
+          "星河长明",
         ];
 
         /* ── 视角与状态 ──────────────────────────────────────── */
@@ -585,10 +714,46 @@
         var candleTips = [];
 
         var RIBBONS = [
-          { turns: 1.8, rStart: 156, rEnd: 190, yStart: 110, yEnd: -88, phase: 0.0, width: 13, speed: 0.7 },
-          { turns: 1.6, rStart: 188, rEnd: 150, yStart: 92, yEnd: -72, phase: 2.1, width: 11, speed: 0.55 },
-          { turns: 1.45, rStart: 148, rEnd: 204, yStart: 120, yEnd: -48, phase: 4.2, width: 10, speed: 0.8 },
-          { turns: 1.3, rStart: 172, rEnd: 158, yStart: 58, yEnd: -96, phase: 1.1, width: 8, speed: 0.65 }
+          {
+            turns: 1.8,
+            rStart: 156,
+            rEnd: 190,
+            yStart: 110,
+            yEnd: -88,
+            phase: 0.0,
+            width: 13,
+            speed: 0.7,
+          },
+          {
+            turns: 1.6,
+            rStart: 188,
+            rEnd: 150,
+            yStart: 92,
+            yEnd: -72,
+            phase: 2.1,
+            width: 11,
+            speed: 0.55,
+          },
+          {
+            turns: 1.45,
+            rStart: 148,
+            rEnd: 204,
+            yStart: 120,
+            yEnd: -48,
+            phase: 4.2,
+            width: 10,
+            speed: 0.8,
+          },
+          {
+            turns: 1.3,
+            rStart: 172,
+            rEnd: 158,
+            yStart: 58,
+            yEnd: -96,
+            phase: 1.1,
+            width: 8,
+            speed: 0.65,
+          },
         ];
 
         /* ── 画布尺寸 ────────────────────────────────────────── */
@@ -622,11 +787,14 @@
             var theta = Math.random() * Math.PI * 2;
             nebula.push({
               x: Math.cos(theta) * CAKE_RADIUS * (0.88 + Math.random() * 0.12),
-              y: CAKE_TOP_Y + 8 + Math.random() * (CAKE_BOTTOM_Y - CAKE_TOP_Y - 14),
+              y:
+                CAKE_TOP_Y +
+                8 +
+                Math.random() * (CAKE_BOTTOM_Y - CAKE_TOP_Y - 14),
               z: Math.sin(theta) * CAKE_RADIUS * (0.88 + Math.random() * 0.12),
               radius: 13 + Math.random() * 24,
               tint: Math.random(),
-              phase: Math.random() * Math.PI * 2
+              phase: Math.random() * Math.PI * 2,
             });
           }
 
@@ -636,14 +804,17 @@
             var r2 = CAKE_RADIUS + (Math.random() - 0.3) * 6;
             bodyStars.push({
               x: Math.cos(t2) * r2,
-              y: CAKE_TOP_Y + 5 + Math.random() * (CAKE_BOTTOM_Y - CAKE_TOP_Y - 8),
+              y:
+                CAKE_TOP_Y +
+                5 +
+                Math.random() * (CAKE_BOTTOM_Y - CAKE_TOP_Y - 8),
               z: Math.sin(t2) * r2,
               size: 2.1 + Math.random() * 5.0,
               colorIdx: Math.floor(Math.random() * palette.stars.length),
               speed: 1.5 + Math.random() * 3.4,
               phase: Math.random() * Math.PI * 2,
               rot: Math.random() * Math.PI * 2,
-              five: Math.random() > 0.32
+              five: Math.random() > 0.32,
             });
           }
 
@@ -655,7 +826,7 @@
               x: Math.cos(tk) * (CAKE_RADIUS - 2),
               y: CAKE_TOP_Y - 3,
               z: Math.sin(tk) * (CAKE_RADIUS - 2),
-              size: 13.8 + Math.random() * 2.1
+              size: 13.8 + Math.random() * 2.1,
             });
           }
 
@@ -669,7 +840,7 @@
               z: Math.sin(am) * dm,
               size: 1.7 + Math.random() * 3.4,
               colorIdx: Math.floor(Math.random() * palette.stars.length),
-              phase: Math.random() * Math.PI * 2
+              phase: Math.random() * Math.PI * 2,
             });
           }
 
@@ -679,13 +850,15 @@
               theta: Math.random() * Math.PI * 2,
               dist: 145 + Math.random() * 230,
               y: -180 + Math.random() * 340,
-              speedTheta: (0.002 + Math.random() * 0.005) * (Math.random() > 0.2 ? 1 : -1),
+              speedTheta:
+                (0.002 + Math.random() * 0.005) *
+                (Math.random() > 0.2 ? 1 : -1),
               speedY: -0.12 - Math.random() * 0.32,
               size: 2.0 + Math.random() * 6.2,
               colorIdx: Math.floor(Math.random() * palette.stars.length),
               phase: Math.random() * Math.PI * 2,
               rot: Math.random() * Math.PI * 2,
-              five: Math.random() > 0.25
+              five: Math.random() > 0.25,
             });
           }
 
@@ -696,7 +869,7 @@
               dist: small ? 150 + (p % 2) * 22 : 208 + (p % 2) * 34,
               y: -98 + p * 30,
               word: words[p],
-              phase: Math.random() * Math.PI * 2
+              phase: Math.random() * Math.PI * 2,
             });
           }
         }
@@ -721,7 +894,7 @@
             x: cx + rx * p,
             y: cy + ry * p,
             z: rz2,
-            s: p
+            s: p,
           };
         }
 
@@ -790,7 +963,7 @@
           return {
             r: Math.round(a[0] + (b[0] - a[0]) * f),
             g: Math.round(a[1] + (b[1] - a[1]) * f),
-            b: Math.round(a[2] + (b[2] - a[2]) * f)
+            b: Math.round(a[2] + (b[2] - a[2]) * f),
           };
         }
 
@@ -811,7 +984,9 @@
           addFireworks();
 
           if (navigator.vibrate) {
-            try { navigator.vibrate([16, 40, 26]); } catch (e) {}
+            try {
+              navigator.vibrate([16, 40, 26]);
+            } catch (e) {}
           }
 
           window.setTimeout(function () {
@@ -833,7 +1008,10 @@
         function addSmoke() {
           var tips = candleTips.length
             ? candleTips
-            : [{ x: W / 2 - 34, y: H * 0.42 }, { x: W / 2 + 34, y: H * 0.42 }];
+            : [
+                { x: W / 2 - 34, y: H * 0.42 },
+                { x: W / 2 + 34, y: H * 0.42 },
+              ];
 
           for (var i = 0; i < 30; i++) {
             var tip = tips[i % tips.length];
@@ -844,7 +1022,7 @@
               vy: -0.7 - Math.random() * 0.9,
               size: 4 + Math.random() * 6,
               life: 0,
-              max: 70 + Math.random() * 40
+              max: 70 + Math.random() * 40,
             });
           }
         }
@@ -864,7 +1042,7 @@
               size: 3.4 + Math.random() * 5.4,
               colorIdx: Math.floor(Math.random() * palette.stars.length),
               alpha: 1,
-              rot: Math.random() * Math.PI * 2
+              rot: Math.random() * Math.PI * 2,
             });
           }
         }
@@ -890,9 +1068,10 @@
 
           var fit = Math.min(W, H);
           /* 手机竖屏把蛋糕放大到约占屏宽 2/3，平板 / 桌面沿用原来的尺寸曲线 */
-          var baseScale = fit < 520
-            ? Math.max(0.98, Math.min(1.28, fit / 330))
-            : Math.min(1.35, 1.28 + (fit - 520) / 420);
+          var baseScale =
+            fit < 520
+              ? Math.max(0.98, Math.min(1.28, fit / 330))
+              : Math.min(1.35, 1.28 + (fit - 520) / 420);
           var cardScale = H < 640 ? 0.58 : 0.64;
           var scale = baseScale * (1 - (1 - cardScale) * cardEase);
 
@@ -914,7 +1093,9 @@
 
           /* 提示语始终落在托盘下沿的下方，避免蛋糕放大后被压住 */
           if (hint && botCenter) {
-            var plateBottom = botCenter.y + 4 * scale +
+            var plateBottom =
+              botCenter.y +
+              4 * scale +
               CAKE_RADIUS * botCenter.s * 1.12 * Math.sin(rotX) * 0.92;
             var nextHint = Math.min(H * 0.85, plateBottom + 18) - hintHostTop;
             if (Math.abs(nextHint - hintTop) > 0.5) {
@@ -930,13 +1111,21 @@
             ctx.save();
             ctx.beginPath();
             ctx.ellipse(
-              botCenter.x, botCenter.y + 8 * scale,
-              rxBotGlow * 1.2, ryBotGlow * 1.2,
-              0, 0, Math.PI * 2
+              botCenter.x,
+              botCenter.y + 8 * scale,
+              rxBotGlow * 1.2,
+              ryBotGlow * 1.2,
+              0,
+              0,
+              Math.PI * 2,
             );
             var floor = ctx.createRadialGradient(
-              botCenter.x, botCenter.y + 8 * scale, rxBotGlow * 0.2,
-              botCenter.x, botCenter.y + 8 * scale, rxBotGlow * 1.25
+              botCenter.x,
+              botCenter.y + 8 * scale,
+              rxBotGlow * 0.2,
+              botCenter.x,
+              botCenter.y + 8 * scale,
+              rxBotGlow * 1.25,
             );
             floor.addColorStop(0, palette.floor0);
             floor.addColorStop(0.6, palette.floor1);
@@ -951,16 +1140,22 @@
             ctx.save();
             ctx.beginPath();
             ctx.ellipse(
-              botCenter.x, botCenter.y + 7 * scale,
-              plateR * 1.02, plateRy * 1.04,
-              0, 0, Math.PI * 2
+              botCenter.x,
+              botCenter.y + 7 * scale,
+              plateR * 1.02,
+              plateRy * 1.04,
+              0,
+              0,
+              Math.PI * 2,
             );
             ctx.fillStyle = "rgba(6,9,16,.55)";
             ctx.fill();
 
             var plateGrad = ctx.createLinearGradient(
-              botCenter.x - plateR, botCenter.y,
-              botCenter.x + plateR, botCenter.y + plateRy
+              botCenter.x - plateR,
+              botCenter.y,
+              botCenter.x + plateR,
+              botCenter.y + plateRy,
             );
             plateGrad.addColorStop(0, palette.plate0);
             plateGrad.addColorStop(0.42, palette.plate1);
@@ -968,9 +1163,13 @@
             plateGrad.addColorStop(1, palette.plateWarm);
             ctx.beginPath();
             ctx.ellipse(
-              botCenter.x, botCenter.y + 4 * scale,
-              plateR, plateRy,
-              0, 0, Math.PI * 2
+              botCenter.x,
+              botCenter.y + 4 * scale,
+              plateR,
+              plateRy,
+              0,
+              0,
+              Math.PI * 2,
             );
             ctx.fillStyle = plateGrad;
             ctx.fill();
@@ -980,9 +1179,13 @@
 
             ctx.beginPath();
             ctx.ellipse(
-              botCenter.x, botCenter.y + 4 * scale,
-              plateR * 0.955, plateRy * 0.955,
-              0, 0, Math.PI * 2
+              botCenter.x,
+              botCenter.y + 4 * scale,
+              plateR * 0.955,
+              plateRy * 0.955,
+              0,
+              0,
+              Math.PI * 2,
             );
             ctx.strokeStyle = palette.plateHighlight;
             ctx.lineWidth = 0.8;
@@ -999,14 +1202,34 @@
 
             ctx.save();
             ctx.beginPath();
-            ctx.ellipse(topCenter.x, topCenter.y, rxTop, ryTop, 0, Math.PI, 0, false);
+            ctx.ellipse(
+              topCenter.x,
+              topCenter.y,
+              rxTop,
+              ryTop,
+              0,
+              Math.PI,
+              0,
+              false,
+            );
             ctx.lineTo(botCenter.x + rxBot, botCenter.y);
-            ctx.ellipse(botCenter.x, botCenter.y, rxBot, ryBot, 0, 0, Math.PI, false);
+            ctx.ellipse(
+              botCenter.x,
+              botCenter.y,
+              rxBot,
+              ryBot,
+              0,
+              0,
+              Math.PI,
+              false,
+            );
             ctx.closePath();
 
             var body = ctx.createLinearGradient(
-              topCenter.x - rxTop, topCenter.y,
-              topCenter.x + rxTop, botCenter.y
+              topCenter.x - rxTop,
+              topCenter.y,
+              topCenter.x + rxTop,
+              botCenter.y,
             );
             body.addColorStop(0, palette.bodyEdge);
             body.addColorStop(0.26, palette.bodyShade);
@@ -1017,7 +1240,12 @@
             ctx.fill();
 
             /* 顶部暖光洒在蛋糕体上 */
-            var bleed = ctx.createLinearGradient(0, topCenter.y, 0, botCenter.y);
+            var bleed = ctx.createLinearGradient(
+              0,
+              topCenter.y,
+              0,
+              botCenter.y,
+            );
             bleed.addColorStop(0, lit ? palette.bleedLit : palette.bleedDim);
             bleed.addColorStop(0.4, palette.bleedMid);
             bleed.addColorStop(1, palette.bleedBottom);
@@ -1029,8 +1257,24 @@
             ctx.stroke();
 
             /* 蛋糕体上的两道缎带 */
-            drawBand(-14, -4, cx, cy, scale, palette.bandTop, palette.bandTopEdge);
-            drawBand(88, 98, cx, cy, scale, palette.bandBottom, palette.bandBottomEdge);
+            drawBand(
+              -14,
+              -4,
+              cx,
+              cy,
+              scale,
+              palette.bandTop,
+              palette.bandTopEdge,
+            );
+            drawBand(
+              88,
+              98,
+              cx,
+              cy,
+              scale,
+              palette.bandBottom,
+              palette.bandBottomEdge,
+            );
             ctx.restore();
           }
 
@@ -1044,13 +1288,33 @@
             for (var i = 0; i <= steps; i++) {
               var f = i / steps;
               var ang = f * Math.PI * 2 * rc.turns + rc.phase - time * rc.speed;
-              var rad = rc.rStart + (rc.rEnd - rc.rStart) * f + Math.sin(f * Math.PI * 4 + time) * 8;
-              var yy = rc.yStart + (rc.yEnd - rc.yStart) * f + Math.cos(f * Math.PI * 3 - time) * 6;
+              var rad =
+                rc.rStart +
+                (rc.rEnd - rc.rStart) * f +
+                Math.sin(f * Math.PI * 4 + time) * 8;
+              var yy =
+                rc.yStart +
+                (rc.yEnd - rc.yStart) * f +
+                Math.cos(f * Math.PI * 3 - time) * 6;
               var twist = Math.sin(f * Math.PI * 5 - time * 1.4 + ri);
               var hw = rc.width * (0.25 + 0.75 * Math.abs(twist));
 
-              var a = project(Math.cos(ang) * rad, yy - hw, Math.sin(ang) * rad, cx, cy, scale);
-              var b = project(Math.cos(ang) * rad, yy + hw, Math.sin(ang) * rad, cx, cy, scale);
+              var a = project(
+                Math.cos(ang) * rad,
+                yy - hw,
+                Math.sin(ang) * rad,
+                cx,
+                cy,
+                scale,
+              );
+              var b = project(
+                Math.cos(ang) * rad,
+                yy + hw,
+                Math.sin(ang) * rad,
+                cx,
+                cy,
+                scale,
+              );
               if (a && b) pts.push({ a: a, b: b, f: f, z: (a.z + b.z) * 0.5 });
             }
             for (var q2 = 0; q2 < pts.length - 1; q2++) {
@@ -1063,8 +1327,11 @@
                 b: s1.b,
                 c: s2.a,
                 d: s2.b,
-                color: mixColor(s1.f + time * 0.08 + ri * 0.25, palette.ribbons),
-                alpha: 0.56 * Math.sin(s1.f * Math.PI)
+                color: mixColor(
+                  s1.f + time * 0.08 + ri * 0.25,
+                  palette.ribbons,
+                ),
+                alpha: 0.56 * Math.sin(s1.f * Math.PI),
               });
             }
           });
@@ -1076,11 +1343,13 @@
               queue.push({
                 type: "nebula",
                 z: p.z,
-                x: p.x, y: p.y,
+                x: p.x,
+                y: p.y,
                 r: nb.radius * p.s,
                 tint: nb.tint,
-                alpha: (0.16 + 0.08 * Math.sin(time * 2 + nb.phase)) *
-                  (1 - Math.max(0, p.z / 40))
+                alpha:
+                  (0.16 + 0.08 * Math.sin(time * 2 + nb.phase)) *
+                  (1 - Math.max(0, p.z / 40)),
               });
             }
           });
@@ -1093,12 +1362,13 @@
               queue.push({
                 type: "star",
                 z: p.z - 2,
-                x: p.x, y: p.y,
+                x: p.x,
+                y: p.y,
                 size: st.size * p.s * (0.85 + 0.3 * tw),
                 color: palette.stars[st.colorIdx % palette.stars.length],
                 alpha: tw * (1 - Math.max(0, p.z / 25)),
                 rot: st.rot + time * 0.3,
-                five: st.five
+                five: st.five,
               });
             }
           });
@@ -1113,19 +1383,22 @@
               Math.cos(os.theta) * os.dist,
               os.y,
               Math.sin(os.theta) * os.dist,
-              cx, cy, scale
+              cx,
+              cy,
+              scale,
             );
             if (p) {
               var tw2 = 0.45 + 0.55 * Math.sin(time * 2.5 + os.phase);
               queue.push({
                 type: "star",
                 z: p.z,
-                x: p.x, y: p.y,
+                x: p.x,
+                y: p.y,
                 size: os.size * p.s,
                 color: palette.stars[os.colorIdx % palette.stars.length],
                 alpha: tw2 * 0.9,
                 rot: os.rot + time * 0.4,
-                five: os.five
+                five: os.five,
               });
             }
           });
@@ -1137,20 +1410,25 @@
               Math.cos(ow.theta) * ow.dist,
               ow.y + Math.sin(time * 1.5 + oi) * 8,
               Math.sin(ow.theta) * ow.dist,
-              cx, cy, scale
+              cx,
+              cy,
+              scale,
             );
             if (p) {
               queue.push({
                 type: "word",
                 z: p.z,
-                x: p.x, y: p.y,
+                x: p.x,
+                y: p.y,
                 s: p.s,
-                text: ow.word
+                text: ow.word,
               });
             }
           });
 
-          queue.sort(function (a, b) { return b.z - a.z; });
+          queue.sort(function (a, b) {
+            return b.z - a.z;
+          });
 
           /* 蛋糕后方的元素 */
           queue.forEach(function (item) {
@@ -1166,8 +1444,12 @@
             ctx.beginPath();
             ctx.ellipse(topCenter.x, topCenter.y, trx, try2, 0, 0, Math.PI * 2);
             var topGrad = ctx.createRadialGradient(
-              topCenter.x, topCenter.y, trx * 0.04,
-              topCenter.x, topCenter.y, trx
+              topCenter.x,
+              topCenter.y,
+              trx * 0.04,
+              topCenter.x,
+              topCenter.y,
+              trx,
             );
             if (lit) {
               topGrad.addColorStop(0, "#FFFFFF");
@@ -1192,11 +1474,12 @@
               var p = project(sp.x, sp.y, sp.z, cx, cy, scale);
               if (p) {
                 fiveStar(
-                  p.x, p.y,
+                  p.x,
+                  p.y,
                   sp.size * p.s,
                   palette.stars[sp.colorIdx % palette.stars.length],
                   0.85,
-                  sp.phase
+                  sp.phase,
                 );
               }
             });
@@ -1206,9 +1489,12 @@
           var projectedPuffs = [];
           puffs.forEach(function (pf) {
             var p = project(pf.x, pf.y, pf.z, cx, cy, scale);
-            if (p) projectedPuffs.push({ x: p.x, y: p.y, z: p.z, r: pf.size * p.s });
+            if (p)
+              projectedPuffs.push({ x: p.x, y: p.y, z: p.z, r: pf.size * p.s });
           });
-          projectedPuffs.sort(function (a, b) { return b.z - a.z; });
+          projectedPuffs.sort(function (a, b) {
+            return b.z - a.z;
+          });
 
           projectedPuffs.forEach(function (pf) {
             if (pf.z > 0) drawPuff(pf);
@@ -1225,10 +1511,24 @@
             var cdx = 34 * cs;
             candleTips = [
               { x: candleBase.x - cdx, y: candleWick.y },
-              { x: candleBase.x + cdx, y: candleWick.y }
+              { x: candleBase.x + cdx, y: candleWick.y },
             ];
-            drawNumeralCandle(candleBase.x - cdx, candleBase.y, candleTop.y, candleWick.y, cs, "2");
-            drawNumeralCandle(candleBase.x + cdx, candleBase.y, candleTop.y, candleWick.y, cs, "3");
+            drawNumeralCandle(
+              candleBase.x - cdx,
+              candleBase.y,
+              candleTop.y,
+              candleWick.y,
+              cs,
+              "2",
+            );
+            drawNumeralCandle(
+              candleBase.x + cdx,
+              candleBase.y,
+              candleTop.y,
+              candleWick.y,
+              cs,
+              "3",
+            );
           }
 
           projectedPuffs.forEach(function (pf) {
@@ -1248,11 +1548,21 @@
             ctx.globalCompositeOperation = "lighter";
             var fr = 240 * scale * (1.2 - flash * 0.2);
             var fg = ctx.createRadialGradient(
-              topCenter.x, topCenter.y - 30 * scale, 2,
-              topCenter.x, topCenter.y - 30 * scale, fr
+              topCenter.x,
+              topCenter.y - 30 * scale,
+              2,
+              topCenter.x,
+              topCenter.y - 30 * scale,
+              fr,
             );
-            fg.addColorStop(0, "rgba(" + palette.flash0 + "," + (0.55 * flash).toFixed(3) + ")");
-            fg.addColorStop(0.35, "rgba(" + palette.flash1 + "," + (0.24 * flash).toFixed(3) + ")");
+            fg.addColorStop(
+              0,
+              "rgba(" + palette.flash0 + "," + (0.55 * flash).toFixed(3) + ")",
+            );
+            fg.addColorStop(
+              0.35,
+              "rgba(" + palette.flash1 + "," + (0.24 * flash).toFixed(3) + ")",
+            );
             fg.addColorStop(1, "rgba(" + palette.flash1 + ",0)");
             ctx.fillStyle = fg;
             ctx.beginPath();
@@ -1275,23 +1585,43 @@
             ctx.lineTo(item.d.x, item.d.y);
             ctx.lineTo(item.b.x, item.b.y);
             ctx.closePath();
-            ctx.fillStyle = "rgba(" + item.color.r + "," + item.color.g + "," + item.color.b + "," + (item.alpha * 0.6).toFixed(3) + ")";
+            ctx.fillStyle =
+              "rgba(" +
+              item.color.r +
+              "," +
+              item.color.g +
+              "," +
+              item.color.b +
+              "," +
+              (item.alpha * 0.6).toFixed(3) +
+              ")";
             ctx.fill();
 
             ctx.beginPath();
             ctx.moveTo(item.a.x, item.a.y);
             ctx.lineTo(item.c.x, item.c.y);
-            ctx.strokeStyle = "rgba(255,250,235," + (item.alpha * 0.45).toFixed(3) + ")";
+            ctx.strokeStyle =
+              "rgba(255,250,235," + (item.alpha * 0.45).toFixed(3) + ")";
             ctx.lineWidth = 1.2;
             ctx.stroke();
             ctx.restore();
           } else if (item.type === "nebula") {
             ctx.save();
             ctx.globalCompositeOperation = "lighter";
-            var c = item.tint > 0.62
-              ? palette.nebulaA
-              : item.tint > 0.28 ? palette.nebulaB : palette.nebulaC;
-            var g = ctx.createRadialGradient(item.x, item.y, 1, item.x, item.y, item.r);
+            var c =
+              item.tint > 0.62
+                ? palette.nebulaA
+                : item.tint > 0.28
+                  ? palette.nebulaB
+                  : palette.nebulaC;
+            var g = ctx.createRadialGradient(
+              item.x,
+              item.y,
+              1,
+              item.x,
+              item.y,
+              item.r,
+            );
             g.addColorStop(0, "rgba(" + c + "," + item.alpha.toFixed(3) + ")");
             g.addColorStop(1, "rgba(" + c + ",0)");
             ctx.fillStyle = g;
@@ -1303,16 +1633,33 @@
             ctx.save();
             ctx.globalCompositeOperation = "lighter";
             if (item.five) {
-              fiveStar(item.x, item.y, item.size, item.color, item.alpha, item.rot);
+              fiveStar(
+                item.x,
+                item.y,
+                item.size,
+                item.color,
+                item.alpha,
+                item.rot,
+              );
             } else {
-              diamondStar(item.x, item.y, item.size * 1.25, item.color, item.alpha);
+              diamondStar(
+                item.x,
+                item.y,
+                item.size * 1.25,
+                item.color,
+                item.alpha,
+              );
             }
             ctx.restore();
           } else if (item.type === "word") {
             var alpha = Math.max(0.1, Math.min(0.55, (200 - item.z) / 420));
             ctx.save();
-            ctx.font = "500 " + Math.max(8, Math.round(11.5 * item.s)) + 'px "Cormorant Garamond", "Noto Serif SC", serif';
-            ctx.fillStyle = "rgba(" + palette.wordColor + "," + alpha.toFixed(3) + ")";
+            ctx.font =
+              "500 " +
+              Math.max(8, Math.round(11.5 * item.s)) +
+              'px "Cormorant Garamond", "Noto Serif SC", serif';
+            ctx.fillStyle =
+              "rgba(" + palette.wordColor + "," + alpha.toFixed(3) + ")";
             ctx.shadowColor = palette.wordShadow;
             ctx.shadowBlur = 8;
             ctx.textAlign = "center";
@@ -1367,7 +1714,9 @@
               Math.cos(a) * radius,
               CAKE_TOP_Y - 1,
               Math.sin(a) * radius,
-              cx, cy, scale
+              cx,
+              cy,
+              scale,
             );
             if (!p) continue;
             if (!started) {
@@ -1387,8 +1736,12 @@
           var r = pf.r;
           ctx.save();
           var g = ctx.createRadialGradient(
-            pf.x - r * 0.22, pf.y - r * 0.28, r * 0.08,
-            pf.x, pf.y, r
+            pf.x - r * 0.22,
+            pf.y - r * 0.28,
+            r * 0.08,
+            pf.x,
+            pf.y,
+            r,
           );
           if (lit) {
             g.addColorStop(0, palette.puffLit[0]);
@@ -1420,8 +1773,18 @@
           /* 烛光在顶面投下的小光斑 */
           ctx.save();
           ctx.beginPath();
-          ctx.ellipse(x, baseY + h * 0.02, w * 0.85, w * 0.28, 0, 0, Math.PI * 2);
-          ctx.fillStyle = lit ? "rgba(255,247,222,.55)" : "rgba(230,220,200,.28)";
+          ctx.ellipse(
+            x,
+            baseY + h * 0.02,
+            w * 0.85,
+            w * 0.28,
+            0,
+            0,
+            Math.PI * 2,
+          );
+          ctx.fillStyle = lit
+            ? "rgba(255,247,222,.55)"
+            : "rgba(230,220,200,.28)";
           ctx.fill();
           ctx.restore();
 
@@ -1440,7 +1803,10 @@
           ctx.stroke();
 
           /* 数字 */
-          ctx.font = "600 " + Math.round(h * 0.56) + 'px "Cormorant Garamond", "Noto Serif SC", serif';
+          ctx.font =
+            "600 " +
+            Math.round(h * 0.56) +
+            'px "Cormorant Garamond", "Noto Serif SC", serif';
           ctx.fillStyle = palette.candleNumeral;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
@@ -1475,7 +1841,8 @@
 
         function drawFlame(wick, s) {
           var k = flameLevel;
-          var flickX = (Math.sin(time * 13) * 1.6 + Math.cos(time * 23) * 1.1) * s;
+          var flickX =
+            (Math.sin(time * 13) * 1.6 + Math.cos(time * 23) * 1.1) * s;
           var fh = (30 + Math.sin(time * 17) * 3.2) * s * k;
           var fw = (9.2 + Math.cos(time * 19) * 1.0) * s * k;
           var alpha = Math.min(1, k * 1.2);
@@ -1486,12 +1853,25 @@
           /* 光晕 */
           var haloR = 62 * s * k;
           var halo = ctx.createRadialGradient(
-            wick.x, wick.y - fh * 0.3, 1,
-            wick.x, wick.y - fh * 0.3, haloR
+            wick.x,
+            wick.y - fh * 0.3,
+            1,
+            wick.x,
+            wick.y - fh * 0.3,
+            haloR,
           );
-          halo.addColorStop(0, "rgba(255,244,190," + (0.55 * alpha).toFixed(3) + ")");
-          halo.addColorStop(0.32, "rgba(255,196,110," + (0.24 * alpha).toFixed(3) + ")");
-          halo.addColorStop(0.72, "rgba(255,170,80," + (0.06 * alpha).toFixed(3) + ")");
+          halo.addColorStop(
+            0,
+            "rgba(255,244,190," + (0.55 * alpha).toFixed(3) + ")",
+          );
+          halo.addColorStop(
+            0.32,
+            "rgba(255,196,110," + (0.24 * alpha).toFixed(3) + ")",
+          );
+          halo.addColorStop(
+            0.72,
+            "rgba(255,170,80," + (0.06 * alpha).toFixed(3) + ")",
+          );
           halo.addColorStop(1, "rgba(255,170,80,0)");
           ctx.fillStyle = halo;
           ctx.beginPath();
@@ -1502,18 +1882,26 @@
           ctx.beginPath();
           ctx.moveTo(wick.x, wick.y + 2);
           ctx.bezierCurveTo(
-            wick.x - fw, wick.y - fh * 0.25,
-            wick.x - fw * 0.5 + flickX, wick.y - fh * 0.8,
-            wick.x + flickX, wick.y - fh
+            wick.x - fw,
+            wick.y - fh * 0.25,
+            wick.x - fw * 0.5 + flickX,
+            wick.y - fh * 0.8,
+            wick.x + flickX,
+            wick.y - fh,
           );
           ctx.bezierCurveTo(
-            wick.x + fw * 0.5 + flickX, wick.y - fh * 0.8,
-            wick.x + fw, wick.y - fh * 0.25,
-            wick.x, wick.y + 2
+            wick.x + fw * 0.5 + flickX,
+            wick.y - fh * 0.8,
+            wick.x + fw,
+            wick.y - fh * 0.25,
+            wick.x,
+            wick.y + 2,
           );
           var fg = ctx.createLinearGradient(
-            wick.x, wick.y,
-            wick.x + flickX, wick.y - fh
+            wick.x,
+            wick.y,
+            wick.x + flickX,
+            wick.y - fh,
           );
           fg.addColorStop(0, "rgba(255,214,120,.85)");
           fg.addColorStop(0.3, "rgba(255,249,228,.98)");
@@ -1528,8 +1916,11 @@
           ctx.ellipse(
             wick.x + flickX * 0.25,
             wick.y - fh * 0.32,
-            fw * 0.3, fh * 0.3,
-            0, 0, Math.PI * 2
+            fw * 0.3,
+            fh * 0.3,
+            0,
+            0,
+            Math.PI * 2,
           );
           ctx.fillStyle = "#FFFFFF";
           ctx.fill();
@@ -1576,11 +1967,12 @@
               ctx.save();
               ctx.globalCompositeOperation = "lighter";
               fiveStar(
-                p2.x, p2.y,
+                p2.x,
+                p2.y,
                 fw.size * p2.s,
                 palette.stars[fw.colorIdx % palette.stars.length],
                 fw.alpha,
-                fw.rot + time * 2
+                fw.rot + time * 2,
               );
               ctx.restore();
             }

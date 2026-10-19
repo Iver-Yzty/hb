@@ -1,0 +1,7 @@
+# Claude Code / 本地预览配置
+.claude/
+
+# 系统垃圾文件
+.DS_Store
+Thumbs.db
+desktop.ini

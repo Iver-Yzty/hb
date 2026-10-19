@@ -25,6 +25,7 @@ cd "C:/Users/Administrator/Desktop/hb" && python -m http.server 5173
 - 星屑与祝词一起缓慢公转；轻触烛火 → 白烟、星屑烟花 → 贺卡浮现，再轻触蛋糕可重新点亮。
 - 手机竖屏下蛋糕约占屏宽 2/3，提示语会自动落在托盘下方；贺卡整体上移，避开底部水印。
 - 贺卡右下角是一枚手绘小头像落款（`assets/photos/signature-avatar.png`，由根目录的原始 PNG 裁切而来）。想换图直接替换这个文件；如果浏览器还显示旧图，把 `index.html` 里的 `?v=2` 改成 `?v=3` 即可强制刷新。
+- 标题用马善政毛笔体，正文与英文分别用 Noto Serif SC / Cormorant Garamond。字体都做了子集化放在 `assets/fonts/`，页面不再请求 Google Fonts，国内可正常加载。
 
 ### 五幕版（story.html · 保留）
 
@@ -89,6 +90,7 @@ hb/
 │  ├─ fx.js        # 金色微尘 / 金箔雨 / 烟花（五幕版使用）
 │  └─ main.js      # 翻页、视差、滑动、陀螺仪、许愿（五幕版使用）
 ├─ assets/photos/  # 照片与落款头像
+├─ assets/fonts/   # 子集化字体（标题 / 正文 / 英文）
 └─ Gemini_Generated_Image_*.png  # 落款的原始手绘头像
 ```
 

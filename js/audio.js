@@ -45,7 +45,8 @@
     [[76,0,1],[79,1,1],[84,2,1.5]]
   ];
 
-  function BirthdayMusic() {
+  function BirthdayMusic(opts) {
+    this.volume = opts && typeof opts.volume === "number" ? opts.volume : 0.82;
     this.ctx = null;
     this.master = null;
     this.comp = null;
@@ -331,7 +332,7 @@
       var t = self.ctx.currentTime;
       self.master.gain.cancelScheduledValues(t);
       self.master.gain.setValueAtTime(Math.max(0.0001, self.master.gain.value), t);
-      self.master.gain.linearRampToValueAtTime(0.82, t + 1.6);
+      self.master.gain.linearRampToValueAtTime(self.volume, t + 1.6);
       self.timer = setInterval(function () { self._tick(); }, 70);
       self._tick();
       return true;

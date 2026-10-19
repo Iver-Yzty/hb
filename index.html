@@ -413,6 +413,70 @@
       .scene--star .cake-canvas.is-tucked {
         opacity: 0;
       }
+
+      /* 右上角的音乐开关：第一次触摸页面时音乐自动响起 */
+      .music-toggle {
+        position: absolute;
+        z-index: 20;
+        top: calc(var(--safe-top, 0px) + 12px);
+        right: 12px;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid rgba(186, 230, 253, 0.22);
+        border-radius: 50%;
+        background: rgba(12, 24, 48, 0.42);
+        color: rgba(224, 242, 254, 0.82);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        cursor: pointer;
+        transition: color 0.3s ease, border-color 0.3s ease,
+          background 0.3s ease;
+      }
+      .music-toggle:hover {
+        color: #ffe7a3;
+        border-color: rgba(255, 231, 163, 0.4);
+      }
+      .music-toggle svg {
+        display: block;
+        width: 17px;
+        height: 17px;
+      }
+      .music-toggle .icon-on {
+        display: none;
+      }
+      .music-toggle.is-on {
+        color: #ffe7a3;
+        border-color: rgba(255, 231, 163, 0.45);
+        background: rgba(24, 38, 66, 0.55);
+      }
+      .music-toggle.is-on .icon-off {
+        display: none;
+      }
+      .music-toggle.is-on .icon-on {
+        display: block;
+      }
+      .music-toggle.is-on::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 231, 163, 0.4);
+        animation: musicPulse 2.4s ease-out infinite;
+        pointer-events: none;
+      }
+      @keyframes musicPulse {
+        0% {
+          transform: scale(0.92);
+          opacity: 0.75;
+        }
+        100% {
+          transform: scale(1.4);
+          opacity: 0;
+        }
+      }
       .cake-canvas:active {
         cursor: grabbing;
       }
@@ -630,6 +694,44 @@
           aria-label="可以拖动旋转的三维星河生日蛋糕，轻触可以为蜡烛许愿"
         ></canvas>
 
+        <button
+          class="music-toggle"
+          id="musicToggle"
+          type="button"
+          aria-label="播放音乐"
+          aria-pressed="false"
+        >
+          <svg
+            class="icon-off"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 17.4V5.6l9-1.8v11.6" />
+            <circle cx="6.8" cy="17.6" r="2.2" />
+            <circle cx="15.8" cy="15.6" r="2.2" />
+            <line x1="4" y1="4" x2="20" y2="20" />
+          </svg>
+          <svg
+            class="icon-on"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 17.4V5.6l9-1.8v11.6" />
+            <circle cx="6.8" cy="17.6" r="2.2" />
+            <circle cx="15.8" cy="15.6" r="2.2" />
+          </svg>
+        </button>
+
         <div class="scene-inner finale-inner star-inner">
           <header class="finale-head">
             <h2 class="finale-title finale-title--art">
@@ -690,6 +792,7 @@
     <div class="grain" aria-hidden="true"></div>
 
     <script src="js/config.js"></script>
+    <script src="js/audio.js"></script>
     <script>
       /* ============================================================
          3D 星河丝带蛋糕
@@ -1222,6 +1325,10 @@
 
           addSmoke();
           addFireworks();
+
+          if (window.birthdayMusic && window.birthdayMusic.playing) {
+            window.birthdayMusic.chime();
+          }
 
           if (navigator.vibrate) {
             try {
@@ -2331,6 +2438,67 @@
           window.setTimeout(function () {
             art.classList.remove("is-sparking");
           }, 950);
+        });
+      })();
+
+      /* 生日氛围音乐：第一次触摸页面时响起，右上角可以随时开关 */
+      (function () {
+        var toggle = document.getElementById("musicToggle");
+        if (!toggle || !window.BirthdayMusic) return;
+
+        var music = new window.BirthdayMusic({ volume: 0.55 });
+        window.birthdayMusic = music;
+        var on = false;
+        var armed = false;
+
+        function setUI(playing) {
+          toggle.classList.toggle("is-on", playing);
+          toggle.setAttribute("aria-pressed", playing ? "true" : "false");
+          toggle.setAttribute("aria-label", playing ? "关闭音乐" : "播放音乐");
+        }
+
+        function turnOn() {
+          if (on) return;
+          on = true;
+          setUI(true);
+          music.start().then(function (ok) {
+            if (!ok) {
+              on = false;
+              setUI(false);
+            }
+          });
+        }
+
+        function turnOff() {
+          on = false;
+          setUI(false);
+          music.stop();
+        }
+
+        toggle.addEventListener("click", function (e) {
+          e.stopPropagation();
+          armed = true;
+          if (on) turnOff();
+          else turnOn();
+        });
+
+        /* 移动端只允许在真实手势里启动音频，第一次触碰时轻轻响起 */
+        function arm(e) {
+          if (armed) return;
+          armed = true;
+          if (
+            e &&
+            e.target &&
+            e.target.closest &&
+            e.target.closest(".music-toggle")
+          ) {
+            return;
+          }
+          turnOn();
+        }
+        window.addEventListener("pointerdown", arm, true);
+        window.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") arm(e);
         });
       })();
     </script>

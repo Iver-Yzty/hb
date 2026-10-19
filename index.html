@@ -95,6 +95,8 @@
       }
 
       .scene--star .finale-title--art {
+        position: relative;
+        isolation: isolate;
         display: block;
         width: min(88vw, 372px);
         margin: 0;
@@ -104,13 +106,136 @@
         text-shadow: none;
         color: transparent;
         filter: drop-shadow(0 12px 34px rgba(5, 12, 30, 0.55));
+        pointer-events: auto;
+        transform: translate3d(
+          calc(var(--tp-x, 0px) * 0.6),
+          calc(var(--tp-y, 0px) * 0.6),
+          0
+        );
+        transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
       }
       .scene--star .finale-title--art img {
+        position: relative;
+        z-index: 1;
         display: block;
         width: 100%;
         height: auto;
         -webkit-user-drag: none;
         user-select: none;
+        animation: titleFloat 7.5s ease-in-out infinite;
+      }
+      .scene--star .finale-title--art .title-glow {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        width: 124%;
+        height: 128%;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            46% 46% at 50% 50%,
+            rgba(123, 223, 242, 0.2),
+            transparent 70%
+          ),
+          radial-gradient(
+            38% 40% at 63% 46%,
+            rgba(255, 182, 193, 0.16),
+            transparent 72%
+          ),
+          radial-gradient(
+            40% 34% at 50% 70%,
+            rgba(255, 231, 163, 0.12),
+            transparent 74%
+          );
+        filter: blur(14px);
+        animation: titleGlow 8s ease-in-out infinite;
+      }
+      .scene--star .finale-title--art .title-sparks {
+        position: absolute;
+        inset: -8% -5%;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .title-sparks i {
+        position: absolute;
+        left: var(--x);
+        top: var(--y);
+        width: var(--s, 7px);
+        height: var(--s, 7px);
+        background: var(--c, #7bdff2);
+        clip-path: polygon(
+          50% 0%,
+          58% 42%,
+          100% 50%,
+          58% 58%,
+          50% 100%,
+          42% 58%,
+          0% 50%,
+          42% 42%
+        );
+        filter: drop-shadow(0 0 5px var(--c, #7bdff2));
+        opacity: 0.2;
+        translate: calc(var(--tp-x, 0px) * 1.7) calc(var(--tp-y, 0px) * 1.7);
+        transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        animation: titleSpark var(--t, 4.4s) ease-in-out var(--d, 0s) infinite;
+      }
+      .finale-title--art.is-sparking .title-sparks i {
+        animation: titleSparkBurst 0.9s ease-out both;
+      }
+      .scene--star .starfield {
+        transform: translate3d(
+            calc(var(--mx, 0) * 6px),
+            calc(var(--my, 0) * 6px),
+            0
+          )
+          scale(1.04);
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
+      }
+
+      @keyframes titleFloat {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-0.25deg);
+        }
+        50% {
+          transform: translateY(-4px) rotate(0.25deg);
+        }
+      }
+      @keyframes titleGlow {
+        0%,
+        100% {
+          opacity: 0.72;
+          transform: translate(-50%, -50%) scale(0.98);
+        }
+        50% {
+          opacity: 1;
+          transform: translate(-50%, -51%) scale(1.06);
+        }
+      }
+      @keyframes titleSpark {
+        0%,
+        100% {
+          opacity: 0.15;
+          scale: 0.55;
+        }
+        50% {
+          opacity: 1;
+          scale: 1;
+        }
+      }
+      @keyframes titleSparkBurst {
+        0% {
+          opacity: 1;
+          scale: 1.7;
+        }
+        100% {
+          opacity: 0.2;
+          scale: 0.65;
+        }
       }
       @media (min-width: 760px) {
         .scene--star .finale-title--art {
@@ -244,6 +369,11 @@
         touch-action: none;
         cursor: grab;
         -webkit-tap-highlight-color: transparent;
+        transition: opacity 0.7s ease;
+      }
+      /* 贺卡挡住了蛋糕时，让蛋糕淡出，只留下画面里的星空 */
+      .scene--star .cake-canvas.is-tucked {
+        opacity: 0;
       }
       .cake-canvas:active {
         cursor: grabbing;
@@ -285,13 +415,48 @@
       }
 
       .scene--star.is-card .wish-card {
-        max-height: min(420px, 52vh);
+        max-height: min(520px, 68vh);
         overflow-y: auto;
         overscroll-behavior: contain;
         scrollbar-width: none;
       }
       .scene--star.is-card .wish-card::-webkit-scrollbar {
         display: none;
+      }
+
+      /* 贺卡顶部的三张贴纸小照片，像随手贴在卡片上的装饰 */
+      .wish-card .wish-photos {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        height: clamp(96px, 26vw, 122px);
+        margin: 0 auto clamp(11px, 2.8vw, 15px);
+      }
+      .wish-card .wish-photos img {
+        display: block;
+        height: 100%;
+        width: auto;
+        -webkit-user-drag: none;
+        user-select: none;
+        filter: drop-shadow(0 5px 10px rgba(92, 66, 32, 0.24));
+      }
+      .wish-card .wish-photos img:nth-child(1) {
+        transform: rotate(-7deg) translate(7px, 5px);
+        z-index: 1;
+        margin-right: -13px;
+      }
+      .wish-card .wish-photos img:nth-child(2) {
+        height: 110%;
+        transform: rotate(1.5deg) translateY(-4px);
+        z-index: 3;
+      }
+      .wish-card .wish-photos img:nth-child(3) {
+        transform: rotate(8deg) translate(-7px, 7px);
+        z-index: 2;
+        margin-left: -13px;
+      }
+      .scene--finale.is-card .wish-photos {
+        animation-delay: 0.42s;
       }
 
       /* 去掉署名后，用一枚小小的金色分隔收尾 */
@@ -372,8 +537,12 @@
           top: 68%;
           font-size: 9px;
         }
+        .wish-card .wish-photos {
+          height: clamp(70px, 19vw, 86px);
+          margin-bottom: 8px;
+        }
         .scene--star.is-card .wish-card {
-          max-height: min(360px, 48vh);
+          max-height: min(430px, 74vh);
         }
         .star-badge {
           display: none;
@@ -426,6 +595,7 @@
         <div class="scene-inner finale-inner star-inner">
           <header class="finale-head">
             <h2 class="finale-title finale-title--art">
+              <span class="title-glow" aria-hidden="true"></span>
               <img
                 src="assets/photos/hbfont-title.webp?v=2"
                 alt="生日快乐"
@@ -433,6 +603,17 @@
                 height="556"
                 decoding="async"
               />
+              <span class="title-sparks" aria-hidden="true">
+                <i style="--x: 7%; --y: 24%; --s: 8px; --c: #7bdff2; --d: 0s; --t: 4.2s"></i>
+                <i style="--x: 92%; --y: 18%; --s: 6px; --c: #ffb6c1; --d: -1.1s; --t: 5s"></i>
+                <i style="--x: 15%; --y: 74%; --s: 5px; --c: #ffe7a3; --d: -2.4s; --t: 4.6s"></i>
+                <i style="--x: 86%; --y: 70%; --s: 9px; --c: #7bdff2; --d: -0.6s; --t: 5.4s"></i>
+                <i style="--x: 51%; --y: 4%; --s: 6px; --c: #ffe7a3; --d: -3.2s; --t: 4.8s"></i>
+                <i style="--x: 30%; --y: 92%; --s: 5px; --c: #9af5d0; --d: -1.7s; --t: 5.2s"></i>
+                <i style="--x: 70%; --y: 94%; --s: 7px; --c: #ffb6c1; --d: -2.9s; --t: 4.4s"></i>
+                <i style="--x: 3%; --y: 52%; --s: 6px; --c: #9af5d0; --d: -0.4s; --t: 5.6s"></i>
+                <i style="--x: 98%; --y: 48%; --s: 5px; --c: #ffe7a3; --d: -3.6s; --t: 4.9s"></i>
+              </span>
             </h2>
           </header>
 
@@ -442,6 +623,11 @@
 
           <div class="wish-card" id="wishCard">
             <div class="wish-card-inner">
+              <div class="wish-photos" aria-hidden="true">
+                <img src="assets/photos/sticker-1.webp" alt="" />
+                <img src="assets/photos/sticker-2.webp" alt="" />
+                <img src="assets/photos/sticker-3.webp" alt="" />
+              </div>
               <p class="wish-eyebrow">Happy Birthday</p>
               <p class="wish-title">生日快乐</p>
               <p class="wish-date" data-birthday>2026.10.20</p>
@@ -695,6 +881,21 @@
         var intro = 0.01;
         var cardEase = 0;
         var card = false;
+        var wishCard = document.getElementById("wishCard");
+        var cardTopPx = Infinity;
+
+        function measureCardTop() {
+          if (wishCard) cardTopPx = wishCard.getBoundingClientRect().top;
+        }
+
+        /* 贺卡是渐变的升起过程，连续采样几次，才知道蛋糕最后会不会被挡住 */
+        function trackCardTop() {
+          var t0 = performance.now();
+          (function sample() {
+            measureCardTop();
+            if (performance.now() - t0 < 1800) requestAnimationFrame(sample);
+          })();
+        }
         var lit = true;
         var blown = false;
         var flameLevel = 1;
@@ -769,6 +970,7 @@
           small = Math.min(W, H) < 430;
           buildScene();
           syncHintHost();
+          measureCardTop();
         }
 
         /* ── 场景对象初始化 ──────────────────────────────────── */
@@ -993,6 +1195,7 @@
             if (!blown) return;
             card = true;
             scene.classList.add("is-card");
+            trackCardTop();
           }, 1550);
         }
 
@@ -1072,7 +1275,8 @@
             fit < 520
               ? Math.max(0.98, Math.min(1.28, fit / 330))
               : Math.min(1.35, 1.28 + (fit - 520) / 420);
-          var cardScale = H < 640 ? 0.58 : 0.64;
+          /* 贺卡出现后蛋糕退到画面上方，给加了照片的贺卡让出空间 */
+          var cardScale = H < 640 ? 0.42 : 0.5;
           var scale = baseScale * (1 - (1 - cardScale) * cardEase);
 
           var cx = W / 2;
@@ -1091,17 +1295,31 @@
           var topCenter = project(0, CAKE_TOP_Y, 0, cx, cy, scale);
           var botCenter = project(0, CAKE_BOTTOM_Y, 0, cx, cy, scale);
 
-          /* 提示语始终落在托盘下沿的下方，避免蛋糕放大后被压住 */
-          if (hint && botCenter) {
-            var plateBottom =
+          var plateBottom = null;
+          if (botCenter) {
+            plateBottom =
               botCenter.y +
               4 * scale +
               CAKE_RADIUS * botCenter.s * 1.12 * Math.sin(rotX) * 0.92;
+          }
+
+          /* 提示语始终落在托盘下沿的下方，避免蛋糕放大后被压住 */
+          if (hint && plateBottom !== null) {
             var nextHint = Math.min(H * 0.85, plateBottom + 18) - hintHostTop;
             if (Math.abs(nextHint - hintTop) > 0.5) {
               hintTop = nextHint;
               hint.style.top = nextHint.toFixed(1) + "px";
             }
+          }
+
+          /* 贺卡已经把蛋糕挡住时，让蛋糕淡出，免得露出一截被切开的边缘 */
+          if (plateBottom !== null && cardTopPx < Infinity) {
+            canvas.classList.toggle(
+              "is-tucked",
+              card && cardEase > 0.4 && plateBottom > cardTopPx + 6
+            );
+          } else {
+            canvas.classList.remove("is-tucked");
           }
 
           /* 地面反光 */
@@ -2029,6 +2247,51 @@
 
         resize();
         requestAnimationFrame(render);
+      })();
+
+      /* 标题与星屑的指针视差：让字图不再像一张贴在背景上的静态图 */
+      (function () {
+        var art = document.querySelector(".finale-title--art");
+        if (!art) return;
+        var scene = document.querySelector(".scene--star");
+
+        function place(x, y) {
+          var tx = -x * 7;
+          var ty = -y * 5;
+          art.style.setProperty("--tp-x", tx.toFixed(2) + "px");
+          art.style.setProperty("--tp-y", ty.toFixed(2) + "px");
+          if (scene) {
+            scene.style.setProperty("--mx", (tx / 8).toFixed(3));
+            scene.style.setProperty("--my", (ty / 8).toFixed(3));
+          }
+        }
+
+        window.addEventListener(
+          "pointermove",
+          function (e) {
+            place(
+              (e.clientX / window.innerWidth - 0.5) * 2,
+              (e.clientY / window.innerHeight - 0.5) * 2
+            );
+          },
+          { passive: true }
+        );
+
+        window.addEventListener("pointerup", function () {
+          place(0, 0);
+        });
+        window.addEventListener("pointercancel", function () {
+          place(0, 0);
+        });
+
+        art.addEventListener("pointerdown", function () {
+          art.classList.remove("is-sparking");
+          void art.offsetWidth;
+          art.classList.add("is-sparking");
+          window.setTimeout(function () {
+            art.classList.remove("is-sparking");
+          }, 950);
+        });
       })();
     </script>
   </body>

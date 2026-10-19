@@ -6,12 +6,8 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#FDFBF7" />
-    <title>Oct 20 · Welcome to 23</title>
-    <meta
-      name="description"
-      content="10.20 · 23岁的金色入场券 —— 一场只属于你的生日漫游。"
-    />
+    <meta name="theme-color" content="#111726" />
+    <title>生日快乐 · 3D 星河蛋糕</title>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231A2238'/%3E%3Cpath d='M32 12c2.4 12 6.6 16.2 18.6 18.6C38.6 33 34.4 37.2 32 49.2 29.6 37.2 25.4 33 13.4 30.6 25.4 28.2 29.6 24 32 12Z' fill='%23FFD166'/%3E%3C/svg%3E"
@@ -23,735 +19,251 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* ── 独立试作页：3D 星河丝带蛋糕 ───────────────────────── */
+
+      body.theme-night{ background:#070B14; }
+
+      /* 默认：原始代码的深海星河色系 */
+      .scene--star{
+        background:
+          radial-gradient(95% 62% at 50% 46%, rgba(30,64,140,.42) 0%, rgba(13,29,64,.28) 42%, transparent 74%),
+          radial-gradient(135% 85% at 50% 38%, #15234A 0%, #0E1830 52%, #070B14 100%);
+      }
+      .scene--star .night-glow{
+        background:radial-gradient(circle,
+          rgba(56,189,248,.20) 0%,
+          rgba(29,78,216,.10) 38%,
+          transparent 68%);
+      }
+      .scene--star .night-horizon{
+        background:radial-gradient(ellipse at 50% 100%, rgba(56,189,248,.14), transparent 64%);
+      }
+      .scene--star .bokeh--a{ background:rgba(56,189,248,.5); box-shadow:0 0 18px rgba(56,189,248,.4); }
+      .scene--star .bokeh--b{ background:rgba(255,105,180,.45); box-shadow:0 0 16px rgba(255,105,180,.35); }
+      .scene--star .bokeh--c{ background:rgba(125,223,242,.35); box-shadow:0 0 22px rgba(125,223,242,.3); }
+
+      .scene--star .kicker--light{ color:rgba(186,230,253,.8); }
+      .scene--star .kicker--light::before,
+      .scene--star .kicker--light::after{
+        background:linear-gradient(90deg, transparent, rgba(125,211,252,.65));
+      }
+      .scene--star .finale-title{
+        background:linear-gradient(100deg, #FFE7A3 0%, #FFB6C1 46%, #7BDFF2 100%);
+        -webkit-background-clip:text;
+        background-clip:text;
+        color:transparent;
+        text-shadow:none;
+        filter:drop-shadow(0 0 22px rgba(56,189,248,.28));
+      }
+      .scene--star .blow-hint{ color:rgba(224,242,254,.8); }
+      .scene--star .blow-hint::after{
+        background:linear-gradient(90deg, transparent, rgba(56,189,248,.75), transparent);
+      }
+
+      .star-topbar{
+        position:fixed;
+        z-index:52;
+        top:calc(var(--safe-top) + 14px);
+        left:0; right:0;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:0 clamp(16px, 5vw, 28px);
+        pointer-events:none;
+      }
+      .star-topbar > *{ pointer-events:auto; }
+
+      .star-back{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        padding:6px 2px;
+        color:rgba(186,230,253,.66);
+        font-size:10.5px;
+        letter-spacing:.16em;
+        text-decoration:none;
+        -webkit-tap-highlight-color:transparent;
+        transition:color .35s;
+      }
+      .star-back:hover{ color:#E0F2FE; }
+
+      .star-badge{
+        font-family:var(--serif);
+        font-style:italic;
+        font-size:10px;
+        letter-spacing:.24em;
+        color:rgba(125,211,252,.45);
+        user-select:none;
+      }
+
+      /* 香槟金版：index.html?theme=gold */
+      .cake-gold .scene--star{
+        background:
+          radial-gradient(95% 62% at 50% 46%, rgba(64,55,72,.55) 0%, rgba(32,40,64,.35) 42%, transparent 74%),
+          radial-gradient(135% 85% at 50% 38%, #2A3554 0%, #1A2238 52%, #111726 100%);
+      }
+      .cake-gold .scene--star .night-glow{
+        background:radial-gradient(circle,
+          rgba(255,209,102,.22) 0%,
+          rgba(230,194,128,.09) 38%,
+          transparent 68%);
+      }
+      .cake-gold .scene--star .night-horizon{
+        background:radial-gradient(ellipse at 50% 100%, rgba(255,196,110,.13), transparent 64%);
+      }
+      .cake-gold .scene--star .bokeh--a{ background:rgba(255,209,102,.5); box-shadow:0 0 18px rgba(255,209,102,.4); }
+      .cake-gold .scene--star .bokeh--b{ background:rgba(243,232,255,.5); box-shadow:0 0 16px rgba(243,232,255,.35); }
+      .cake-gold .scene--star .bokeh--c{ background:rgba(230,194,128,.35); box-shadow:0 0 22px rgba(230,194,128,.3); }
+
+      .cake-gold .scene--star .kicker--light{ color:rgba(240,216,166,.85); }
+      .cake-gold .scene--star .kicker--light::before,
+      .cake-gold .scene--star .kicker--light::after{
+        background:linear-gradient(90deg, transparent, rgba(230,194,128,.7));
+      }
+      .cake-gold .scene--star .finale-title{
+        background:none;
+        -webkit-background-clip:border-box;
+        background-clip:border-box;
+        color:#FBF1DC;
+        text-shadow:0 0 26px rgba(255,209,102,.25);
+        filter:none;
+      }
+      .cake-gold .scene--star .blow-hint{ color:rgba(255,240,210,.82); }
+      .cake-gold .scene--star .blow-hint::after{
+        background:linear-gradient(90deg, transparent, rgba(255,209,102,.75), transparent);
+      }
+      .cake-gold .star-back{ color:rgba(243,226,185,.66); }
+      .cake-gold .star-back:hover{ color:#FFE9B8; }
+      .cake-gold .star-badge{ color:rgba(230,194,128,.5); }
+
+      .cake-canvas{
+        position:absolute;
+        inset:0;
+        z-index:3;
+        width:100%;
+        height:100%;
+        touch-action:none;
+        cursor:grab;
+        -webkit-tap-highlight-color:transparent;
+      }
+      .cake-canvas:active{ cursor:grabbing; }
+
+      .star-inner{
+        justify-content:flex-start;
+        gap:0;
+        pointer-events:none;
+      }
+
+      .star-inner .finale-head{
+        padding-top:2px;
+        flex:0 0 auto;
+      }
+
+      .star-inner .blow-hint{
+        position:absolute;
+        left:50%;
+        top:68%;
+        z-index:8;
+        margin:0;
+        transform:translateX(-50%);
+        white-space:nowrap;
+        pointer-events:auto;
+      }
+      .scene--star.is-blown .blow-hint{
+        transform:translate(-50%, 8px);
+      }
+
+      .star-inner .wish-card{
+        position:absolute;
+        left:50%;
+        bottom:0;
+        transform:translateX(-50%);
+        margin:0;
+        pointer-events:auto;
+        width:min(90%, 390px);
+      }
+
+      .scene--star.is-card .wish-card{
+        max-height:min(420px, 52vh);
+        overflow-y:auto;
+        overscroll-behavior:contain;
+        scrollbar-width:none;
+      }
+      .scene--star.is-card .wish-card::-webkit-scrollbar{ display:none; }
+
+      /* 去掉署名后，用一枚小小的金色分隔收尾 */
+      .wish-card .wish-ornament{
+        display:block;
+        position:relative;
+        width:104px;
+        height:8px;
+        margin:13px auto 0;
+        background:radial-gradient(circle, rgba(174,124,54,.85) 0 1.6px, rgba(174,124,54,0) 2px) center/6px 6px no-repeat;
+      }
+      .wish-card .wish-ornament::before,
+      .wish-card .wish-ornament::after{
+        content:"";
+        position:absolute;
+        top:50%;
+        width:40px;
+        height:1px;
+        background:linear-gradient(90deg, rgba(185,138,71,0), rgba(185,138,71,.55));
+      }
+      .wish-card .wish-ornament::before{ left:0; }
+      .wish-card .wish-ornament::after{ right:0; transform:scaleX(-1); }
+      .scene--finale.is-card .wish-ornament{ animation-delay:1.2s; }
+
+      /* 正文保持居中；底部留出落款的位置，像信末签名一样自然错开 */
+      .wish-card .wish-card-inner{
+        padding-bottom:calc(clamp(17px, 4.4vw, 24px) + clamp(50px, 16vw, 62px));
+      }
+
+      /* 右下角的手绘头像，当作落款 */
+      .wish-card .wish-signature{
+        position:absolute;
+        right:11px;
+        bottom:14px;
+        width:clamp(56px, 17vw, 68px);
+        height:auto;
+        pointer-events:none;
+      }
+      .wish-card .wish-signature img{
+        display:block;
+        width:100%;
+        height:auto;
+        transform:rotate(-7deg);
+        opacity:.9;
+        filter:drop-shadow(0 1px 1px rgba(120,92,48,.10));
+      }
+      .scene--finale.is-card .wish-signature{ animation-delay:1.16s; }
+
+      @media (max-width:640px){
+        /* 手机上贺卡整体上移一点，离底部水印更从容 */
+        .star-inner .wish-card{ bottom:24px; }
+      }
+
+      @media (max-height:600px){
+        .star-inner .blow-hint{ top:68%; font-size:9px; }
+        .scene--star.is-card .wish-card{ max-height:min(360px, 48vh); }
+        .star-badge{ display:none; }
+      }
+
+      @media (max-width:360px){
+        .star-badge{ display:none; }
+        .star-inner .blow-hint{ font-size:9px; letter-spacing:.12em; }
+        .scene--star.is-card .wish-card{ width:94%; }
+      }
+
+      @media (prefers-reduced-motion: reduce){
+        .cake-canvas{ cursor:default; }
+      }
+    </style>
   </head>
-  <body>
-    <svg class="svg-defs" aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#B9873F" />
-          <stop offset=".35" stop-color="#F4DDA6" />
-          <stop offset=".6" stop-color="#C99B52" />
-          <stop offset="1" stop-color="#FFEBC4" />
-        </linearGradient>
-        <linearGradient id="flameGrad" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0" stop-color="#FFB347" />
-          <stop offset=".55" stop-color="#FFD166" />
-          <stop offset="1" stop-color="#FFF6D8" />
-        </linearGradient>
-        <radialGradient id="flameGlow">
-          <stop offset="0" stop-color="#FFD98A" stop-opacity=".85" />
-          <stop offset=".5" stop-color="#FFB347" stop-opacity=".28" />
-          <stop offset="1" stop-color="#FFB347" stop-opacity="0" />
-        </radialGradient>
-        <linearGradient id="riverGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#D9ECDD" />
-          <stop offset=".5" stop-color="#93BFA9" />
-          <stop offset="1" stop-color="#5F927C" />
-        </linearGradient>
 
-        <!-- 手绘线稿：照片占位插画 -->
-        <symbol id="art-lake" viewBox="0 0 200 200">
-          <circle cx="138" cy="58" r="17" />
-          <path d="M18 112c22-8 40-8 62 0s52 8 102 0" />
-          <path d="M12 128c26 7 48-7 74 0s56 7 102 0" opacity=".6" />
-          <path d="M26 145c16 4 30-4 46 0s32 4 50-2" opacity=".4" />
-          <path d="M152 145c10-2 20 1 28-1" opacity=".4" />
-          <path
-            d="M38 112c-9-18-12-34-6-52M38 112c9-16 11-32 8-50M38 112c0-20-5-36 2-58"
-            stroke-width="1.1"
-            opacity=".8"
-          />
-          <circle
-            cx="78"
-            cy="88"
-            r="2"
-            fill="currentColor"
-            stroke="none"
-            opacity=".7"
-          />
-          <circle
-            cx="96"
-            cy="80"
-            r="1.4"
-            fill="currentColor"
-            stroke="none"
-            opacity=".5"
-          />
-        </symbol>
-        <symbol id="art-dune" viewBox="0 0 200 200">
-          <circle cx="62" cy="62" r="20" />
-          <path d="M6 140c26-34 54-44 78-30s44 16 62 4 34-16 48-10" />
-          <path d="M2 160c34-22 70-24 102-8s58 14 94 2" opacity=".6" />
-          <path d="M20 176c28-10 54-10 80-2" opacity=".4" />
-          <path d="M148 84c4-6 4-14 0-20M148 84c6-4 14-4 20 0" opacity=".5" />
-          <circle
-            cx="150"
-            cy="58"
-            r="1.6"
-            fill="currentColor"
-            stroke="none"
-            opacity=".6"
-          />
-        </symbol>
-        <symbol id="art-river" viewBox="0 0 200 200">
-          <path
-            d="M18 158c30-6 44-24 36-42-8-20 12-34 34-34s40 14 34 30c-8 22 10 34 34 32"
-          />
-          <path d="M10 176c34-4 50-16 44-32" opacity=".5" />
-          <path d="M28 84l30-38 26 30 18-22 34 44" opacity=".7" />
-          <path d="M150 120c8-4 16-4 24 0" opacity=".5" />
-          <path d="M36 108c14-4 28-4 42 0" opacity=".4" />
-        </symbol>
-        <symbol id="art-boardwalk" viewBox="0 0 200 200">
-          <path d="M40 176l34-92h52l34 92" opacity=".7" />
-          <path d="M62 176l22-84M96 176V92M130 176l-22-84" opacity=".5" />
-          <path d="M46 120h108M54 148h92" opacity=".5" />
-          <path d="M50 120v-34M60 120v-34M150 120v-34M140 120v-34" />
-          <path d="M50 86h100" />
-          <path d="M122 60c8-6 18-6 26 0" opacity=".4" />
-        </symbol>
-        <symbol id="art-dress" viewBox="0 0 200 200">
-          <path d="M82 58c0 12 8 18 18 18s18-6 18-18" />
-          <path d="M100 76v24" />
-          <path
-            d="M100 100c-14 0-22 12-26 28-4 20-12 34-20 48h92c-8-14-16-28-20-48-4-16-12-28-26-28z"
-          />
-          <path d="M84 118c6 8 26 8 32 0" opacity=".5" />
-          <path d="M74 176c18-6 34-6 52 0" opacity=".4" />
-          <circle
-            cx="66"
-            cy="74"
-            r="2"
-            fill="currentColor"
-            stroke="none"
-            opacity=".7"
-          />
-          <path
-            d="M142 56l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"
-            fill="currentColor"
-            stroke="none"
-            opacity=".55"
-          />
-        </symbol>
-        <symbol id="art-birch" viewBox="0 0 200 200">
-          <path
-            d="M50 180V36M92 180V20M136 180V50"
-            stroke-width="10"
-            opacity=".3"
-          />
-          <path d="M50 180V36M92 180V20M136 180V50" />
-          <path
-            d="M40 78h20M84 64h16M130 92h14M44 120h14M86 140h18M132 148h12"
-            opacity=".5"
-          />
-          <path d="M50 66l-14-18M92 56l16-18M136 74l14-20" opacity=".5" />
-          <circle
-            cx="76"
-            cy="104"
-            r="1.5"
-            fill="currentColor"
-            stroke="none"
-            opacity=".5"
-          />
-          <circle
-            cx="118"
-            cy="82"
-            r="1.3"
-            fill="currentColor"
-            stroke="none"
-            opacity=".4"
-          />
-        </symbol>
-        <symbol id="art-veil" viewBox="0 0 200 200">
-          <path d="M64 92c0-26 16-42 42-42s42 16 42 42" />
-          <path
-            d="M70 90c0 34 8 60 22 82M136 90c0 34-8 60-22 82"
-            opacity=".6"
-          />
-          <path d="M78 72c10-10 34-10 44 0" opacity=".5" />
-          <circle cx="100" cy="46" r="2.5" fill="currentColor" stroke="none" />
-          <circle cx="84" cy="56" r="1.5" fill="currentColor" stroke="none" />
-          <circle cx="116" cy="56" r="1.5" fill="currentColor" stroke="none" />
-          <path
-            d="M90 118l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"
-            fill="currentColor"
-            stroke="none"
-            opacity=".5"
-          />
-          <path
-            d="M112 144l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"
-            fill="currentColor"
-            stroke="none"
-            opacity=".4"
-          />
-        </symbol>
-      </defs>
-    </svg>
-
-    <div class="grain" aria-hidden="true"></div>
-    <canvas id="fx" aria-hidden="true"></canvas>
-
-    <header class="topbar">
-      <div class="brand" aria-hidden="true">
-        <span>OCT</span><i></i><span>20</span>
-      </div>
-      <button
-        class="music-toggle"
-        id="musicToggle"
-        type="button"
-        aria-label="开启生日音乐"
-        aria-pressed="false"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8" />
-          <path d="M13.7 21a2 2 0 0 1-3.4 0" />
-          <path class="bell-line" d="M12 2v1" />
-        </svg>
-        <span class="music-pulse" aria-hidden="true"></span>
-      </button>
-    </header>
-
-    <nav class="progress" id="progress" aria-label="章节导航"></nav>
-
-    <main id="app" class="app">
-      <!-- ───────────────── 序幕 ───────────────── -->
-      <section
-        class="scene scene--cover"
-        id="cover"
-        data-theme="day"
-        data-title="序幕"
-      >
-        <div class="scene-bg cover-bg" aria-hidden="true">
-          <div class="cover-halo"></div>
-          <div class="cover-rays"></div>
-          <div class="cover-vignette"></div>
-        </div>
-
-        <div class="scene-inner cover-inner">
-          <p class="cover-prelude reveal">A little celebration · for you</p>
-
-          <div class="invitation-wrap reveal">
-            <button
-              class="invitation"
-              id="invitation"
-              type="button"
-              aria-label="拆开邀请函，开启23岁的第一场漫游"
-            >
-              <span class="inv-face">
-                <span class="inv-edge" aria-hidden="true"></span>
-                <span
-                  class="inv-corner inv-corner--tl"
-                  aria-hidden="true"
-                ></span>
-                <span
-                  class="inv-corner inv-corner--tr"
-                  aria-hidden="true"
-                ></span>
-                <span
-                  class="inv-corner inv-corner--bl"
-                  aria-hidden="true"
-                ></span>
-                <span
-                  class="inv-corner inv-corner--br"
-                  aria-hidden="true"
-                ></span>
-                <span class="inv-shine" aria-hidden="true"></span>
-
-                <span class="inv-head">
-                  <span class="inv-kicker">Special Edition · MMXXVI</span>
-                  <span class="inv-title">Oct 20</span>
-                  <span class="inv-welcome">Welcome to <em>23</em></span>
-                </span>
-
-                <span class="inv-emblem" aria-hidden="true">
-                  <svg viewBox="0 0 64 64">
-                    <g
-                      class="star-rays"
-                      stroke="currentColor"
-                      stroke-width=".8"
-                      opacity=".7"
-                    >
-                      <path
-                        d="M32 2v7M32 55v7M2 32h7M55 32h7M11 11l5 5M48 48l5 5M53 11l-5 5M16 48l-5 5"
-                      />
-                    </g>
-                    <path
-                      class="star-shape"
-                      d="M32 10c2 11 5.5 14.7 16.7 16.7C37.5 28.7 34 32.4 32 43.4 30 32.4 26.5 28.7 15.3 26.7 26.5 24.7 30 21 32 10Z"
-                    />
-                    <circle class="star-dot" cx="32" cy="27" r="1.4" />
-                  </svg>
-                </span>
-
-                <span class="inv-foot">
-                  <span class="inv-rule"></span>
-                  <span class="inv-date">MMXXVI · X · XX</span>
-                  <span class="inv-rule"></span>
-                </span>
-
-                <span class="inv-note" aria-hidden="true"
-                  >An invitation to twenty-three</span
-                >
-              </span>
-
-              <span class="ribbon ribbon--left" aria-hidden="true"></span>
-              <span class="ribbon ribbon--right" aria-hidden="true"></span>
-              <span class="bow" aria-hidden="true">
-                <span class="bow-loop bow-loop--left"></span>
-                <span class="bow-loop bow-loop--right"></span>
-                <span class="bow-knot"></span>
-              </span>
-            </button>
-          </div>
-
-          <button class="cover-hint reveal" id="coverHint" type="button">
-            <span class="hint-star" aria-hidden="true">✦</span>
-            <span class="hint-main">轻触拆封</span>
-            <small>开启 23 岁的第一场漫游</small>
-          </button>
-        </div>
-      </section>
-
-      <!-- ───────────────── Chapter 01 ───────────────── -->
-      <section
-        class="scene scene--ch1"
-        id="ch1"
-        data-theme="day"
-        data-title="Chapter 01"
-      >
-        <div class="scene-bg ch1-bg" aria-hidden="true">
-          <div class="sun sun--ch1"></div>
-          <div class="cloud cloud--a"></div>
-          <div class="cloud cloud--b"></div>
-          <div class="cloud cloud--c"></div>
-          <svg class="hills" viewBox="0 0 800 320" preserveAspectRatio="none">
-            <path
-              class="hill hill--far"
-              d="M0 220 C 120 150 210 210 330 185 S 560 120 800 200 L800 320 L0 320 Z"
-            />
-            <path
-              class="hill hill--near"
-              d="M0 262 C 150 210 260 272 420 246 S 650 220 800 266 L800 320 L0 320 Z"
-            />
-          </svg>
-          <div class="lake"><span class="lake-glint"></span></div>
-          <div class="grass grass--l"></div>
-          <div class="grass grass--r"></div>
-        </div>
-
-        <div class="scene-inner">
-          <header class="chapter-head reveal">
-            <p class="kicker"><span>Chapter 01</span></p>
-            <h2 class="chapter-title">旷野明朗</h2>
-            <p class="chapter-sub">日光与旷野 · 23岁的肆意奔跑</p>
-          </header>
-
-          <div class="photo-stage photo-stage--ch1 reveal">
-            <figure
-              class="photo-card photo-card--hero"
-              data-parallax="0.05"
-              data-tilt
-              style="--rot: -2.2deg"
-            >
-              <div class="photo-frame">
-                <div class="photo-fallback">
-                  <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                    <use href="#art-lake" />
-                  </svg>
-                  <p class="fb-cap">湖岸 · 薄纱迎风</p>
-                  <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                </div>
-                <img
-                  data-photo="ch1_lake"
-                  alt="她在湖岸边手挽薄纱、迎风大笑的全身照"
-                  loading="lazy"
-                  hidden
-                />
-                <span class="photo-sheen" aria-hidden="true"></span>
-              </div>
-              <figcaption>
-                <span>Lake Daydream</span><em>薄纱与风</em>
-              </figcaption>
-            </figure>
-
-            <figure
-              class="photo-card photo-card--side"
-              data-parallax="0.1"
-              style="--rot: 3.2deg"
-            >
-              <div class="photo-frame">
-                <div class="photo-fallback">
-                  <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                    <use href="#art-dune" />
-                  </svg>
-                  <p class="fb-cap">沙丘 · 日光墨镜</p>
-                  <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                </div>
-                <img
-                  data-photo="ch1_dune"
-                  alt="她在沙丘前戴着墨镜的阳光笑容"
-                  loading="lazy"
-                  hidden
-                />
-                <span class="photo-sheen" aria-hidden="true"></span>
-              </div>
-              <figcaption><span>Dune</span><em>日光墨镜</em></figcaption>
-            </figure>
-
-            <svg class="veil-fabric" viewBox="0 0 120 260" aria-hidden="true">
-              <path
-                d="M78 8c26 34 30 84 16 128-12 38-34 70-70 106 46-12 82-40 100-86 16-42 12-98-24-148Z"
-              />
-              <path
-                d="M92 40c14 30 12 66-2 96-12 26-30 48-52 66 34-10 58-32 70-64 12-32 12-70-16-98Z"
-                opacity=".55"
-              />
-            </svg>
-          </div>
-
-          <div class="chapter-copy reveal">
-            <span class="copy-mark" aria-hidden="true">✦</span>
-            <p>
-              23岁的第一程，脚步依旧轻盈，<br />去看更宽阔的世界，奔赴每一场晴朗。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────── Chapter 02 ───────────────── -->
-      <section
-        class="scene scene--ch2"
-        id="ch2"
-        data-theme="day"
-        data-title="Chapter 02"
-      >
-        <div class="scene-bg ch2-bg" aria-hidden="true">
-          <div class="sun sun--ch2"></div>
-          <svg
-            class="mountains"
-            viewBox="0 0 800 360"
-            preserveAspectRatio="none"
-          >
-            <path
-              class="mtn mtn--far"
-              d="M0 250 L110 150 L200 220 L300 120 L420 230 L520 160 L640 240 L740 150 L800 210 L800 360 L0 360 Z"
-            />
-            <path
-              class="mtn mtn--near"
-              d="M0 300 L120 240 L220 290 L340 230 L470 300 L600 250 L720 300 L800 260 L800 360 L0 360 Z"
-            />
-          </svg>
-          <div class="river"><span class="river-sheen"></span></div>
-          <div class="bubbles">
-            <span style="--x: 12%; --s: 14px; --t: 18s; --d: -2s"></span>
-            <span style="--x: 26%; --s: 22px; --t: 23s; --d: -11s"></span>
-            <span style="--x: 68%; --s: 18px; --t: 20s; --d: -6s"></span>
-            <span style="--x: 82%; --s: 12px; --t: 16s; --d: -13s"></span>
-            <span style="--x: 47%; --s: 10px; --t: 15s; --d: -8s"></span>
-          </div>
-        </div>
-
-        <div class="scene-inner">
-          <header class="chapter-head reveal">
-            <p class="kicker"><span>Chapter 02</span></p>
-            <h2 class="chapter-title">自由生风</h2>
-            <p class="chapter-sub">风与山河 · 步履不停的探险家</p>
-          </header>
-
-          <div class="swiper-block reveal">
-            <div class="swiper" data-swiper>
-              <div class="swiper-track">
-                <figure class="photo-card swiper-card">
-                  <div class="photo-frame">
-                    <div class="photo-fallback">
-                      <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                        <use href="#art-river" />
-                      </svg>
-                      <p class="fb-cap">河湾 · 牛仔帽</p>
-                      <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                    </div>
-                    <img
-                      data-photo="ch2_hat"
-                      alt="她戴着棕色牛仔帽在碧绿河湾前扶帽浅笑"
-                      loading="lazy"
-                      hidden
-                    />
-                    <span class="photo-sheen" aria-hidden="true"></span>
-                  </div>
-                  <figcaption>
-                    <span>River Bend</span><em>扶帽浅笑</em>
-                  </figcaption>
-                </figure>
-
-                <figure class="photo-card swiper-card">
-                  <div class="photo-frame">
-                    <div class="photo-fallback">
-                      <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                        <use href="#art-boardwalk" />
-                      </svg>
-                      <p class="fb-cap">湖畔栈道 · 单脚微翘</p>
-                      <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                    </div>
-                    <img
-                      data-photo="ch2_boardwalk"
-                      alt="她在湖畔木栈道上单脚微翘倚靠栏杆"
-                      loading="lazy"
-                      hidden
-                    />
-                    <span class="photo-sheen" aria-hidden="true"></span>
-                  </div>
-                  <figcaption>
-                    <span>Wooden Pier</span><em>栈道微风</em>
-                  </figcaption>
-                </figure>
-
-                <figure class="photo-card swiper-card">
-                  <div class="photo-frame">
-                    <div class="photo-fallback">
-                      <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                        <use href="#art-river" />
-                      </svg>
-                      <p class="fb-cap">湖风 · 围巾飞扬</p>
-                      <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                    </div>
-                    <img
-                      data-photo="ch2_scarf"
-                      alt="她在湖边被风拂动围巾的飒爽模样"
-                      loading="lazy"
-                      hidden
-                    />
-                    <span class="photo-sheen" aria-hidden="true"></span>
-                  </div>
-                  <figcaption>
-                    <span>Lake Breeze</span><em>围巾与风</em>
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-            <div class="swiper-dots" data-dots aria-label="照片切换"></div>
-            <p class="swipe-hint">轻滑 · 风的方向</p>
-          </div>
-
-          <div class="chapter-copy reveal">
-            <span class="copy-mark" aria-hidden="true">✦</span>
-            <p>
-              永远有说走就走的底气，翻过山河，穿过人群，<br />做自己生活里最酷的女主角。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────── Chapter 03 ───────────────── -->
-      <section
-        class="scene scene--ch3"
-        id="ch3"
-        data-theme="warm"
-        data-title="Chapter 03"
-      >
-        <div class="scene-bg ch3-bg" aria-hidden="true">
-          <div class="rays"></div>
-          <svg
-            class="birch birch--left"
-            viewBox="0 0 220 600"
-            preserveAspectRatio="xMinYMax slice"
-          >
-            <rect
-              x="30"
-              y="30"
-              width="28"
-              height="570"
-              rx="14"
-              fill="#FFFCF3"
-              opacity=".72"
-            />
-            <rect
-              x="112"
-              y="-10"
-              width="20"
-              height="610"
-              rx="10"
-              fill="#FFFCF3"
-              opacity=".5"
-            />
-            <path
-              d="M34 120h20M34 210h16M34 320h22M116 90h12M116 190h12M116 300h12M116 410h12"
-              stroke="#8C7A61"
-              stroke-width="2.4"
-              opacity=".3"
-            />
-            <path
-              d="M58 30c8-18 18-24 30-26M44 60c-10-8-18-10-26-10"
-              stroke="#8C7A61"
-              stroke-width="1.6"
-              opacity=".25"
-              fill="none"
-            />
-          </svg>
-          <svg
-            class="birch birch--right"
-            viewBox="0 0 220 600"
-            preserveAspectRatio="xMaxYMax slice"
-          >
-            <rect
-              x="150"
-              y="10"
-              width="26"
-              height="590"
-              rx="13"
-              fill="#FFFCF3"
-              opacity=".68"
-            />
-            <rect
-              x="70"
-              y="50"
-              width="18"
-              height="550"
-              rx="9"
-              fill="#FFFCF3"
-              opacity=".45"
-            />
-            <path
-              d="M154 110h18M154 200h14M154 310h20M74 150h12M74 280h12M74 390h12"
-              stroke="#8C7A61"
-              stroke-width="2.4"
-              opacity=".28"
-            />
-          </svg>
-          <div class="petal petal--1"></div>
-          <div class="petal petal--2"></div>
-          <div class="petal petal--3"></div>
-          <div class="ch3-glow"></div>
-        </div>
-
-        <div class="scene-inner">
-          <header class="chapter-head reveal">
-            <p class="kicker"><span>Chapter 03</span></p>
-            <h2 class="chapter-title">璀璨星河</h2>
-            <p class="chapter-sub">星光加冕 · 23岁的公主时刻</p>
-          </header>
-
-          <div class="swiper-block reveal">
-            <div class="swiper swiper--ch3" data-swiper>
-              <div class="swiper-track">
-                <figure class="photo-card swiper-card">
-                  <div class="photo-frame">
-                    <div class="photo-fallback">
-                      <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                        <use href="#art-dress" />
-                      </svg>
-                      <p class="fb-cap">草地 · 浅粉长裙</p>
-                      <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                    </div>
-                    <img
-                      data-photo="ch3_gown"
-                      alt="她身着闪光浅粉长裙在草地双手托腮甜笑"
-                      loading="lazy"
-                      hidden
-                    />
-                    <span class="photo-sheen" aria-hidden="true"></span>
-                    <span class="sparkle-field" aria-hidden="true"></span>
-                  </div>
-                  <figcaption>
-                    <span>Blush Gown</span><em>草地甜笑</em>
-                  </figcaption>
-                </figure>
-
-                <figure class="photo-card swiper-card">
-                  <div class="photo-frame">
-                    <div class="photo-fallback">
-                      <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                        <use href="#art-birch" />
-                      </svg>
-                      <p class="fb-cap">白桦林 · 回眸提裙</p>
-                      <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                    </div>
-                    <img
-                      data-photo="ch3_birch"
-                      alt="她在白桦林间回眸提裙"
-                      loading="lazy"
-                      hidden
-                    />
-                    <span class="photo-sheen" aria-hidden="true"></span>
-                    <span class="sparkle-field" aria-hidden="true"></span>
-                  </div>
-                  <figcaption>
-                    <span>Silver Birch</span><em>白桦回眸</em>
-                  </figcaption>
-                </figure>
-
-                <figure class="photo-card swiper-card">
-                  <div class="photo-frame">
-                    <div class="photo-fallback">
-                      <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                        <use href="#art-veil" />
-                      </svg>
-                      <p class="fb-cap">头纱 · 碎钻星光</p>
-                      <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                    </div>
-                    <img
-                      data-photo="ch3_veil"
-                      alt="她戴着精致珠饰头纱回眸的高光瞬间"
-                      loading="lazy"
-                      hidden
-                    />
-                    <span class="photo-sheen" aria-hidden="true"></span>
-                    <span class="sparkle-field" aria-hidden="true"></span>
-                  </div>
-                  <figcaption>
-                    <span>Starlit Veil</span><em>珠饰头纱</em>
-                  </figcaption>
-                </figure>
-
-                <figure class="photo-card swiper-card">
-                  <div class="photo-frame">
-                    <div class="photo-fallback">
-                      <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
-                        <use href="#art-dress" />
-                      </svg>
-                      <p class="fb-cap">林间 · 高光时刻</p>
-                      <span class="fb-note">PORTRAIT TO BE ADDED</span>
-                    </div>
-                    <img
-                      data-photo="ch3_star"
-                      alt="她在林间暖光里的高光时刻"
-                      loading="lazy"
-                      hidden
-                    />
-                    <span class="photo-sheen" aria-hidden="true"></span>
-                    <span class="sparkle-field" aria-hidden="true"></span>
-                  </div>
-                  <figcaption>
-                    <span>Starlight</span><em>高光时刻</em>
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-            <div class="swiper-dots" data-dots aria-label="照片切换"></div>
-            <p class="swipe-hint">轻滑 · 星光加冕</p>
-          </div>
-
-          <div class="chapter-copy reveal">
-            <span class="copy-mark" aria-hidden="true">✦</span>
-            <p>盛装也好，素履也罢，<br />属于你的高光时刻永远都在眼前。</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ───────────────── 尾声 ───────────────── -->
-      <section
-        class="scene scene--finale"
-        id="finale"
-        data-theme="night"
-        data-title="尾声"
-      >
+  <body class="theme-night">
+    <div class="app">
+      <section class="scene scene--finale scene--star" id="finale" data-theme="night">
         <div class="scene-bg finale-bg" aria-hidden="true">
           <div class="night-glow"></div>
           <div class="starfield"></div>
@@ -761,261 +273,1338 @@
           <div class="night-horizon"></div>
         </div>
 
-        <div class="scene-inner finale-inner">
-          <header class="finale-head reveal">
-            <p class="kicker kicker--light"><span>The Finale</span></p>
-            <h2 class="finale-title">许愿时刻</h2>
+        <canvas
+          class="cake-canvas"
+          id="cakeCanvas"
+          aria-label="可以拖动旋转的三维星河生日蛋糕，轻触可以为蜡烛许愿"
+        ></canvas>
+
+        <div class="scene-inner finale-inner star-inner">
+          <header class="finale-head">
+            <p class="kicker kicker--light"><span>Happy Birthday</span></p>
+            <h2 class="finale-title">生日快乐</h2>
           </header>
 
-          <div class="cake-wrap" id="cakeWrap">
-            <div class="ring" aria-hidden="true"></div>
-            <svg
-              class="cake-svg"
-              viewBox="0 0 320 320"
-              role="img"
-              aria-label="插着数字2和3蜡烛的生日蛋糕"
-            >
-              <ellipse
-                class="cake-glow"
-                cx="160"
-                cy="190"
-                rx="142"
-                ry="92"
-                fill="url(#flameGlow)"
-                opacity=".55"
-              />
-              <ellipse
-                cx="160"
-                cy="294"
-                rx="126"
-                ry="15"
-                fill="#0E1422"
-                opacity=".55"
-              />
-              <ellipse
-                cx="160"
-                cy="289"
-                rx="126"
-                ry="15"
-                fill="url(#goldGrad)"
-                opacity=".7"
-              />
-              <ellipse cx="160" cy="286" rx="112" ry="11" fill="#1B2438" />
-
-              <rect
-                x="64"
-                y="212"
-                width="192"
-                height="74"
-                rx="12"
-                fill="#FBF1DF"
-              />
-              <rect
-                x="64"
-                y="212"
-                width="192"
-                height="74"
-                rx="12"
-                fill="none"
-                stroke="rgba(185,135,63,.35)"
-                stroke-width="1"
-              />
-              <rect
-                x="64"
-                y="270"
-                width="192"
-                height="5"
-                fill="url(#goldGrad)"
-                opacity=".8"
-              />
-              <path
-                d="M64 232c18 2 24 10 42 10s24-8 42-8 24 8 42 8 24-8 42-10"
-                fill="none"
-                stroke="rgba(199,161,92,.42)"
-                stroke-width="1.2"
-              />
-
-              <rect
-                x="98"
-                y="146"
-                width="124"
-                height="78"
-                rx="10"
-                fill="#F7DCD4"
-              />
-              <rect
-                x="98"
-                y="146"
-                width="124"
-                height="78"
-                rx="10"
-                fill="none"
-                stroke="rgba(185,135,63,.3)"
-                stroke-width="1"
-              />
-              <rect
-                x="98"
-                y="200"
-                width="124"
-                height="4"
-                fill="url(#goldGrad)"
-                opacity=".75"
-              />
-              <path
-                d="M98 162c12 2 16 7 28 7s16-6 28-6 16 6 28 6 16-6 28-7"
-                fill="none"
-                stroke="rgba(199,161,92,.36)"
-                stroke-width="1.1"
-              />
-
-              <g fill="#FFF9EE">
-                <circle cx="80" cy="212" r="6" />
-                <circle cx="104" cy="209" r="6" />
-                <circle cx="128" cy="207" r="6" />
-                <circle cx="152" cy="206" r="6" />
-                <circle cx="176" cy="206" r="6" />
-                <circle cx="200" cy="207" r="6" />
-                <circle cx="224" cy="209" r="6" />
-                <circle cx="248" cy="212" r="6" />
-              </g>
-
-              <g class="cake-deco" fill="url(#goldGrad)">
-                <path
-                  d="M124 238l2.2 5.8 5.8 2.2-5.8 2.2-2.2 5.8-2.2-5.8-5.8-2.2 5.8-2.2z"
-                />
-                <path
-                  d="M198 246l1.8 4.8 4.8 1.8-4.8 1.8-1.8 4.8-1.8-4.8-4.8-1.8 4.8-1.8z"
-                  opacity=".8"
-                />
-                <circle cx="160" cy="242" r="2.6" />
-                <circle cx="146" cy="258" r="1.8" opacity=".7" />
-                <circle cx="178" cy="228" r="1.8" opacity=".7" />
-              </g>
-
-              <text
-                class="numeral"
-                x="136"
-                y="146"
-                text-anchor="middle"
-                font-size="54"
-              >
-                2
-              </text>
-              <text
-                class="numeral"
-                x="186"
-                y="146"
-                text-anchor="middle"
-                font-size="54"
-              >
-                3
-              </text>
-              <path
-                d="M136 112V103M186 112V103"
-                stroke="#6B543A"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                opacity=".9"
-              />
-
-              <g class="flame-group" id="cakeFlames">
-                <g transform="translate(136,103)">
-                  <g class="flame flame--a">
-                    <ellipse
-                      class="flame-halo"
-                      cx="0"
-                      cy="-10"
-                      rx="17"
-                      ry="19"
-                    />
-                    <path
-                      class="flame-body"
-                      d="M0 0C-7-7-5-16 0-24 5-16 7-7 0 0Z"
-                    />
-                    <path
-                      class="flame-core"
-                      d="M0-2C-3-7-2-12 0-16 2-12 3-7 0-2Z"
-                    />
-                    <circle class="wick" cx="0" cy="1" r="1.6" />
-                  </g>
-                </g>
-                <g transform="translate(186,103)">
-                  <g class="flame flame--b">
-                    <ellipse
-                      class="flame-halo"
-                      cx="0"
-                      cy="-10"
-                      rx="17"
-                      ry="19"
-                    />
-                    <path
-                      class="flame-body"
-                      d="M0 0C-7-7-5-16 0-24 5-16 7-7 0 0Z"
-                    />
-                    <path
-                      class="flame-core"
-                      d="M0-2C-3-7-2-12 0-16 2-12 3-7 0-2Z"
-                    />
-                    <circle class="wick" cx="0" cy="1" r="1.6" />
-                  </g>
-                </g>
-              </g>
-
-              <g
-                class="smoke-group"
-                fill="none"
-                stroke="rgba(255,255,255,.55)"
-                stroke-width="2"
-                stroke-linecap="round"
-              >
-                <path class="smoke s1" d="M136 100c-7-12 6-18 1-30" />
-                <path class="smoke s2" d="M136 100c5-10-5-16-1-26" />
-                <path class="smoke s3" d="M186 100c-7-12 6-18 1-30" />
-                <path class="smoke s4" d="M186 100c5-10-5-16-1-26" />
-              </g>
-            </svg>
-
-            <button class="blow-hint" id="blowHint" type="button">
-              轻触火焰，吹灭蜡烛许个愿吧
-            </button>
-            <button
-              class="blow-target"
-              id="blowZone"
-              type="button"
-              aria-label="吹灭生日蜡烛，许下心愿"
-            ></button>
-          </div>
+          <button class="blow-hint" id="blowHint" type="button">
+            轻触烛火许个愿吧
+          </button>
 
           <div class="wish-card" id="wishCard">
             <div class="wish-card-inner">
               <p class="wish-eyebrow">Happy 23rd Birthday</p>
-              <p class="wish-title">
-                祝 <span data-name="her">亲爱的你</span><br />23岁生日快乐！
-              </p>
+              <p class="wish-title">生日快乐</p>
               <p class="wish-date" data-birthday>2026.10.20</p>
               <span class="wish-rule" aria-hidden="true"></span>
               <div class="wish-lines">
                 <p>愿你新的一岁，步履依然自在，笑容依旧明媚；</p>
                 <p>想去的地方都顺遂抵达，想做的事情都如愿以偿。</p>
-                <p>愿你永远被偏爱、被好运环绕，</p>
                 <p>23岁的每一天都鲜活热烈，闪闪发光！</p>
                 <p>很高兴重新认识你。</p>
                 <p>也很高兴，还能祝你生日快乐。</p>
               </div>
-              <p class="wish-sign">—— <span data-name="you">杨雅均</span></p>
+              <span class="wish-ornament" aria-hidden="true"></span>
+              <span class="wish-signature" aria-hidden="true">
+                <img src="assets/photos/signature-avatar.png?v=2" alt="" />
+              </span>
             </div>
           </div>
         </div>
       </section>
-    </main>
+    </div>
 
     <footer class="jubilee" aria-hidden="true">
       <span class="jubilee-star">✦</span>10.20 / 23RD JUBILEE
     </footer>
 
+    <div class="grain" aria-hidden="true"></div>
+
     <script src="js/config.js"></script>
-    <script src="js/audio.js"></script>
-    <script src="js/fx.js"></script>
-    <script src="js/main.js"></script>
+    <script>
+      /* ============================================================
+         3D 星河丝带蛋糕
+         —— 圆柱蛋糕体 + 双数字蜡烛 + 环绕流光丝带 + 3D 星屑
+         ============================================================ */
+      (function () {
+        "use strict";
+
+        var cfg = window.BIRTHDAY_CONFIG || {};
+
+        document.querySelectorAll('[data-name="her"]').forEach(function (el) {
+          el.textContent = cfg.herName || "亲爱的你";
+        });
+        document.querySelectorAll('[data-name="you"]').forEach(function (el) {
+          el.textContent = cfg.yourName || "永远爱你的人";
+        });
+        document.querySelectorAll("[data-birthday]").forEach(function (el) {
+          el.textContent = cfg.birthdayLabel || "2026.10.20";
+        });
+
+        var canvas = document.getElementById("cakeCanvas");
+        var ctx = canvas.getContext("2d");
+        var scene = document.getElementById("finale");
+        var hint = document.getElementById("blowHint");
+
+        var W = 0;
+        var H = 0;
+        var DPR = 1;
+        var small = false;
+        var reduce = window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        /* ── 蛋糕的三个世界坐标参数 ───────────────────────────── */
+        var CAKE_RADIUS = 132;
+        var CAKE_TOP_Y = -22;
+        var CAKE_BOTTOM_Y = 112;
+        var FOV = 620;
+
+        /* ── 两套色板 ─────────────────────────────────────────
+           默认「深海星河」＝原始代码的配色；
+           加 ?theme=gold 可切回香槟金版。
+           ──────────────────────────────────────────────────── */
+
+        var THEME_OCEAN = {
+          bodyEdge: "#17439A",
+          bodyShade: "#0A1B3D",
+          bodyDeep: "#061539",
+          bodyWarmEdge: "#1E3A8A",
+          bodyGlow: "#1D4ED8",
+          bodyStroke: "rgba(56,189,248,.28)",
+
+          topInner: "#FFF3B0",
+          topMid: "#FFD166",
+          topOuter: "#38BDF8",
+          frostingBase: "#E0F2FE",
+          topBlown: ["#BAE6FD", "#0284C7", "#1E3A8A"],
+
+          glowLit: "rgba(56,189,248,.22)",
+          glowDim: "rgba(29,78,216,.13)",
+          glowMid: "rgba(29,78,216,.07)",
+          glowEnd: "rgba(29,78,216,0)",
+
+          floor0: "rgba(56,189,248,.38)",
+          floor1: "rgba(29,78,216,.16)",
+
+          plateEdge: "rgba(56,189,248,.55)",
+          plate0: "#1E3A8A",
+          plate1: "#0D2B6B",
+          plate2: "#061539",
+          plateWarm: "#38BDF8",
+          plateHighlight: "rgba(224,242,254,.22)",
+
+          bleedLit: "rgba(56,189,248,.40)",
+          bleedDim: "rgba(56,189,248,.14)",
+          bleedMid: "rgba(29,78,216,.12)",
+          bleedBottom: "rgba(56,189,248,.42)",
+
+          bandTop: "rgba(224,242,254,.26)",
+          bandTopEdge: "rgba(255,255,255,.50)",
+          bandBottom: "rgba(56,189,248,.34)",
+          bandBottomEdge: "rgba(125,211,252,.62)",
+
+          ring1: "rgba(56,189,248,.40)",
+          ring2: "rgba(255,209,102,.22)",
+
+          ribbons: [
+            [0, 229, 255],
+            [255, 209, 102],
+            [255, 105, 180],
+            [56, 189, 248]
+          ],
+          stars: ["#FFD166", "#FF9F1C", "#FF70A6", "#7BDFF2", "#FFFFFF", "#BDE0FE"],
+
+          puffLit: ["#FFFFFF", "#FEF9C3", "#E0F2FE", "rgba(96,165,250,.25)"],
+          puffDim: ["#F8FAFC", "#BAE6FD", "rgba(30,58,138,.25)"],
+
+          nebulaA: "56,189,248",
+          nebulaB: "255,182,193",
+          nebulaC: "250,204,21",
+
+          wordColor: "255,228,230",
+          wordShadow: "rgba(244,114,182,.8)",
+
+          candleBody: ["#FFFBEB", "#FEF3C7", "#E0F2FE", "#93C5FD"],
+          candleNumeral: "rgba(30,58,138,.92)",
+          candleStroke: "rgba(56,189,248,.35)",
+
+          flash0: "224,242,254",
+          flash1: "56,189,248"
+        };
+
+        var THEME_GOLD = {
+          bodyEdge: "#2A3859",
+          bodyShade: "#101A30",
+          bodyDeep: "#0B1220",
+          bodyWarmEdge: "#2C2433",
+          bodyGlow: "#6B512C",
+          bodyStroke: "rgba(230,194,128,.24)",
+
+          topInner: "#FFFDF5",
+          topMid: "#FFEBC2",
+          topOuter: "#E6C280",
+          frostingBase: "#FDFBF7",
+          topBlown: ["#F4EFE6", "#D8C7A8", "#9C8054"],
+
+          glowLit: "rgba(255,209,102,.20)",
+          glowDim: "rgba(230,194,128,.10)",
+          glowMid: "rgba(230,194,128,.055)",
+          glowEnd: "rgba(230,194,128,0)",
+
+          floor0: "rgba(255,209,102,.24)",
+          floor1: "rgba(230,194,128,.09)",
+
+          plateEdge: "rgba(230,194,128,.52)",
+          plate0: "#2C3A5C",
+          plate1: "#141D32",
+          plate2: "#0D1424",
+          plateWarm: "#4A3A22",
+          plateHighlight: "rgba(255,236,196,.18)",
+
+          bleedLit: "rgba(255,226,160,.30)",
+          bleedDim: "rgba(230,194,128,.10)",
+          bleedMid: "rgba(230,194,128,.04)",
+          bleedBottom: "rgba(255,209,102,.18)",
+
+          bandTop: "rgba(253,251,247,.20)",
+          bandTopEdge: "rgba(255,244,214,.50)",
+          bandBottom: "rgba(230,194,128,.34)",
+          bandBottomEdge: "rgba(255,231,176,.62)",
+
+          ring1: "rgba(185,138,71,.34)",
+          ring2: "rgba(185,138,71,.16)",
+
+          ribbons: [
+            [255, 209, 102],
+            [230, 194, 128],
+            [253, 251, 247],
+            [243, 232, 255]
+          ],
+          stars: ["#FFD166", "#E6C280", "#F3E8FF", "#FFFFFF", "#FFEBC4", "#B98A47"],
+
+          puffLit: ["#FFFFFF", "#FFF6DD", "#FDFBF7", "rgba(230,194,128,.32)"],
+          puffDim: ["#F7F3E9", "#DCCDB1", "rgba(140,112,70,.28)"],
+
+          nebulaA: "255,209,102",
+          nebulaB: "243,232,255",
+          nebulaC: "230,194,128",
+
+          wordColor: "246,229,193",
+          wordShadow: "rgba(255,209,102,.55)",
+
+          candleBody: ["#FFF9EA", "#FBE8C2", "#EFD19A", "#C9A263"],
+          candleNumeral: "rgba(116,82,36,.92)",
+          candleStroke: "rgba(150,112,56,.35)",
+
+          flash0: "255,248,220",
+          flash1: "255,209,102"
+        };
+
+        var useGold = /[?&]theme=gold\b/.test(window.location.search);
+        var palette = useGold ? THEME_GOLD : THEME_OCEAN;
+
+        if (useGold) document.body.classList.add("cake-gold");
+
+        var words = [
+          "生日快乐",
+          "HAPPY BIRTHDAY",
+          "平安喜乐",
+          "万事胜意",
+          "心想事成",
+          "星河长明"
+        ];
+
+        /* ── 视角与状态 ──────────────────────────────────────── */
+        var rotY = 0.4;
+        var rotX = 0.36;
+        var targetRotX = 0.36;
+        var hintTop = -1;
+        var hintHostTop = 0;
+
+        function syncHintHost() {
+          if (!hint) return;
+          var host = hint.offsetParent;
+          hintHostTop = host ? host.getBoundingClientRect().top : 0;
+        }
+        var dragging = false;
+        var moved = 0;
+        var lastX = 0;
+        var lastY = 0;
+        var dragVel = 0;
+
+        var intro = 0.01;
+        var cardEase = 0;
+        var card = false;
+        var lit = true;
+        var blown = false;
+        var flameLevel = 1;
+        var flash = 0;
+        var time = 0;
+        var lastT = 0;
+
+        /* ── 场景对象 ────────────────────────────────────────── */
+        var bodyStars = [];
+        var nebula = [];
+        var puffs = [];
+        var sprinkles = [];
+        var orbitStars = [];
+        var orbitWords = [];
+        var smoke = [];
+        var fireworks = [];
+        var candleTips = [];
+
+        var RIBBONS = [
+          { turns: 1.8, rStart: 156, rEnd: 190, yStart: 110, yEnd: -88, phase: 0.0, width: 13, speed: 0.7 },
+          { turns: 1.6, rStart: 188, rEnd: 150, yStart: 92, yEnd: -72, phase: 2.1, width: 11, speed: 0.55 },
+          { turns: 1.45, rStart: 148, rEnd: 204, yStart: 120, yEnd: -48, phase: 4.2, width: 10, speed: 0.8 },
+          { turns: 1.3, rStart: 172, rEnd: 158, yStart: 58, yEnd: -96, phase: 1.1, width: 8, speed: 0.65 }
+        ];
+
+        /* ── 画布尺寸 ────────────────────────────────────────── */
+        function resize() {
+          W = window.innerWidth;
+          H = window.innerHeight;
+          DPR = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = Math.round(W * DPR);
+          canvas.height = Math.round(H * DPR);
+          canvas.style.width = W + "px";
+          canvas.style.height = H + "px";
+          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+          small = Math.min(W, H) < 430;
+          buildScene();
+          syncHintHost();
+        }
+
+        /* ── 场景对象初始化 ──────────────────────────────────── */
+        function buildScene() {
+          bodyStars.length = 0;
+          nebula.length = 0;
+          puffs.length = 0;
+          sprinkles.length = 0;
+          orbitStars.length = 0;
+          orbitWords.length = 0;
+
+          var q = small ? 0.62 : 1;
+
+          /* 蛋糕体上的星云光斑 */
+          for (var i = 0; i < Math.round(80 * q); i++) {
+            var theta = Math.random() * Math.PI * 2;
+            nebula.push({
+              x: Math.cos(theta) * CAKE_RADIUS * (0.88 + Math.random() * 0.12),
+              y: CAKE_TOP_Y + 8 + Math.random() * (CAKE_BOTTOM_Y - CAKE_TOP_Y - 14),
+              z: Math.sin(theta) * CAKE_RADIUS * (0.88 + Math.random() * 0.12),
+              radius: 13 + Math.random() * 24,
+              tint: Math.random(),
+              phase: Math.random() * Math.PI * 2
+            });
+          }
+
+          /* 蛋糕体上嵌着的五角星 / 钻石星 */
+          for (var j = 0; j < Math.round(190 * q); j++) {
+            var t2 = Math.random() * Math.PI * 2;
+            var r2 = CAKE_RADIUS + (Math.random() - 0.3) * 6;
+            bodyStars.push({
+              x: Math.cos(t2) * r2,
+              y: CAKE_TOP_Y + 5 + Math.random() * (CAKE_BOTTOM_Y - CAKE_TOP_Y - 8),
+              z: Math.sin(t2) * r2,
+              size: 2.1 + Math.random() * 5.0,
+              colorIdx: Math.floor(Math.random() * palette.stars.length),
+              speed: 1.5 + Math.random() * 3.4,
+              phase: Math.random() * Math.PI * 2,
+              rot: Math.random() * Math.PI * 2,
+              five: Math.random() > 0.32
+            });
+          }
+
+          /* 顶部一圈奶油裱花 */
+          var puffCount = small ? 18 : 24;
+          for (var k = 0; k < puffCount; k++) {
+            var tk = (k / puffCount) * Math.PI * 2;
+            puffs.push({
+              x: Math.cos(tk) * (CAKE_RADIUS - 2),
+              y: CAKE_TOP_Y - 3,
+              z: Math.sin(tk) * (CAKE_RADIUS - 2),
+              size: 13.8 + Math.random() * 2.1
+            });
+          }
+
+          /* 蛋糕顶面的金色糖星 */
+          for (var m = 0; m < Math.round(100 * q); m++) {
+            var am = Math.random() * Math.PI * 2;
+            var dm = 12 + Math.sqrt(Math.random()) * (CAKE_RADIUS - 20);
+            sprinkles.push({
+              x: Math.cos(am) * dm,
+              y: CAKE_TOP_Y - 1,
+              z: Math.sin(am) * dm,
+              size: 1.7 + Math.random() * 3.4,
+              colorIdx: Math.floor(Math.random() * palette.stars.length),
+              phase: Math.random() * Math.PI * 2
+            });
+          }
+
+          /* 环绕蛋糕的 3D 星屑 */
+          for (var n = 0; n < Math.round(210 * q); n++) {
+            orbitStars.push({
+              theta: Math.random() * Math.PI * 2,
+              dist: 145 + Math.random() * 230,
+              y: -180 + Math.random() * 340,
+              speedTheta: (0.002 + Math.random() * 0.005) * (Math.random() > 0.2 ? 1 : -1),
+              speedY: -0.12 - Math.random() * 0.32,
+              size: 2.0 + Math.random() * 6.2,
+              colorIdx: Math.floor(Math.random() * palette.stars.length),
+              phase: Math.random() * Math.PI * 2,
+              rot: Math.random() * Math.PI * 2,
+              five: Math.random() > 0.25
+            });
+          }
+
+          /* 环绕漂浮的祝词 */
+          for (var p = 0; p < words.length; p++) {
+            orbitWords.push({
+              theta: (p / words.length) * Math.PI * 2,
+              dist: small ? 150 + (p % 2) * 22 : 208 + (p % 2) * 34,
+              y: -98 + p * 30,
+              word: words[p],
+              phase: Math.random() * Math.PI * 2
+            });
+          }
+        }
+
+        /* ── 投影 ────────────────────────────────────────────── */
+        function project(x, y, z, cx, cy, scale) {
+          var cosY = Math.cos(rotY);
+          var sinY = Math.sin(rotY);
+          var rx = x * cosY - z * sinY;
+          var rz = x * sinY + z * cosY;
+
+          var cosX = Math.cos(rotX);
+          var sinX = Math.sin(rotX);
+          var ry = y * cosX - rz * sinX;
+          var rz2 = y * sinX + rz * cosX;
+
+          var depth = FOV + rz2 + 180;
+          if (depth <= 10) return null;
+          var p = (FOV / depth) * scale * intro;
+
+          return {
+            x: cx + rx * p,
+            y: cy + ry * p,
+            z: rz2,
+            s: p
+          };
+        }
+
+        /* ── 基础图形 ────────────────────────────────────────── */
+        function fiveStar(x, y, r, color, alpha, rotation) {
+          if (r < 0.6 || alpha <= 0.02) return;
+          var inner = r * 0.44;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(rotation || 0);
+          ctx.beginPath();
+          for (var i = 0; i < 10; i++) {
+            var rr = i % 2 === 0 ? r : inner;
+            var a = (i * Math.PI) / 5 - Math.PI / 2;
+            var px = Math.cos(a) * rr;
+            var py = Math.sin(a) * rr;
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          }
+          ctx.closePath();
+          ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+          ctx.fillStyle = color;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function diamondStar(x, y, size, color, alpha) {
+          if (size < 0.8 || alpha <= 0.02) return;
+          var inner = size * 0.22;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.beginPath();
+          ctx.moveTo(0, -size);
+          ctx.quadraticCurveTo(inner, -inner, size, 0);
+          ctx.quadraticCurveTo(inner, inner, 0, size);
+          ctx.quadraticCurveTo(-inner, inner, -size, 0);
+          ctx.quadraticCurveTo(-inner, -inner, 0, -size);
+          ctx.closePath();
+          ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+          ctx.fillStyle = color;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function roundRect(x, y, w, h, r) {
+          r = Math.min(r, w / 2, h / 2);
+          ctx.beginPath();
+          ctx.moveTo(x + r, y);
+          ctx.lineTo(x + w - r, y);
+          ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+          ctx.lineTo(x + w, y + h - r);
+          ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+          ctx.lineTo(x + r, y + h);
+          ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+          ctx.lineTo(x, y + r);
+          ctx.quadraticCurveTo(x, y, x + r, y);
+          ctx.closePath();
+        }
+
+        function mixColor(t, list) {
+          var s = (((t % 1) + 1) % 1) * (list.length - 1);
+          var i = Math.floor(s);
+          var f = s - i;
+          var a = list[i];
+          var b = list[Math.min(i + 1, list.length - 1)];
+          return {
+            r: Math.round(a[0] + (b[0] - a[0]) * f),
+            g: Math.round(a[1] + (b[1] - a[1]) * f),
+            b: Math.round(a[2] + (b[2] - a[2]) * f)
+          };
+        }
+
+        /* ── 许愿 / 复燃 ─────────────────────────────────────── */
+        function blowCandles() {
+          if (blown) {
+            if (card) relight();
+            return;
+          }
+          blown = true;
+          lit = false;
+          card = false;
+          flash = 1;
+          scene.classList.add("is-blown");
+          scene.classList.remove("is-card");
+
+          addSmoke();
+          addFireworks();
+
+          if (navigator.vibrate) {
+            try { navigator.vibrate([16, 40, 26]); } catch (e) {}
+          }
+
+          window.setTimeout(function () {
+            if (!blown) return;
+            card = true;
+            scene.classList.add("is-card");
+          }, 1550);
+        }
+
+        function relight() {
+          blown = false;
+          lit = true;
+          card = false;
+          scene.classList.remove("is-blown", "is-card");
+          smoke.length = 0;
+          fireworks.length = 0;
+        }
+
+        function addSmoke() {
+          var tips = candleTips.length
+            ? candleTips
+            : [{ x: W / 2 - 34, y: H * 0.42 }, { x: W / 2 + 34, y: H * 0.42 }];
+
+          for (var i = 0; i < 30; i++) {
+            var tip = tips[i % tips.length];
+            smoke.push({
+              x: tip.x + (Math.random() - 0.5) * 6,
+              y: tip.y,
+              vx: (Math.random() - 0.5) * 0.7,
+              vy: -0.7 - Math.random() * 0.9,
+              size: 4 + Math.random() * 6,
+              life: 0,
+              max: 70 + Math.random() * 40
+            });
+          }
+        }
+
+        function addFireworks() {
+          for (var i = 0; i < (small ? 70 : 105); i++) {
+            var theta = Math.random() * Math.PI * 2;
+            var phi = (Math.random() - 0.32) * Math.PI;
+            var speed = 2.4 + Math.random() * 5.4;
+            fireworks.push({
+              x: 0,
+              y: CAKE_TOP_Y - 58,
+              z: 0,
+              vx: Math.cos(theta) * Math.cos(phi) * speed,
+              vy: Math.sin(phi) * speed - 1.4,
+              vz: Math.sin(theta) * Math.cos(phi) * speed,
+              size: 3.4 + Math.random() * 5.4,
+              colorIdx: Math.floor(Math.random() * palette.stars.length),
+              alpha: 1,
+              rot: Math.random() * Math.PI * 2
+            });
+          }
+        }
+
+        /* ── 主渲染 ──────────────────────────────────────────── */
+        function render(now) {
+          var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
+          lastT = now;
+          time += dt;
+
+          intro += (1 - intro) * Math.min(1, dt * 4.5);
+          cardEase += ((card ? 1 : 0) - cardEase) * Math.min(1, dt * 5);
+          flameLevel += ((lit ? 1 : 0) - flameLevel) * Math.min(1, dt * 10);
+          flash = Math.max(0, flash - dt * 0.75);
+
+          if (!dragging && !reduce) {
+            rotY += (0.16 + dragVel) * dt;
+            dragVel *= Math.pow(0.05, dt);
+          } else if (!dragging) {
+            dragVel *= Math.pow(0.05, dt);
+          }
+          rotX += (targetRotX - rotX) * Math.min(1, dt * 8);
+
+          var fit = Math.min(W, H);
+          /* 手机竖屏把蛋糕放大到约占屏宽 2/3，平板 / 桌面沿用原来的尺寸曲线 */
+          var baseScale = fit < 520
+            ? Math.max(0.98, Math.min(1.28, fit / 330))
+            : Math.min(1.35, 1.28 + (fit - 520) / 420);
+          var cardScale = H < 640 ? 0.58 : 0.64;
+          var scale = baseScale * (1 - (1 - cardScale) * cardEase);
+
+          var cx = W / 2;
+          var cy = H * (0.5 - 0.17 * cardEase);
+
+          ctx.clearRect(0, 0, W, H);
+
+          /* 蛋糕背后的暖光 */
+          var glow = ctx.createRadialGradient(cx, cy, 10, cx, cy, 330 * scale);
+          glow.addColorStop(0, lit ? palette.glowLit : palette.glowDim);
+          glow.addColorStop(0.5, palette.glowMid);
+          glow.addColorStop(1, palette.glowEnd);
+          ctx.fillStyle = glow;
+          ctx.fillRect(0, 0, W, H);
+
+          var topCenter = project(0, CAKE_TOP_Y, 0, cx, cy, scale);
+          var botCenter = project(0, CAKE_BOTTOM_Y, 0, cx, cy, scale);
+
+          /* 提示语始终落在托盘下沿的下方，避免蛋糕放大后被压住 */
+          if (hint && botCenter) {
+            var plateBottom = botCenter.y + 4 * scale +
+              CAKE_RADIUS * botCenter.s * 1.12 * Math.sin(rotX) * 0.92;
+            var nextHint = Math.min(H * 0.85, plateBottom + 18) - hintHostTop;
+            if (Math.abs(nextHint - hintTop) > 0.5) {
+              hintTop = nextHint;
+              hint.style.top = nextHint.toFixed(1) + "px";
+            }
+          }
+
+          /* 地面反光 */
+          if (botCenter) {
+            var rxBotGlow = CAKE_RADIUS * botCenter.s;
+            var ryBotGlow = rxBotGlow * Math.sin(rotX);
+            ctx.save();
+            ctx.beginPath();
+            ctx.ellipse(
+              botCenter.x, botCenter.y + 8 * scale,
+              rxBotGlow * 1.2, ryBotGlow * 1.2,
+              0, 0, Math.PI * 2
+            );
+            var floor = ctx.createRadialGradient(
+              botCenter.x, botCenter.y + 8 * scale, rxBotGlow * 0.2,
+              botCenter.x, botCenter.y + 8 * scale, rxBotGlow * 1.25
+            );
+            floor.addColorStop(0, palette.floor0);
+            floor.addColorStop(0.6, palette.floor1);
+            floor.addColorStop(1, "rgba(0,0,0,0)");
+            ctx.fillStyle = floor;
+            ctx.fill();
+            ctx.restore();
+
+            /* 香槟金托盘 */
+            var plateR = CAKE_RADIUS * botCenter.s * 1.12;
+            var plateRy = plateR * Math.sin(rotX) * 0.92;
+            ctx.save();
+            ctx.beginPath();
+            ctx.ellipse(
+              botCenter.x, botCenter.y + 7 * scale,
+              plateR * 1.02, plateRy * 1.04,
+              0, 0, Math.PI * 2
+            );
+            ctx.fillStyle = "rgba(6,9,16,.55)";
+            ctx.fill();
+
+            var plateGrad = ctx.createLinearGradient(
+              botCenter.x - plateR, botCenter.y,
+              botCenter.x + plateR, botCenter.y + plateRy
+            );
+            plateGrad.addColorStop(0, palette.plate0);
+            plateGrad.addColorStop(0.42, palette.plate1);
+            plateGrad.addColorStop(0.78, palette.plate2);
+            plateGrad.addColorStop(1, palette.plateWarm);
+            ctx.beginPath();
+            ctx.ellipse(
+              botCenter.x, botCenter.y + 4 * scale,
+              plateR, plateRy,
+              0, 0, Math.PI * 2
+            );
+            ctx.fillStyle = plateGrad;
+            ctx.fill();
+            ctx.strokeStyle = palette.plateEdge;
+            ctx.lineWidth = 1.1;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.ellipse(
+              botCenter.x, botCenter.y + 4 * scale,
+              plateR * 0.955, plateRy * 0.955,
+              0, 0, Math.PI * 2
+            );
+            ctx.strokeStyle = palette.plateHighlight;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          /* 圆柱蛋糕体 */
+          if (topCenter && botCenter) {
+            var rxTop = CAKE_RADIUS * topCenter.s;
+            var ryTop = rxTop * Math.sin(rotX);
+            var rxBot = CAKE_RADIUS * botCenter.s;
+            var ryBot = rxBot * Math.sin(rotX);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.ellipse(topCenter.x, topCenter.y, rxTop, ryTop, 0, Math.PI, 0, false);
+            ctx.lineTo(botCenter.x + rxBot, botCenter.y);
+            ctx.ellipse(botCenter.x, botCenter.y, rxBot, ryBot, 0, 0, Math.PI, false);
+            ctx.closePath();
+
+            var body = ctx.createLinearGradient(
+              topCenter.x - rxTop, topCenter.y,
+              topCenter.x + rxTop, botCenter.y
+            );
+            body.addColorStop(0, palette.bodyEdge);
+            body.addColorStop(0.26, palette.bodyShade);
+            body.addColorStop(0.62, palette.bodyDeep);
+            body.addColorStop(0.88, palette.bodyWarmEdge);
+            body.addColorStop(1, palette.bodyGlow);
+            ctx.fillStyle = body;
+            ctx.fill();
+
+            /* 顶部暖光洒在蛋糕体上 */
+            var bleed = ctx.createLinearGradient(0, topCenter.y, 0, botCenter.y);
+            bleed.addColorStop(0, lit ? palette.bleedLit : palette.bleedDim);
+            bleed.addColorStop(0.4, palette.bleedMid);
+            bleed.addColorStop(1, palette.bleedBottom);
+            ctx.fillStyle = bleed;
+            ctx.fill();
+
+            ctx.strokeStyle = palette.bodyStroke;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            /* 蛋糕体上的两道缎带 */
+            drawBand(-14, -4, cx, cy, scale, palette.bandTop, palette.bandTopEdge);
+            drawBand(88, 98, cx, cy, scale, palette.bandBottom, palette.bandBottomEdge);
+            ctx.restore();
+          }
+
+          /* 收集需要按深度排序的元素 */
+          var queue = [];
+
+          /* 流光丝带 */
+          var steps = small ? 58 : 72;
+          RIBBONS.forEach(function (rc, ri) {
+            var pts = [];
+            for (var i = 0; i <= steps; i++) {
+              var f = i / steps;
+              var ang = f * Math.PI * 2 * rc.turns + rc.phase - time * rc.speed;
+              var rad = rc.rStart + (rc.rEnd - rc.rStart) * f + Math.sin(f * Math.PI * 4 + time) * 8;
+              var yy = rc.yStart + (rc.yEnd - rc.yStart) * f + Math.cos(f * Math.PI * 3 - time) * 6;
+              var twist = Math.sin(f * Math.PI * 5 - time * 1.4 + ri);
+              var hw = rc.width * (0.25 + 0.75 * Math.abs(twist));
+
+              var a = project(Math.cos(ang) * rad, yy - hw, Math.sin(ang) * rad, cx, cy, scale);
+              var b = project(Math.cos(ang) * rad, yy + hw, Math.sin(ang) * rad, cx, cy, scale);
+              if (a && b) pts.push({ a: a, b: b, f: f, z: (a.z + b.z) * 0.5 });
+            }
+            for (var q2 = 0; q2 < pts.length - 1; q2++) {
+              var s1 = pts[q2];
+              var s2 = pts[q2 + 1];
+              queue.push({
+                type: "ribbon",
+                z: (s1.z + s2.z) * 0.5,
+                a: s1.a,
+                b: s1.b,
+                c: s2.a,
+                d: s2.b,
+                color: mixColor(s1.f + time * 0.08 + ri * 0.25, palette.ribbons),
+                alpha: 0.56 * Math.sin(s1.f * Math.PI)
+              });
+            }
+          });
+
+          /* 星云 */
+          nebula.forEach(function (nb) {
+            var p = project(nb.x, nb.y, nb.z, cx, cy, scale);
+            if (p && p.z < 35) {
+              queue.push({
+                type: "nebula",
+                z: p.z,
+                x: p.x, y: p.y,
+                r: nb.radius * p.s,
+                tint: nb.tint,
+                alpha: (0.16 + 0.08 * Math.sin(time * 2 + nb.phase)) *
+                  (1 - Math.max(0, p.z / 40))
+              });
+            }
+          });
+
+          /* 蛋糕体上的星星 */
+          bodyStars.forEach(function (st) {
+            var p = project(st.x, st.y, st.z, cx, cy, scale);
+            if (p && p.z < 20) {
+              var tw = 0.55 + 0.45 * Math.sin(time * st.speed + st.phase);
+              queue.push({
+                type: "star",
+                z: p.z - 2,
+                x: p.x, y: p.y,
+                size: st.size * p.s * (0.85 + 0.3 * tw),
+                color: palette.stars[st.colorIdx % palette.stars.length],
+                alpha: tw * (1 - Math.max(0, p.z / 25)),
+                rot: st.rot + time * 0.3,
+                five: st.five
+              });
+            }
+          });
+
+          /* 环绕星屑 */
+          orbitStars.forEach(function (os) {
+            os.theta += os.speedTheta;
+            os.y += os.speedY;
+            if (os.y < -190) os.y = 160;
+
+            var p = project(
+              Math.cos(os.theta) * os.dist,
+              os.y,
+              Math.sin(os.theta) * os.dist,
+              cx, cy, scale
+            );
+            if (p) {
+              var tw2 = 0.45 + 0.55 * Math.sin(time * 2.5 + os.phase);
+              queue.push({
+                type: "star",
+                z: p.z,
+                x: p.x, y: p.y,
+                size: os.size * p.s,
+                color: palette.stars[os.colorIdx % palette.stars.length],
+                alpha: tw2 * 0.9,
+                rot: os.rot + time * 0.4,
+                five: os.five
+              });
+            }
+          });
+
+          /* 祝词 */
+          orbitWords.forEach(function (ow, oi) {
+            ow.theta += 0.0035;
+            var p = project(
+              Math.cos(ow.theta) * ow.dist,
+              ow.y + Math.sin(time * 1.5 + oi) * 8,
+              Math.sin(ow.theta) * ow.dist,
+              cx, cy, scale
+            );
+            if (p) {
+              queue.push({
+                type: "word",
+                z: p.z,
+                x: p.x, y: p.y,
+                s: p.s,
+                text: ow.word
+              });
+            }
+          });
+
+          queue.sort(function (a, b) { return b.z - a.z; });
+
+          /* 蛋糕后方的元素 */
+          queue.forEach(function (item) {
+            if (item.z > 0) drawItem(item);
+          });
+
+          /* 蛋糕顶面 */
+          if (topCenter) {
+            var trx = CAKE_RADIUS * topCenter.s;
+            var try2 = trx * Math.sin(rotX);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.ellipse(topCenter.x, topCenter.y, trx, try2, 0, 0, Math.PI * 2);
+            var topGrad = ctx.createRadialGradient(
+              topCenter.x, topCenter.y, trx * 0.04,
+              topCenter.x, topCenter.y, trx
+            );
+            if (lit) {
+              topGrad.addColorStop(0, "#FFFFFF");
+              topGrad.addColorStop(0.24, palette.topInner);
+              topGrad.addColorStop(0.58, palette.topMid);
+              topGrad.addColorStop(0.86, palette.topOuter);
+              topGrad.addColorStop(1, palette.frostingBase);
+            } else {
+              topGrad.addColorStop(0, palette.topBlown[0]);
+              topGrad.addColorStop(0.5, palette.topBlown[1]);
+              topGrad.addColorStop(1, palette.topBlown[2]);
+            }
+            ctx.fillStyle = topGrad;
+            ctx.fill();
+            ctx.restore();
+
+            drawTopRing(112, cx, cy, scale, palette.ring1, 1);
+            drawTopRing(92, cx, cy, scale, palette.ring2, 0.8);
+
+            /* 顶面糖星 */
+            sprinkles.forEach(function (sp) {
+              var p = project(sp.x, sp.y, sp.z, cx, cy, scale);
+              if (p) {
+                fiveStar(
+                  p.x, p.y,
+                  sp.size * p.s,
+                  palette.stars[sp.colorIdx % palette.stars.length],
+                  0.85,
+                  sp.phase
+                );
+              }
+            });
+          }
+
+          /* 奶油裱花（按深度分成前后两半） */
+          var projectedPuffs = [];
+          puffs.forEach(function (pf) {
+            var p = project(pf.x, pf.y, pf.z, cx, cy, scale);
+            if (p) projectedPuffs.push({ x: p.x, y: p.y, z: p.z, r: pf.size * p.s });
+          });
+          projectedPuffs.sort(function (a, b) { return b.z - a.z; });
+
+          projectedPuffs.forEach(function (pf) {
+            if (pf.z > 0) drawPuff(pf);
+          });
+
+          /* 两支数字蜡烛：始终以屏幕左右固定朝向站立，
+             蛋糕转动时「2」「3」的阅读顺序不会颠倒 */
+          var candleBase = project(0, CAKE_TOP_Y - 2, 0, cx, cy, scale);
+          var candleTop = project(0, CAKE_TOP_Y - 66, 0, cx, cy, scale);
+          var candleWick = project(0, CAKE_TOP_Y - 75, 0, cx, cy, scale);
+
+          if (candleBase && candleTop && candleWick) {
+            var cs = candleBase.s;
+            var cdx = 34 * cs;
+            candleTips = [
+              { x: candleBase.x - cdx, y: candleWick.y },
+              { x: candleBase.x + cdx, y: candleWick.y }
+            ];
+            drawNumeralCandle(candleBase.x - cdx, candleBase.y, candleTop.y, candleWick.y, cs, "2");
+            drawNumeralCandle(candleBase.x + cdx, candleBase.y, candleTop.y, candleWick.y, cs, "3");
+          }
+
+          projectedPuffs.forEach(function (pf) {
+            if (pf.z <= 0) drawPuff(pf);
+          });
+
+          /* 蛋糕前方的元素 */
+          queue.forEach(function (item) {
+            if (item.z <= 0) drawItem(item);
+          });
+
+          drawEffects(cx, cy, scale, topCenter);
+
+          /* 吹灭瞬间的金色闪光 */
+          if (flash > 0.01 && topCenter) {
+            ctx.save();
+            ctx.globalCompositeOperation = "lighter";
+            var fr = 240 * scale * (1.2 - flash * 0.2);
+            var fg = ctx.createRadialGradient(
+              topCenter.x, topCenter.y - 30 * scale, 2,
+              topCenter.x, topCenter.y - 30 * scale, fr
+            );
+            fg.addColorStop(0, "rgba(" + palette.flash0 + "," + (0.55 * flash).toFixed(3) + ")");
+            fg.addColorStop(0.35, "rgba(" + palette.flash1 + "," + (0.24 * flash).toFixed(3) + ")");
+            fg.addColorStop(1, "rgba(" + palette.flash1 + ",0)");
+            ctx.fillStyle = fg;
+            ctx.beginPath();
+            ctx.arc(topCenter.x, topCenter.y - 30 * scale, fr, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+
+          requestAnimationFrame(render);
+        }
+
+        /* ── 元素绘制 ────────────────────────────────────────── */
+        function drawItem(item) {
+          if (item.type === "ribbon") {
+            ctx.save();
+            ctx.globalCompositeOperation = "lighter";
+            ctx.beginPath();
+            ctx.moveTo(item.a.x, item.a.y);
+            ctx.lineTo(item.c.x, item.c.y);
+            ctx.lineTo(item.d.x, item.d.y);
+            ctx.lineTo(item.b.x, item.b.y);
+            ctx.closePath();
+            ctx.fillStyle = "rgba(" + item.color.r + "," + item.color.g + "," + item.color.b + "," + (item.alpha * 0.6).toFixed(3) + ")";
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(item.a.x, item.a.y);
+            ctx.lineTo(item.c.x, item.c.y);
+            ctx.strokeStyle = "rgba(255,250,235," + (item.alpha * 0.45).toFixed(3) + ")";
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+            ctx.restore();
+          } else if (item.type === "nebula") {
+            ctx.save();
+            ctx.globalCompositeOperation = "lighter";
+            var c = item.tint > 0.62
+              ? palette.nebulaA
+              : item.tint > 0.28 ? palette.nebulaB : palette.nebulaC;
+            var g = ctx.createRadialGradient(item.x, item.y, 1, item.x, item.y, item.r);
+            g.addColorStop(0, "rgba(" + c + "," + item.alpha.toFixed(3) + ")");
+            g.addColorStop(1, "rgba(" + c + ",0)");
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(item.x, item.y, item.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          } else if (item.type === "star") {
+            ctx.save();
+            ctx.globalCompositeOperation = "lighter";
+            if (item.five) {
+              fiveStar(item.x, item.y, item.size, item.color, item.alpha, item.rot);
+            } else {
+              diamondStar(item.x, item.y, item.size * 1.25, item.color, item.alpha);
+            }
+            ctx.restore();
+          } else if (item.type === "word") {
+            var alpha = Math.max(0.1, Math.min(0.55, (200 - item.z) / 420));
+            ctx.save();
+            ctx.font = "500 " + Math.max(8, Math.round(11.5 * item.s)) + 'px "Cormorant Garamond", "Noto Serif SC", serif';
+            ctx.fillStyle = "rgba(" + palette.wordColor + "," + alpha.toFixed(3) + ")";
+            ctx.shadowColor = palette.wordShadow;
+            ctx.shadowBlur = 8;
+            ctx.textAlign = "center";
+            ctx.fillText(item.text, item.x, item.y);
+            ctx.restore();
+          }
+        }
+
+        /* 沿圆柱面画一圈横向缎带（只画朝向镜头的前半圈） */
+        function drawBand(yTop, yBottom, cx, cy, scale, fill, edge) {
+          var n = small ? 34 : 46;
+          var prev = null;
+          ctx.save();
+          ctx.fillStyle = fill;
+          ctx.strokeStyle = edge;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+
+          for (var i = 0; i <= n; i++) {
+            var a = (i / n) * Math.PI * 2;
+            var x = Math.cos(a) * CAKE_RADIUS;
+            var z = Math.sin(a) * CAKE_RADIUS;
+            var p1 = project(x, yTop, z, cx, cy, scale);
+            var p2 = project(x, yBottom, z, cx, cy, scale);
+            var cur = p1 && p2 ? { a: p1, b: p2 } : null;
+
+            if (prev && cur) {
+              var depth = (prev.a.z + prev.b.z + cur.a.z + cur.b.z) / 4;
+              if (depth <= 0) {
+                ctx.moveTo(prev.a.x, prev.a.y);
+                ctx.lineTo(cur.a.x, cur.a.y);
+                ctx.lineTo(cur.b.x, cur.b.y);
+                ctx.lineTo(prev.b.x, prev.b.y);
+                ctx.closePath();
+              }
+            }
+            prev = cur;
+          }
+          ctx.fill();
+          ctx.restore();
+        }
+
+        /* 蛋糕顶面的一圈金线 */
+        function drawTopRing(radius, cx, cy, scale, color, width) {
+          var n = small ? 44 : 60;
+          ctx.save();
+          ctx.beginPath();
+          var started = false;
+          for (var i = 0; i <= n; i++) {
+            var a = (i / n) * Math.PI * 2;
+            var p = project(
+              Math.cos(a) * radius,
+              CAKE_TOP_Y - 1,
+              Math.sin(a) * radius,
+              cx, cy, scale
+            );
+            if (!p) continue;
+            if (!started) {
+              ctx.moveTo(p.x, p.y);
+              started = true;
+            } else {
+              ctx.lineTo(p.x, p.y);
+            }
+          }
+          ctx.strokeStyle = color;
+          ctx.lineWidth = width;
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        function drawPuff(pf) {
+          var r = pf.r;
+          ctx.save();
+          var g = ctx.createRadialGradient(
+            pf.x - r * 0.22, pf.y - r * 0.28, r * 0.08,
+            pf.x, pf.y, r
+          );
+          if (lit) {
+            g.addColorStop(0, palette.puffLit[0]);
+            g.addColorStop(0.42, palette.puffLit[1]);
+            g.addColorStop(0.8, palette.puffLit[2]);
+            g.addColorStop(1, palette.puffLit[3]);
+          } else {
+            g.addColorStop(0, palette.puffDim[0]);
+            g.addColorStop(0.6, palette.puffDim[1]);
+            g.addColorStop(1, palette.puffDim[2]);
+          }
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(pf.x, pf.y, r, 0, Math.PI * 2);
+          ctx.fill();
+
+          /* 裱花的小高光 */
+          ctx.beginPath();
+          ctx.arc(pf.x - r * 0.26, pf.y - r * 0.3, r * 0.2, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(255,255,255,.55)";
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function drawNumeralCandle(x, baseY, topY, wickY, s, numeral) {
+          var w = 30 * s;
+          var h = baseY - topY;
+
+          /* 烛光在顶面投下的小光斑 */
+          ctx.save();
+          ctx.beginPath();
+          ctx.ellipse(x, baseY + h * 0.02, w * 0.85, w * 0.28, 0, 0, Math.PI * 2);
+          ctx.fillStyle = lit ? "rgba(255,247,222,.55)" : "rgba(230,220,200,.28)";
+          ctx.fill();
+          ctx.restore();
+
+          /* 蜡烛柱身 */
+          ctx.save();
+          var body = ctx.createLinearGradient(x - w / 2, 0, x + w / 2, 0);
+          body.addColorStop(0, palette.candleBody[0]);
+          body.addColorStop(0.4, palette.candleBody[1]);
+          body.addColorStop(0.72, palette.candleBody[2]);
+          body.addColorStop(1, palette.candleBody[3]);
+          roundRect(x - w / 2, topY, w, h, w * 0.3);
+          ctx.fillStyle = body;
+          ctx.fill();
+          ctx.strokeStyle = palette.candleStroke;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+
+          /* 数字 */
+          ctx.font = "600 " + Math.round(h * 0.56) + 'px "Cormorant Garamond", "Noto Serif SC", serif';
+          ctx.fillStyle = palette.candleNumeral;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(numeral, x, topY + h * 0.55);
+          ctx.restore();
+
+          /* 烛芯 */
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(x, topY);
+          ctx.lineTo(x, wickY);
+          ctx.strokeStyle = "#3A2C1C";
+          ctx.lineWidth = Math.max(1, 1.8 * s);
+          ctx.lineCap = "round";
+          ctx.stroke();
+          ctx.restore();
+
+          if (flameLevel > 0.03) {
+            drawFlame({ x: x, y: wickY }, s);
+          } else {
+            /* 熄灭后的余烬 */
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, wickY, Math.max(1.2, 2.2 * s), 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,150,80,.65)";
+            ctx.shadowColor = "rgba(255,120,40,.8)";
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.restore();
+          }
+        }
+
+        function drawFlame(wick, s) {
+          var k = flameLevel;
+          var flickX = (Math.sin(time * 13) * 1.6 + Math.cos(time * 23) * 1.1) * s;
+          var fh = (30 + Math.sin(time * 17) * 3.2) * s * k;
+          var fw = (9.2 + Math.cos(time * 19) * 1.0) * s * k;
+          var alpha = Math.min(1, k * 1.2);
+
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+
+          /* 光晕 */
+          var haloR = 62 * s * k;
+          var halo = ctx.createRadialGradient(
+            wick.x, wick.y - fh * 0.3, 1,
+            wick.x, wick.y - fh * 0.3, haloR
+          );
+          halo.addColorStop(0, "rgba(255,244,190," + (0.55 * alpha).toFixed(3) + ")");
+          halo.addColorStop(0.32, "rgba(255,196,110," + (0.24 * alpha).toFixed(3) + ")");
+          halo.addColorStop(0.72, "rgba(255,170,80," + (0.06 * alpha).toFixed(3) + ")");
+          halo.addColorStop(1, "rgba(255,170,80,0)");
+          ctx.fillStyle = halo;
+          ctx.beginPath();
+          ctx.arc(wick.x, wick.y - fh * 0.3, haloR, 0, Math.PI * 2);
+          ctx.fill();
+
+          /* 水滴形外焰 */
+          ctx.beginPath();
+          ctx.moveTo(wick.x, wick.y + 2);
+          ctx.bezierCurveTo(
+            wick.x - fw, wick.y - fh * 0.25,
+            wick.x - fw * 0.5 + flickX, wick.y - fh * 0.8,
+            wick.x + flickX, wick.y - fh
+          );
+          ctx.bezierCurveTo(
+            wick.x + fw * 0.5 + flickX, wick.y - fh * 0.8,
+            wick.x + fw, wick.y - fh * 0.25,
+            wick.x, wick.y + 2
+          );
+          var fg = ctx.createLinearGradient(
+            wick.x, wick.y,
+            wick.x + flickX, wick.y - fh
+          );
+          fg.addColorStop(0, "rgba(255,214,120,.85)");
+          fg.addColorStop(0.3, "rgba(255,249,228,.98)");
+          fg.addColorStop(0.68, "rgba(255,205,105,.95)");
+          fg.addColorStop(1, "rgba(255,170,70,.55)");
+          ctx.fillStyle = fg;
+          ctx.globalAlpha = alpha;
+          ctx.fill();
+
+          /* 内焰 */
+          ctx.beginPath();
+          ctx.ellipse(
+            wick.x + flickX * 0.25,
+            wick.y - fh * 0.32,
+            fw * 0.3, fh * 0.3,
+            0, 0, Math.PI * 2
+          );
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function drawEffects(cx, cy, scale, topCenter) {
+          /* 白烟 */
+          for (var i = smoke.length - 1; i >= 0; i--) {
+            var sp = smoke[i];
+            sp.x += sp.vx + Math.sin(time * 3 + i) * 0.18;
+            sp.y += sp.vy;
+            sp.life++;
+            sp.size += 0.16;
+            if (sp.life >= sp.max) {
+              smoke.splice(i, 1);
+              continue;
+            }
+            var a = (1 - sp.life / sp.max) * 0.4;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(232,226,212," + a.toFixed(3) + ")";
+            ctx.fill();
+            ctx.restore();
+          }
+
+          /* 星屑烟花 */
+          for (var j = fireworks.length - 1; j >= 0; j--) {
+            var fw = fireworks[j];
+            fw.x += fw.vx;
+            fw.y += fw.vy;
+            fw.z += fw.vz;
+            fw.vy += 0.085;
+            fw.vx *= 0.985;
+            fw.vz *= 0.985;
+            fw.alpha -= 0.012;
+            if (fw.alpha <= 0) {
+              fireworks.splice(j, 1);
+              continue;
+            }
+            var p2 = project(fw.x, fw.y, fw.z, cx, cy, scale);
+            if (p2) {
+              ctx.save();
+              ctx.globalCompositeOperation = "lighter";
+              fiveStar(
+                p2.x, p2.y,
+                fw.size * p2.s,
+                palette.stars[fw.colorIdx % palette.stars.length],
+                fw.alpha,
+                fw.rot + time * 2
+              );
+              ctx.restore();
+            }
+          }
+        }
+
+        /* ── 指针交互 ────────────────────────────────────────── */
+        canvas.addEventListener("pointerdown", function (e) {
+          dragging = true;
+          moved = 0;
+          lastX = e.clientX;
+          lastY = e.clientY;
+          canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
+        });
+
+        canvas.addEventListener("pointermove", function (e) {
+          if (!dragging) return;
+          var dx = e.clientX - lastX;
+          var dy = e.clientY - lastY;
+          moved += Math.abs(dx) + Math.abs(dy);
+          lastX = e.clientX;
+          lastY = e.clientY;
+
+          rotY += dx * 0.007;
+          dragVel = dx * 0.0012;
+          targetRotX = Math.max(0.14, Math.min(0.72, targetRotX + dy * 0.005));
+          rotX = targetRotX;
+        });
+
+        function endDrag() {
+          if (!dragging) return;
+          dragging = false;
+          if (moved < 9) blowCandles();
+        }
+
+        canvas.addEventListener("pointerup", endDrag);
+        canvas.addEventListener("pointercancel", function () {
+          dragging = false;
+        });
+
+        hint.addEventListener("click", function (e) {
+          e.stopPropagation();
+          blowCandles();
+        });
+
+        window.addEventListener("resize", resize);
+        window.addEventListener("orientationchange", function () {
+          window.setTimeout(resize, 260);
+        });
+        window.addEventListener("load", syncHintHost);
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(syncHintHost);
+        }
+
+        resize();
+        requestAnimationFrame(render);
+      })();
+    </script>
   </body>
 </html>

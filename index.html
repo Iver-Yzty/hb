@@ -467,6 +467,20 @@
         animation: musicPulse 2.4s ease-out infinite;
         pointer-events: none;
       }
+      /* 自动播放被浏览器拦下：意图是开的，但还没出声，用冷色呼吸圈提示轻触 */
+      .music-toggle.is-pending {
+        color: rgba(224, 242, 254, 0.92);
+        border-color: rgba(186, 230, 253, 0.48);
+      }
+      .music-toggle.is-pending::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 1px solid rgba(186, 230, 253, 0.35);
+        animation: musicPulse 2.4s ease-out infinite;
+        pointer-events: none;
+      }
       @keyframes musicPulse {
         0% {
           transform: scale(0.92);
@@ -2442,7 +2456,7 @@
       })();
 
       /* 生日氛围音乐：默认开启，进页面就尝试播放；
-         浏览器自动播放策略拦下时，第一次真实触摸会立刻接上 */
+         浏览器自动播放策略拦下时，按钮会显示「待开启」，第一次真实触摸立刻接上 */
       (function () {
         var toggle = document.getElementById("musicToggle");
         if (!toggle || !window.BirthdayMusic) return;
@@ -2450,13 +2464,32 @@
         var music = new window.BirthdayMusic({ volume: 0.55 });
         window.birthdayMusic = music;
 
-        var on = true; // 默认就是开启状态
-        var userPaused = false; // 用户手动关过之后，就不再自动接上
+        var on = true; // 用户意图：默认开启
+        var userPaused = false; // 手动关掉之后，就不再被触摸自动打开
 
-        function setUI(playing) {
-          toggle.classList.toggle("is-on", playing);
-          toggle.setAttribute("aria-pressed", playing ? "true" : "false");
-          toggle.setAttribute("aria-label", playing ? "关闭音乐" : "播放音乐");
+        function running() {
+          return !!(music.playing && music.ctx && music.ctx.state === "running");
+        }
+
+        /* 按钮只反映真实状态：真的在响才点亮，
+           被自动播放策略挡住时显示待开启的呼吸圈 */
+        function paint() {
+          var live = running();
+          var pending = on && !live && !userPaused;
+          toggle.classList.toggle("is-on", live);
+          toggle.classList.toggle("is-pending", pending);
+          toggle.setAttribute("aria-pressed", live ? "true" : "false");
+          toggle.setAttribute(
+            "aria-label",
+            live ? "关闭音乐" : pending ? "轻触播放音乐" : "播放音乐",
+          );
+        }
+
+        function watchContext() {
+          if (music.ctx && !music.ctx.__painted) {
+            music.ctx.__painted = true;
+            music.ctx.addEventListener("statechange", paint);
+          }
         }
 
         /* 幂等：已经在播时 start() 会直接返回 */
@@ -2465,37 +2498,40 @@
           music.start().then(function (ok) {
             if (!ok) {
               on = false;
-              setUI(false);
             } else if (!on) {
               /* 等待解锁的过程中用户点了关闭 */
               music.stop();
             }
+            watchContext();
+            paint();
           });
         }
 
         function turnOff() {
           on = false;
-          setUI(false);
+          userPaused = true;
           music.stop();
+          paint(); /* stop() 会立刻把 playing 置为 false，之后再刷新按钮状态 */
         }
 
         function turnOn() {
           on = true;
-          setUI(true);
+          userPaused = false;
+          paint();
           attempt();
         }
 
-        setUI(true);
+        paint();
         attempt();
 
         toggle.addEventListener("click", function (e) {
           e.stopPropagation();
-          userPaused = true;
           if (on) turnOff();
           else turnOn();
         });
 
-        /* 自动播放被拦时，第一次真实手势里把音乐接上 */
+        /* 自动播放被拦时，第一次真实手势里把音乐接上。
+           不同 webview 派发的事件不一样，这里多挂几种兜底 */
         function arm(e) {
           if (userPaused || !on) return;
           if (
@@ -2508,9 +2544,31 @@
           }
           attempt();
         }
-        window.addEventListener("pointerdown", arm, true);
-        window.addEventListener("keydown", function (e) {
+
+        function armKey(e) {
           if (e.key === "Enter" || e.key === " ") arm(e);
+        }
+
+        window.addEventListener("pointerdown", arm, true);
+        window.addEventListener("touchstart", arm, {
+          capture: true,
+          passive: true,
+        });
+        window.addEventListener("mousedown", arm, true);
+        window.addEventListener("click", arm, true);
+        window.addEventListener("keydown", armKey);
+
+        /* 微信内置浏览器要等 JSBridge 就绪才允许出声 */
+        document.addEventListener("WeixinJSBridgeReady", function () {
+          if (!userPaused && on) attempt();
+        });
+
+        /* 从后台切回来时，audio.js 会 resume 上下文，这里补一次播放与界面同步 */
+        document.addEventListener("visibilitychange", function () {
+          if (!document.hidden && on && !userPaused) {
+            attempt();
+            paint();
+          }
         });
       })();
     </script>

@@ -2441,15 +2441,17 @@
         });
       })();
 
-      /* 生日氛围音乐：第一次触摸页面时响起，右上角可以随时开关 */
+      /* 生日氛围音乐：默认开启，进页面就尝试播放；
+         浏览器自动播放策略拦下时，第一次真实触摸会立刻接上 */
       (function () {
         var toggle = document.getElementById("musicToggle");
         if (!toggle || !window.BirthdayMusic) return;
 
         var music = new window.BirthdayMusic({ volume: 0.55 });
         window.birthdayMusic = music;
-        var on = false;
-        var armed = false;
+
+        var on = true; // 默认就是开启状态
+        var userPaused = false; // 用户手动关过之后，就不再自动接上
 
         function setUI(playing) {
           toggle.classList.toggle("is-on", playing);
@@ -2457,14 +2459,16 @@
           toggle.setAttribute("aria-label", playing ? "关闭音乐" : "播放音乐");
         }
 
-        function turnOn() {
-          if (on) return;
-          on = true;
-          setUI(true);
+        /* 幂等：已经在播时 start() 会直接返回 */
+        function attempt() {
+          if (!on) return;
           music.start().then(function (ok) {
             if (!ok) {
               on = false;
               setUI(false);
+            } else if (!on) {
+              /* 等待解锁的过程中用户点了关闭 */
+              music.stop();
             }
           });
         }
@@ -2475,17 +2479,25 @@
           music.stop();
         }
 
+        function turnOn() {
+          on = true;
+          setUI(true);
+          attempt();
+        }
+
+        setUI(true);
+        attempt();
+
         toggle.addEventListener("click", function (e) {
           e.stopPropagation();
-          armed = true;
+          userPaused = true;
           if (on) turnOff();
           else turnOn();
         });
 
-        /* 移动端只允许在真实手势里启动音频，第一次触碰时轻轻响起 */
+        /* 自动播放被拦时，第一次真实手势里把音乐接上 */
         function arm(e) {
-          if (armed) return;
-          armed = true;
+          if (userPaused || !on) return;
           if (
             e &&
             e.target &&
@@ -2494,7 +2506,7 @@
           ) {
             return;
           }
-          turnOn();
+          attempt();
         }
         window.addEventListener("pointerdown", arm, true);
         window.addEventListener("keydown", function (e) {

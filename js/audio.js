@@ -303,6 +303,11 @@
 
   BirthdayMusic.prototype._tick = function () {
     if (!this.playing || !this.ctx || this.ctx.state !== "running") return;
+    /* 自动播放被拦、页面切走或长时间挂起后，nextTime 可能停在很久以前；
+       直接追帧会瞬间排出一大串音符，这里把它拉回当前时间 */
+    if (this.nextTime < this.ctx.currentTime - 0.2) {
+      this.nextTime = this.ctx.currentTime + 0.05;
+    }
     while (this.nextTime < this.ctx.currentTime + 0.6) {
       this._playBar(this.bar, this.nextTime);
       this.nextTime += BEAT * 4;

@@ -2558,10 +2558,27 @@
         window.addEventListener("click", arm, true);
         window.addEventListener("keydown", armKey);
 
-        /* 微信内置浏览器要等 JSBridge 就绪才允许出声 */
-        document.addEventListener("WeixinJSBridgeReady", function () {
-          if (!userPaused && on) attempt();
-        });
+        /* 微信内置浏览器要等 JSBridge 就绪才允许出声。
+           iOS / Android 的微信都认这个时机，能在没有手势的情况下直接开始播放 */
+        function wechatKick() {
+          if (!on || userPaused) return;
+          if (window.WeixinJSBridge) {
+            try {
+              window.WeixinJSBridge.invoke("getNetworkType", {}, function () {
+                if (!on || userPaused) return;
+                if (music.ctx && music.ctx.state === "suspended") {
+                  music.ctx.resume().catch(function () {});
+                }
+                attempt();
+              });
+            } catch (err) {
+              /* 老版本微信没有 invoke，直接尝试即可 */
+            }
+          }
+          attempt();
+        }
+        document.addEventListener("WeixinJSBridgeReady", wechatKick, false);
+        if (window.WeixinJSBridge) wechatKick();
 
         /* 从后台切回来时，audio.js 会 resume 上下文，这里补一次播放与界面同步 */
         document.addEventListener("visibilitychange", function () {

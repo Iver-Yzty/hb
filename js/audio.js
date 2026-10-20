@@ -1,7 +1,8 @@
 /* ============================================================
-   BirthdayMusic — 纯 Web Audio 合成的轻快生日纯音乐
-   手风琴感的暖垫 + 木吉他式拨弦 + 音乐盒旋律 + 轻沙锤
-   无需任何音频文件，所有浏览器本地合成。
+   BirthdayMusic — 轻快的生日纯音乐
+   优先播放预渲染好的 assets/audio/birthday-loop.mp3（整首 16 小节
+   循环，手机端零合成开销，绝对不会卡）；文件加载失败时退回
+   Web Audio 实时合成，保证任何情况下都有声音。
    ============================================================ */
 (function () {
   "use strict";
@@ -73,6 +74,15 @@
     this.voices = [];
     this.sends = null;
 
+    /* 预渲染的循环音轨：16 小节 × 4 拍 × 60/90 秒 */
+    this.trackUrl =
+      opts && opts.track ? opts.track : "assets/audio/birthday-loop.mp3";
+    this.trackSeconds = (16 * 4 * 60) / 90;
+    this.buffer = null;
+    this.source = null;
+    this.trackGain = null;
+    this._preload = null;
+
     var self = this;
     document.addEventListener("visibilitychange", function () {
       if (!self.ctx || !self.playing) return;
@@ -102,6 +112,12 @@
     this.bus = ctx.createGain();
     this.bus.gain.value = 1;
     this.bus.connect(this.master);
+
+    /* 音频文件里已经过压缩器，直接送到输出即可，避免再压一次；
+       独立的一只增益专门做音量与淡入淡出 */
+    this.trackGain = ctx.createGain();
+    this.trackGain.gain.value = 0.0001;
+    this.trackGain.connect(ctx.destination);
 
     this._buildReverb();
 
@@ -410,6 +426,85 @@
     }
   };
 
+  /* MP3 解码后前后会各多出一小段编码器静音（Chrome 约 25ms / 18ms），
+     不裁掉的话循环接缝会有一声停顿。这里找到音乐真正开始的位置，
+     再截出正好一个循环的长度，loop 时才能严丝合缝地接上。 */
+  BirthdayMusic.prototype._trimLoop = function (buf) {
+    var rate = buf.sampleRate;
+    var expected = Math.round(this.trackSeconds * rate);
+    if (buf.length < expected) return buf;
+
+    var lead = 0;
+    var scan = Math.min(buf.length - expected, Math.round(0.1 * rate));
+    var data = buf.getChannelData(0);
+    while (lead < scan && Math.abs(data[lead]) < 0.001) lead++;
+    if (lead >= scan) lead = 0; // 开头实在找不到起点就不裁
+
+    var out = this.ctx.createBuffer(buf.numberOfChannels, expected, rate);
+    for (var c = 0; c < buf.numberOfChannels; c++) {
+      out.getChannelData(c).set(
+        buf.getChannelData(c).subarray(lead, lead + expected),
+      );
+    }
+    return out;
+  };
+
+  /* 页面加载就开始下载并解码，等用户第一次操作时声音已经准备好 */
+  BirthdayMusic.prototype.preload = function () {
+    var self = this;
+    if (this._preload) return this._preload;
+
+    this._preload = new Promise(function (resolve) {
+      try {
+        if (!self.ctx) {
+          var AC = window.AudioContext || window.webkitAudioContext;
+          self.ctx = new AC();
+          self._build();
+        }
+        if (typeof fetch !== "function") return resolve(false);
+        fetch(self.trackUrl, { credentials: "same-origin" })
+          .then(function (res) {
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            return res.arrayBuffer();
+          })
+          .then(function (ab) {
+            return new Promise(function (ok, fail) {
+              self.ctx.decodeAudioData(ab, ok, fail);
+            });
+          })
+          .then(function (buf) {
+            self.buffer = self._trimLoop(buf);
+            resolve(true);
+          })
+          .catch(function () {
+            resolve(false);
+          });
+      } catch (err) {
+        resolve(false);
+      }
+    });
+
+    return this._preload;
+  };
+
+  BirthdayMusic.prototype._playBuffer = function (t) {
+    var ctx = this.ctx;
+    var src = ctx.createBufferSource();
+    src.buffer = this.buffer;
+    src.loop = true;
+    src.loopStart = 0;
+    src.loopEnd = this.buffer.duration;
+    src.connect(this.trackGain);
+
+    var gain = this.trackGain.gain;
+    gain.cancelScheduledValues(t);
+    gain.setValueAtTime(Math.max(0.0001, gain.value), t);
+    gain.linearRampToValueAtTime(this.volume, t + 1.2);
+
+    src.start(t + 0.02);
+    this.source = src;
+  };
+
   BirthdayMusic.prototype.ensure = function () {
     if (!this.supported) return Promise.reject(new Error("Web Audio unsupported"));
     if (!this.ctx) {
@@ -430,9 +525,17 @@
     return this.ensure().then(function () {
       if (self.playing) return true;
       self.playing = true;
-      self.bar = 0;
-      self.nextTime = self.ctx.currentTime + 0.18;
       var t = self.ctx.currentTime;
+
+      /* 音轨就绪就放整首循环，手机端不需要再合成任何音符 */
+      if (self.buffer) {
+        self._playBuffer(t);
+        return true;
+      }
+
+      /* 文件还没下载完：先用实时合成顶上，一样能出声 */
+      self.bar = 0;
+      self.nextTime = t + 0.18;
       self.master.gain.cancelScheduledValues(t);
       self.master.gain.setValueAtTime(Math.max(0.0001, self.master.gain.value), t);
       self.master.gain.linearRampToValueAtTime(self.volume, t + 1.6);
@@ -457,6 +560,18 @@
     this.master.gain.cancelScheduledValues(t);
     this.master.gain.setValueAtTime(Math.max(0.0001, this.master.gain.value), t);
     this.master.gain.linearRampToValueAtTime(0.0001, t + 0.55);
+
+    /* 循环音轨：淡出后停掉，下次播放重新起一个干净的 source */
+    if (this.source) {
+      var tg = this.trackGain.gain;
+      tg.cancelScheduledValues(t);
+      tg.setValueAtTime(Math.max(0.0001, tg.value), t);
+      tg.linearRampToValueAtTime(0.0001, t + 0.5);
+      try {
+        this.source.stop(t + 0.56);
+      } catch (err) {}
+      this.source = null;
+    }
 
     /* 未来两秒多已经排好的音符一起收掉：
        否则重新开启时，旧排程会和新排程叠在一起响 */

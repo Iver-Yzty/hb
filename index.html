@@ -2770,6 +2770,8 @@
 
         var music = new window.BirthdayMusic({ volume: 0.55 });
         window.birthdayMusic = music;
+        /* 提前下载并解码循环音轨，等第一次手势解锁时直接开声 */
+        if (music.preload) music.preload();
 
         var on = true; // 用户意图：默认开启
         var userPaused = false; // 手动关掉之后，就不再被触摸自动打开

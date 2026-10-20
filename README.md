@@ -32,6 +32,7 @@ cd "C:/Users/Administrator/Desktop/hb" && python -m http.server 5173
 - 正文字体 Noto Serif SC、英文字体 Cormorant Garamond 都做了子集化放在 `assets/fonts/`，页面不再请求 Google Fonts，国内可正常加载。Noto 的可见汉字子集不含数字，所以另打了一份 `noto-serif-sc-digits.woff2`（等高 lining 数字），避免数字回退到 Cormorant 的旧式字形后「2」比「3」矮一截。
 - 右上角圆形音符按钮控制背景音乐（与五幕版共用的纯合成生日曲，主页默认开启、进页面就尝试播放，音量 0.55）；按钮图标只反映真实播放状态，被浏览器自动播放策略拦下时显示冷色呼吸圈，轻触后变金色（此时点按钮就是「开始播放」，不会误关）。吹灭蜡烛时会额外叠加一串清脆的风铃音。
 - 手机上的音乐做了减负：自动切到轻量合成（少一层泛音）、混响从 1.8 秒卷积换成四条带阻尼反馈的延迟（音频线程 CPU 约省 37%），排程提前 2.2 秒、每 200ms 排一次，主线程偶尔卡几百毫秒也不会漏音符；来电 / 切后台被打断后会自动恢复。贺卡展开、蛋糕淡出后画布直接停止重绘，资源全留给音乐。
+- 主音乐现在是预渲染的循环音轨 `assets/audio/birthday-loop.mp3`（42.7 秒 / 683KB，用同一套合成器离线渲染，末尾混响尾巴已叠回开头，循环处没有接缝）。播放时手机端只解码一次、之后一个 BufferSource 循环，**完全不做实时合成**；文件加载或解码失败才退回实时合成。想换曲子重新渲染替换这个 mp3 即可（16 小节 × 90 BPM）。
 
 ### 五幕版（story.html · 保留）
 
@@ -92,11 +93,12 @@ hb/
 ├─ css/style.css
 ├─ js/
 │  ├─ config.js    # 名字、日期、照片路径
-│  ├─ audio.js     # Web Audio 合成音乐（主页与五幕版共用，可传 volume）
+│  ├─ audio.js     # 音乐：优先播放循环音轨，失败时退回实时合成（可传 volume）
 │  ├─ fx.js        # 金色微尘 / 金箔雨 / 烟花（五幕版使用）
 │  └─ main.js      # 翻页、视差、滑动、陀螺仪、许愿（五幕版使用）
 ├─ assets/photos/  # 照片与落款头像
 ├─ assets/fonts/   # 子集化字体（标题 / 正文 / 英文）
+├─ assets/audio/   # 预渲染的循环音轨（birthday-loop.mp3）
 └─ Gemini_Generated_Image_*.png  # 落款的原始手绘头像
 ```
 

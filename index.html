@@ -575,6 +575,133 @@
         animation-delay: 0.42s;
       }
 
+      /* ── 贺卡换成星河配色：奶油底 + 青 / 粉 / 金三色流光 ──────────
+         与页面里的星空、丝带、蛋糕用的是同一套颜色，整体更明艳 */
+      .scene--star .wish-card-inner {
+        border: 1.5px solid transparent;
+        border-radius: 14px;
+        color: #2a3557;
+        background:
+          radial-gradient(
+            circle at 7% 11%,
+            rgba(255, 209, 102, 0.95) 0 1.5px,
+            transparent 2.2px
+          ),
+          radial-gradient(
+            circle at 93% 9%,
+            rgba(123, 223, 242, 0.95) 0 1.4px,
+            transparent 2.1px
+          ),
+          radial-gradient(
+            circle at 5% 90%,
+            rgba(255, 112, 166, 0.9) 0 1.3px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 95% 86%,
+            rgba(255, 209, 102, 0.9) 0 1.5px,
+            transparent 2.2px
+          ),
+          radial-gradient(
+            120% 90% at 8% -8%,
+            rgba(123, 223, 242, 0.56),
+            transparent 58%
+          ),
+          radial-gradient(
+            115% 85% at 96% 4%,
+            rgba(255, 112, 166, 0.46),
+            transparent 55%
+          ),
+          radial-gradient(
+            110% 80% at 0% 78%,
+            rgba(167, 139, 250, 0.32),
+            transparent 55%
+          ),
+          radial-gradient(
+            135% 100% at 50% 108%,
+            rgba(255, 209, 102, 0.5),
+            transparent 62%
+          ),
+          linear-gradient(160deg, #ffffff 0%, #f3faff 48%, #fff6ea 100%),
+          linear-gradient(
+            135deg,
+            #7bdff2 0%,
+            #ff70a6 38%,
+            #ffd166 68%,
+            #7bdff2 100%
+          );
+        background-clip: padding-box, padding-box, padding-box, padding-box,
+          padding-box, padding-box, padding-box, padding-box, padding-box,
+          border-box;
+        box-shadow:
+          0 26px 62px rgba(3, 10, 30, 0.52),
+          0 0 0 1px rgba(255, 255, 255, 0.55) inset,
+          0 0 42px rgba(56, 189, 248, 0.22),
+          0 0 74px rgba(255, 112, 166, 0.14);
+      }
+      /* 内圈细线从金线换成淡蓝紫，避免和新的彩色描边打架 */
+      .scene--star .wish-card-inner::before {
+        inset: 8px;
+        border-radius: 9px;
+        border-color: rgba(90, 140, 210, 0.24);
+      }
+      /* 扫光带一点青蓝，不再只是纯白 */
+      .scene--star .wish-card-inner::after {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.62),
+          rgba(189, 224, 254, 0.38),
+          transparent
+        );
+      }
+
+      .scene--star .wish-eyebrow {
+        color: transparent;
+        background: linear-gradient(
+          90deg,
+          #0089b0 0%,
+          #e8458e 52%,
+          #c98a00 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+      .scene--star .wish-title {
+        color: transparent;
+        background: linear-gradient(
+          100deg,
+          #1d3a8a 0%,
+          #6d28d9 46%,
+          #db2777 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
+      }
+      .scene--star .wish-date {
+        color: #0369a1;
+      }
+      .scene--star .wish-rule {
+        width: 58px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          #7bdff2 20%,
+          #ff70a6 55%,
+          #ffd166 82%,
+          transparent
+        );
+      }
+      .scene--star .wish-lines p {
+        color: #3c4a6e;
+      }
+
+      /* 贴纸与落款的投影也换成冷色，和星空底更协调 */
+      .scene--star .wish-card .wish-photos img {
+        filter: drop-shadow(0 6px 12px rgba(24, 54, 120, 0.28));
+      }
+
       /* 去掉署名后，用一枚小小的金色分隔收尾 */
       .wish-card .wish-ornament {
         display: block;
@@ -611,6 +738,23 @@
       }
       .scene--finale.is-card .wish-ornament {
         animation-delay: 1.2s;
+      }
+      /* 星河版贺卡的收尾分隔：粉色亮点 + 青蓝细线 */
+      .scene--star .wish-card .wish-ornament {
+        background: radial-gradient(
+            circle,
+            rgba(255, 112, 166, 0.9) 0 1.6px,
+            rgba(255, 112, 166, 0) 2px
+          )
+          center/6px 6px no-repeat;
+      }
+      .scene--star .wish-card .wish-ornament::before,
+      .scene--star .wish-card .wish-ornament::after {
+        background: linear-gradient(
+          90deg,
+          rgba(123, 223, 242, 0),
+          rgba(123, 223, 242, 0.75)
+        );
       }
 
       /* 正文保持居中；底部留出落款的位置，像信末签名一样自然错开 */

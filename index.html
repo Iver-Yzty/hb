@@ -798,6 +798,12 @@
         .star-inner .wish-card {
           bottom: 12px;
         }
+        /* 按钮压在不停重绘的画布上，背景模糊在手机上很贵，改用半透明底色 */
+        .music-toggle {
+          -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+          background: rgba(12, 24, 48, 0.62);
+        }
       }
 
       @media (max-height: 600px) {
@@ -1221,6 +1227,33 @@
         var smoke = [];
         var fireworks = [];
         var candleTips = [];
+        /* 蛋糕上的光斑每帧都要画几十个，用预渲染的小贴图代替
+           每帧新建径向渐变，颜色固定所以只需要每种颜色一张 */
+        var nebulaSprites = {};
+
+        function nebulaSprite(color) {
+          var sprite = nebulaSprites[color];
+          if (sprite) return sprite;
+          var size = 128;
+          sprite = document.createElement("canvas");
+          sprite.width = size;
+          sprite.height = size;
+          var sctx = sprite.getContext("2d");
+          var g = sctx.createRadialGradient(
+            size / 2,
+            size / 2,
+            1,
+            size / 2,
+            size / 2,
+            size / 2,
+          );
+          g.addColorStop(0, "rgba(" + color + ",1)");
+          g.addColorStop(1, "rgba(" + color + ",0)");
+          sctx.fillStyle = g;
+          sctx.fillRect(0, 0, size, size);
+          nebulaSprites[color] = sprite;
+          return sprite;
+        }
 
         var RIBBONS = [
           {
@@ -1573,6 +1606,13 @@
             return;
           }
           lastPaint = now;
+
+          /* 贺卡展开后画布已经淡出，整座蛋糕不用再画。
+             这一步能省掉几乎全部绘制开销，把手机 CPU / GPU 让给音频线程 */
+          if (card && cardEase > 0.45 && canvas.classList.contains("is-tucked")) {
+            requestAnimationFrame(render);
+            return;
+          }
 
           var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
           lastT = now;
@@ -2154,20 +2194,15 @@
                 : item.tint > 0.28
                   ? palette.nebulaB
                   : palette.nebulaC;
-            var g = ctx.createRadialGradient(
-              item.x,
-              item.y,
-              1,
-              item.x,
-              item.y,
-              item.r,
+            var sprite = nebulaSprite(c);
+            ctx.globalAlpha = item.alpha;
+            ctx.drawImage(
+              sprite,
+              item.x - item.r,
+              item.y - item.r,
+              item.r * 2,
+              item.r * 2,
             );
-            g.addColorStop(0, "rgba(" + c + "," + item.alpha.toFixed(3) + ")");
-            g.addColorStop(1, "rgba(" + c + ",0)");
-            ctx.fillStyle = g;
-            ctx.beginPath();
-            ctx.arc(item.x, item.y, item.r, 0, Math.PI * 2);
-            ctx.fill();
             ctx.restore();
           } else if (item.type === "star") {
             ctx.save();
@@ -2527,7 +2562,13 @@
           moved = 0;
           lastX = e.clientX;
           lastY = e.clientY;
-          canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
+          /* 手指很快抬起 / 被系统接管时 pointerId 已经失效，
+             setPointerCapture 会抛错，别让它打断后面的手势 */
+          try {
+            if (canvas.setPointerCapture) {
+              canvas.setPointerCapture(e.pointerId);
+            }
+          } catch (err) {}
         });
 
         canvas.addEventListener("pointermove", function (e) {
@@ -2792,7 +2833,9 @@
 
         toggle.addEventListener("click", function (e) {
           e.stopPropagation();
-          if (on) turnOff();
+          /* 按真实播放状态判断：自动播放被拦下时按钮写着「轻触播放音乐」，
+             这时候点它应该是开始播放，而不是把播放意图关掉 */
+          if (running()) turnOff();
           else turnOn();
         });
 

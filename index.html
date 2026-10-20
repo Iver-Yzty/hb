@@ -602,24 +602,30 @@
             rgba(255, 209, 102, 0.9) 0 1.5px,
             transparent 2.2px
           ),
+          /* 文字区蒙一层很淡的白纱，让正文压得住彩色底 */
+          radial-gradient(
+            86% 64% at 50% 60%,
+            rgba(255, 255, 255, 0.66),
+            rgba(255, 255, 255, 0) 74%
+          ),
           radial-gradient(
             120% 90% at 8% -8%,
-            rgba(123, 223, 242, 0.56),
+            rgba(123, 223, 242, 0.46),
             transparent 58%
           ),
           radial-gradient(
             115% 85% at 96% 4%,
-            rgba(255, 112, 166, 0.46),
+            rgba(255, 112, 166, 0.38),
             transparent 55%
           ),
           radial-gradient(
             110% 80% at 0% 78%,
-            rgba(167, 139, 250, 0.32),
+            rgba(167, 139, 250, 0.26),
             transparent 55%
           ),
           radial-gradient(
             135% 100% at 50% 108%,
-            rgba(255, 209, 102, 0.5),
+            rgba(255, 209, 102, 0.42),
             transparent 62%
           ),
           linear-gradient(160deg, #ffffff 0%, #f3faff 48%, #fff6ea 100%),
@@ -632,7 +638,7 @@
           );
         background-clip: padding-box, padding-box, padding-box, padding-box,
           padding-box, padding-box, padding-box, padding-box, padding-box,
-          border-box;
+          padding-box, border-box;
         box-shadow:
           0 26px 62px rgba(3, 10, 30, 0.52),
           0 0 0 1px rgba(255, 255, 255, 0.55) inset,
@@ -657,30 +663,19 @@
       }
 
       .scene--star .wish-eyebrow {
-        color: transparent;
-        background: linear-gradient(
-          90deg,
-          #0089b0 0%,
-          #e8458e 52%,
-          #c98a00 100%
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
+        color: #4a6a86;
       }
+      /* 标题不再用彩色渐变，回到干净的石墨蓝，保证清晰 */
       .scene--star .wish-title {
-        color: transparent;
-        background: linear-gradient(
-          100deg,
-          #243a6b 0%,
-          #4b4f7d 48%,
-          #8f5c77 100%
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
+        color: #22345c;
+        background: none;
+        -webkit-background-clip: border-box;
+        background-clip: border-box;
+        filter: none;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
       }
       .scene--star .wish-date {
-        color: #0369a1;
+        color: #2f5e82;
       }
       .scene--star .wish-rule {
         width: 58px;
@@ -694,7 +689,11 @@
         );
       }
       .scene--star .wish-lines p {
-        color: #3c4a6e;
+        color: #2e3852;
+        font-weight: 500;
+        font-size: clamp(11.2px, 3.05vw, 12.4px);
+        line-height: 1.9;
+        letter-spacing: 0.045em;
       }
 
       /* 贴纸与落款的投影也换成冷色，和星空底更协调 */

@@ -2805,7 +2805,10 @@
         function attempt() {
           if (!on) return;
           music.start().then(function (ok) {
-            if (!ok) {
+            /* 只有浏览器根本不支持 Web Audio 才放弃；
+               iOS 上 resume() 在没有手势时可能被拒，这里保留“要播放”的意图，
+               下一次手势会再试一次 */
+            if (!ok && !music.supported) {
               on = false;
             } else if (!on) {
               /* 等待解锁的过程中用户点了关闭 */

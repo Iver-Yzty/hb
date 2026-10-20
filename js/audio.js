@@ -522,7 +522,21 @@
   BirthdayMusic.prototype.start = function () {
     var self = this;
     if (!this.supported) return Promise.resolve(false);
-    return this.ensure().then(function () {
+
+    /* 音轨正在下载 / 解码时稍等一下，优先用文件播放；
+       等太久（网络慢）就先让实时合成顶上，不能一直没声音 */
+    var ready = this.buffer
+      ? Promise.resolve()
+      : Promise.race([
+          this.preload(),
+          new Promise(function (resolve) {
+            setTimeout(resolve, 1500);
+          }),
+        ]);
+
+    return ready.then(function () {
+      return self.ensure();
+    }).then(function () {
       if (self.playing) return true;
       self.playing = true;
       var t = self.ctx.currentTime;

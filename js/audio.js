@@ -91,14 +91,14 @@
     this.bus.gain.value = 1;
     this.bus.connect(this.master);
 
-    /* reverb */
+    /* reverb：混响尾巴略短一点，移动端的卷积开销能小不少 */
     this.reverb = ctx.createConvolver();
-    this.reverb.buffer = this._impulse(3.0, 2.6);
+    this.reverb.buffer = this._impulse(1.8, 2.4);
     var lp = ctx.createBiquadFilter();
     lp.type = "lowpass";
     lp.frequency.value = 4600;
     this.wet = ctx.createGain();
-    this.wet.gain.value = 0.34;
+    this.wet.gain.value = 0.27;
     this.reverb.connect(lp);
     lp.connect(this.wet);
     this.wet.connect(this.master);
@@ -193,11 +193,11 @@
     var g = this._env(t, 0.004, dur, peak);
     this._route(g, 0.4, dest);
 
+    /* 第四泛音音量很小、听感贡献有限，去掉一个振荡器给手机减负 */
     var partials = [
       [1, 1, 1],
       [2.01, 0.26, 0.72],
-      [3.02, 0.12, 0.5],
-      [4.98, 0.05, 0.34]
+      [3.02, 0.12, 0.5]
     ];
 
     for (var i = 0; i < partials.length; i++) {
@@ -308,7 +308,8 @@
     if (this.nextTime < this.ctx.currentTime - 0.2) {
       this.nextTime = this.ctx.currentTime + 0.05;
     }
-    while (this.nextTime < this.ctx.currentTime + 0.6) {
+    /* 提前 1.1s 排程：手机上主线程偶尔卡一下也不至于漏掉音符 */
+    while (this.nextTime < this.ctx.currentTime + 1.1) {
       this._playBar(this.bar, this.nextTime);
       this.nextTime += BEAT * 4;
       this.bar = (this.bar + 1) % 16;
@@ -338,7 +339,8 @@
       self.master.gain.cancelScheduledValues(t);
       self.master.gain.setValueAtTime(Math.max(0.0001, self.master.gain.value), t);
       self.master.gain.linearRampToValueAtTime(self.volume, t + 1.6);
-      self.timer = setInterval(function () { self._tick(); }, 70);
+      /* 排程间隔放宽到 120ms，配合更长的预排时间，减少主线程压力 */
+      self.timer = setInterval(function () { self._tick(); }, 120);
       self._tick();
       return true;
     }).catch(function (err) {

@@ -1200,6 +1200,7 @@
         var flash = 0;
         var time = 0;
         var lastT = 0;
+        var lastPaint = 0;
 
         /* ── 场景对象 ────────────────────────────────────────── */
         var bodyStars = [];
@@ -1259,13 +1260,15 @@
         function resize() {
           W = window.innerWidth;
           H = window.innerHeight;
-          DPR = Math.min(window.devicePixelRatio || 1, 2);
+          small = Math.min(W, H) < 430;
+          /* 手机上克制一点分辨率：发光类画面 1.75x 已经很细腻，
+             像素少 ~23%，留给音频和交互更多余量 */
+          DPR = Math.min(window.devicePixelRatio || 1, small ? 1.75 : 2);
           canvas.width = Math.round(W * DPR);
           canvas.height = Math.round(H * DPR);
           canvas.style.width = W + "px";
           canvas.style.height = H + "px";
           ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-          small = Math.min(W, H) < 430;
           buildScene();
           syncHintHost();
           measureCardTop();
@@ -1554,6 +1557,14 @@
 
         /* ── 主渲染 ──────────────────────────────────────────── */
         function render(now) {
+          /* 高刷屏（90 / 120Hz）上把绘制限制在 60fps：
+             蛋糕本身绘制量不小，省下的 CPU 留给音频调度，避免音乐断音 */
+          if (now - lastPaint < 15.2) {
+            requestAnimationFrame(render);
+            return;
+          }
+          lastPaint = now;
+
           var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
           lastT = now;
           time += dt;

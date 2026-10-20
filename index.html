@@ -694,6 +694,15 @@
         font-size: clamp(11.2px, 3.05vw, 12.4px);
         line-height: 1.9;
         letter-spacing: 0.045em;
+        /* 万一极小屏幕上放不进一行，也让两行长度差不多，
+           而不是把最后一个字单独留在下一行 */
+        text-wrap: balance;
+      }
+      /* 每句话尽量保持一行。手机浏览器字号放大后，原本刚好放下的句子
+         会把最后一个字挤到下一行；脚本会按真实渲染宽度等比缩一点字号，
+         确认放得下之后才加上 is-fitted。 */
+      .wish-lines.is-fitted p {
+        white-space: nowrap;
       }
 
       /* 贴纸与落款的投影也换成冷色，和星空底更协调 */
@@ -2607,6 +2616,109 @@
             art.classList.remove("is-sparking");
           }, 950);
         });
+      })();
+
+      /* 贺卡正文：保证每句话都落在一行里。
+         实测手机上只要浏览器字号被系统 / 浏览器设置放大一点，
+         「想去的地方都顺遂抵达，想做的事情都如愿以偿。」这种长句
+         就会把最后一个字挤到下一行。这里先禁止换行量出整句的真实宽度，
+         再按「可用宽度 / 实际宽度」等比缩小字号，直到每一句都放得下。 */
+      (function () {
+        var wrap = document.querySelector(".wish-lines");
+        if (!wrap) return;
+        var ps = Array.prototype.slice.call(wrap.querySelectorAll("p"));
+        if (!ps.length) return;
+
+        var MIN_CSS = 9.4; // CSS 字号下限，再小就不好读了
+        var MIN_HEIGHT = 17.5; // 渲染行高下限（≈9.2px 字 × 1.9），兼容手机字体缩放
+        var MAX_PASS = 5;
+
+        function textWidth(p) {
+          var range = document.createRange();
+          range.selectNodeContents(p);
+          return range.getBoundingClientRect().width;
+        }
+
+        function reset() {
+          for (var i = 0; i < ps.length; i++) ps[i].style.fontSize = "";
+          wrap.classList.remove("is-fitted");
+        }
+
+        function fit() {
+          reset();
+          /* 临时加上 nowrap，Range 量到的才是整句宽度而不是折行后的块宽 */
+          wrap.classList.add("is-fitted");
+          void wrap.offsetWidth;
+
+          var size = parseFloat(window.getComputedStyle(ps[0]).fontSize) || 0;
+          if (!size) {
+            reset();
+            return;
+          }
+
+          var measured = false;
+          for (var pass = 0; pass < MAX_PASS; pass++) {
+            var ratio = 1;
+            for (var i = 0; i < ps.length; i++) {
+              var avail = ps[i].getBoundingClientRect().width;
+              var need = textWidth(ps[i]);
+              if (need > 0) measured = true;
+              if (avail > 0 && need > avail) {
+                ratio = Math.min(ratio, avail / need);
+              }
+            }
+            if (ratio >= 0.999) break;
+            /* 第一轮多留一点余量，之后只做微调，避免亚像素再挤出换行 */
+            size = size * ratio * (pass === 0 ? 0.985 : 0.997);
+            size = Math.max(4, Math.round(size * 100) / 100);
+            for (var j = 0; j < ps.length; j++) {
+              ps[j].style.fontSize = size + "px";
+            }
+          }
+
+          var height = ps[0].getBoundingClientRect().height;
+          var overflow = !measured;
+          for (var k = 0; k < ps.length; k++) {
+            if (textWidth(ps[k]) > ps[k].getBoundingClientRect().width + 0.5) {
+              overflow = true;
+            }
+          }
+
+          /* 实在放不下（超小屏 + 超大字号）就退回正常换行，
+             宁可折行也不能让字被卡片裁掉 */
+          if (overflow || (size < MIN_CSS && height < MIN_HEIGHT)) {
+            reset();
+          }
+        }
+
+        var timer = 0;
+        function schedule() {
+          window.clearTimeout(timer);
+          timer = window.setTimeout(function () {
+            window.requestAnimationFrame(fit);
+          }, 60);
+        }
+
+        schedule();
+        window.addEventListener("resize", schedule);
+        window.addEventListener("orientationchange", function () {
+          window.setTimeout(schedule, 260);
+        });
+        /* 字体是 swap 加载的：等真正的字形换上之后再量一次 */
+        if (document.fonts) {
+          if (document.fonts.ready) document.fonts.ready.then(schedule);
+          if (document.fonts.addEventListener) {
+            document.fonts.addEventListener("loadingdone", schedule);
+          }
+        }
+        /* 贺卡展开时宽度会从 90% 变成 94%，重新量一次能少缩一点字号 */
+        var scene = document.getElementById("finale");
+        if (scene && window.MutationObserver) {
+          new window.MutationObserver(schedule).observe(scene, {
+            attributes: true,
+            attributeFilter: ["class"],
+          });
+        }
       })();
 
       /* 生日氛围音乐：默认开启，进页面就尝试播放；
